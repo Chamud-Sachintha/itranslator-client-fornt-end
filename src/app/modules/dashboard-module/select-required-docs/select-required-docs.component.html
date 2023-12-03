@@ -1,1 +1,26 @@
-<p>select-required-docs works!</p>
+<h5 class="card-header">Step 1</h5>
+<div class="card-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.serviceList; index as i">
+            <div class="card">
+                <div class="card-header">
+                    {{ this.eachService.serviceName }}
+                </div>
+                <div class="card-body">
+                    <p class="card-text" style="text-align: justify;">{{ this.eachService.description }}</p>
+                    <div class="form-group row">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Success</label>
+                        <div class="col-12 col-sm-8 col-lg-6 pt-1">
+                            <div class="switch-button switch-button-success">
+                                <input type="checkbox" name="{{ i + 1 }}" id="{{ i + 1 }}" (change)="onChangeToggle(eachService.serviceId,eachService.serviceName, eachService.description, $event)"><span>
+                            <label for="{{ i + 1 }}"></label></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-sm" (click)="goToStep2($event)">Go Next Step</button>
+    <button class="btn btn-primary btn-sm " style="margin-left: 10px;" (click)="onClickPreviousBtn()">Previous</button>
+</div>

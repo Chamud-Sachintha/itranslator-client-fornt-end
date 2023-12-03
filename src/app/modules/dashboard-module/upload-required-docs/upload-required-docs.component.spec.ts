@@ -6,10 +6,12 @@ describe('UploadRequiredDocsComponent', () => {
   let component: UploadRequiredDocsComponent;
   let fixture: ComponentFixture<UploadRequiredDocsComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [UploadRequiredDocsComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ UploadRequiredDocsComponent ]
+    })
+    .compileComponents();
+
     fixture = TestBed.createComponent(UploadRequiredDocsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

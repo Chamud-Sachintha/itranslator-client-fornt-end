@@ -1,1 +1,251 @@
-<p>upload-required-docs works!</p>
+<h5 class="card-header">Step 2</h5>
+<div class="card-body">
+  <div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.selectedServiceList[0]">
+      <div class="card">
+        <div class="card-header">{{ eachService.serviceName }}</div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ eachService.description }}
+          </p>
+          <div class="form-group row">
+            <div class="col-8 pt-1">
+              <a href="#" data-toggle="modal" data-target="#exampleModal" (click)="setTranslateModalId(eachService.serviceId)">Upload Documents</a>
+            </div>
+            <div class="col-4 pt-1">
+              <a href="#" (click)="onClickRemove()">Remove</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Additional Informations</h5>
+        <div class="card-body border-top">
+          <div class="row">
+            <div class="col-md-6 col-lg-6 col-sm-12">
+              <label for="">Select Delivery Time</label>
+              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryTime">
+                <option value="">--- Select Option ---</option>
+                <option value="3">1 Day</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 col-lg-6 col-sm-12">
+              <label for="">Select Delivery Method</label>
+              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryMethod">
+                <option value="">--- Select Option ---</option>
+                <option value="2">By Courier</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 col-lg-6 col-sm-12">
+              <label for="">Select Payment Method</label>
+              <select name="" id="" class="form-control" [(ngModel)]="this.paymentMethod">
+                <option value="">--- Select Option ---</option>
+                <option value="1">Bank Deposit</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- added documents result row -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Manage All Main Categories</h5>
+        <div class="card-body border-top">
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered first">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Translate Dcument Title</th>
+                  <th>Added Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let eachDocument of this.appendDocList; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ eachDocument.translationTitle }}</td>
+                  <td>{{ eachDocument.submitedDate | date }}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm">Check Details</button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>#</th>
+                  <th>Translate Dcument Title</th>
+                  <th>Added Date</th>
+                  <th>Actions</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()">
+    Previous
+  </button>
+  <button class="btn btn-primary btn-sm" style="margin-left: 10px" (click)="onClickNextStep()">Next</button>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="nicTranslateForm" (ngSubmit)="onSubmitNicTranslateForm()" enctype="multipart/form-data" *ngIf="this.nicTranslateService">
+            <div class="row">
+                <div class="col-12">
+                    <label for="">NIC Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="nicName">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Birth Place</label>
+                    <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="birthPlace">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="address">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Select Front Side Of NIC </label>
+                    <input type="file" class="form-control" (change)="onChangeFrontImage($event)">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Select Back Side Of NIC </label>
+                    <input type="file" class="form-control" (change)="onChangeBackImage($event)">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+
+        <form [formGroup]="this.bcTranslateForm" (ngSubmit)="onSubmitBirthCertificateTranslateForm()" *ngIf="this.birthCertificateTranslateService">
+          <div class="row">
+              <div class="col-12">
+                  <label for="">Name</label>
+                  <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="name">
+              </div>
+              <div class="col-12 mt-3">
+                  <label for="">Father Name</label>
+                  <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="fatherName">
+              </div>
+              <div class="col-12 mt-3">
+                  <label for="">Mother Name</label>
+                  <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="motherName">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+
+        <form [formGroup]="this.passportTranslateForm" (ngSubmit)="onSubmitPassportTranslateForm()" *ngIf="this.passportTranslateService">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Front Image:</label>
+              <input type="file" class="form-control" (change)="onChangePassportFrontImage($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Back Image:</label>
+              <input type="file" class="from-control" (change)="onChangePassportBackImage($event)">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+
+        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateService">
+          <!-- male details starts here -->
+          <div class="row">
+            <div class="col-12">
+              <h6>Male Details</h6>
+              <hr>
+              <label for="">Name:</label>
+              <input type="text" class="form-control" placeholder="Saman Kumara">
+            </div>
+            <div class="col-12">
+              <label for="">Father's Name:</label>
+              <input type="text" class="form-control" placeholder="Nishantha bandara">
+            </div>
+            <div class="col-12">
+              <label for="">Residences:</label>
+              <input type="text" class="form-control" placeholder="Makola">
+            </div>
+          </div>
+          <!-- male details end here -->
+
+          <!-- female details starts here -->
+          <div class="row">
+            <div class="col-12">
+              <h6>Female Detailss</h6>
+              <hr>
+
+              <label for="">Name:</label>
+              <input type="text" class="form-control" placeholder="Saman Kumara">
+            </div>
+            <div class="col-12">
+              <label for="">Father's Name:</label>
+              <input type="text" class="form-control" placeholder="Nishantha Bandara">
+            </div>
+            <div class="col-12">
+              <label for="">Recidencies:</label>
+              <input type="text" class="form-control" placeholder="Makola">
+            </div>
+          </div>
+          <!-- femaledetails ends here -->
+
+          <div class="row">
+            <div class="col-12">
+              <label for="">Front Image:</label>
+              <input type="file" class="form-control" (change)="onChangeMariageFrontImage($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Back Image:</label>
+              <input type="file" class="form-control" (change)="onChangeMariageBackImage($event)">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

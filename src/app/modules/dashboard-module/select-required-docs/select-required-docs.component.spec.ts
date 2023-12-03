@@ -6,10 +6,12 @@ describe('SelectRequiredDocsComponent', () => {
   let component: SelectRequiredDocsComponent;
   let fixture: ComponentFixture<SelectRequiredDocsComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SelectRequiredDocsComponent]
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ SelectRequiredDocsComponent ]
+    })
+    .compileComponents();
+
     fixture = TestBed.createComponent(SelectRequiredDocsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

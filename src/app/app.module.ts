@@ -6,17 +6,21 @@ import { AppComponent } from './app.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { WebLayoutComponent } from './layouts/web-layout/web-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
+import { DashboardHeaderComponent } from './shared/dashboard-header/dashboard-header.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthLayoutComponent,
     WebLayoutComponent,
-    DashboardLayoutComponent
+    DashboardLayoutComponent,
+    DashboardHeaderComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
