@@ -11,18 +11,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  getMenuPermissions(requestModel: any) {
-    const path = environment.appURL + "get-menu-perm";
-    return this.http.post(path, requestModel);
-  }
-
   authenticateUser(authModel: Auth) {
-    const path = environment.appURL + "authenticate-user";
+    const path = environment.appURL + "signin";
     return this.http.post(path, authModel);
   }
 
-  createNewClient(clientModel: Client) {
-    const path = environment.appURL + "add-client";
-    return this.http.post(path, clientModel);
+  registerUser(client: Client) {
+    const path = environment.appURL + "signup";
+    return this.http.post(path, client);
   }
 }

@@ -29,8 +29,6 @@ export class SigninComponent implements OnInit {
 
     } else if (password == "") {
 
-    } else if (flag == "") {
-
     } else {
       this.authModel.username = username;
       this.authModel.password = password;

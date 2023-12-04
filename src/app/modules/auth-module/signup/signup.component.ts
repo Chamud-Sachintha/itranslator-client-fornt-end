@@ -29,7 +29,7 @@ export class SignupComponent implements OnInit {
     const birthDate = this.cretateSignUpForm.controls['birthDate'].value;
     const password = this.cretateSignUpForm.controls['password'].value;
     const confPassword = this.cretateSignUpForm.controls['confPassword'].value;
-    console.log(fullName)
+
     if (fullName == "") {
 
     } else if (emailAddress == "") {
@@ -56,7 +56,7 @@ export class SignupComponent implements OnInit {
       this.clientModel.mobileNumber = mobileNumber;
       this.clientModel.password = password;
 
-      this.authService.createNewClient(this.clientModel).subscribe((resp: any) => {
+      this.authService.registerUser(this.clientModel).subscribe((resp: any) => {
 
         if (resp.code === 1) {
           console.log(resp);
