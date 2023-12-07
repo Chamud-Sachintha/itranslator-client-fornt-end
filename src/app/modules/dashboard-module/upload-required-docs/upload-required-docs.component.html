@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-6 col-sm-12">
               <label for="">Select Delivery Time</label>
-              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryTime">
+              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryTime" (change)="onChangeDeliveryTime()">
                 <option value="">--- Select Option ---</option>
                 <option value="3">1 Day</option>
               </select>
@@ -71,6 +71,7 @@
                 <tr>
                   <th>#</th>
                   <th>Translate Dcument Title</th>
+                  <th>Pages</th>
                   <th>Added Date</th>
                   <th>Actions</th>
                 </tr>
@@ -79,6 +80,7 @@
                 <tr *ngFor="let eachDocument of this.appendDocList; index as i">
                   <td>{{ i + 1 }}</td>
                   <td>{{ eachDocument.translationTitle }}</td>
+                  <td>{{ eachDocument.pages }}</td>
                   <td>{{ eachDocument.submitedDate | date }}</td>
                   <td>
                     <button class="btn btn-primary btn-sm">Check Details</button>
@@ -89,6 +91,7 @@
                 <tr>
                   <th>#</th>
                   <th>Translate Dcument Title</th>
+                  <th>Pages</th>
                   <th>Added Date</th>
                   <th>Actions</th>
                 </tr>
@@ -164,6 +167,14 @@
               <div class="col-12 mt-3">
                   <label for="">Mother Name</label>
                   <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="motherName">
+              </div>
+              <div class="col-12 mt-3">
+                <label for="">Select Front Side Of NIC </label>
+                <input type="file" class="form-control" (change)="onChangeBCFrontImage($event)">
+              </div>
+              <div class="col-12 mt-3">
+                  <label for="">Select Back Side Of NIC </label>
+                  <input type="file" class="form-control" (change)="onChangeBCBackImage($event)">
               </div>
           </div>
           <div class="modal-footer">
@@ -243,6 +254,31 @@
           <div class="modal-footer">
             <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
             <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+
+        <form [formGroup]="this.deathTranslateForm" *ngIf="this.deathTranslateService" (ngSubmit)="onSubmitDeathCertificateTranslateForm()">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Name:</label>
+              <input type="text" class="form-control" placeholder="Name">
+            </div>
+            <div class="col-12">
+              <label for="">Father Name</label>
+              <input type="text" class="form-control" placeholder="Father Name">
+            </div>
+            <div class="col-12">
+              <label for="">Mother Name</label>
+              <input type="text" class="form-control" placeholder="Mother Name">
+            </div>
+            <div class="col-12">
+              <label for="">Front Image</label>
+              <input type="file" class="form-control" (change)="onChangeDCFrontImage($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Back Image</label>
+              <input type="file" class="form-control" (change)="onChangeDCBackImage($event)">
+            </div>
           </div>
         </form>
       </div>

@@ -3,9 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataShareService } from 'src/app/services/data/data-share.service';
+import { ServiceService } from 'src/app/services/service/service.service';
 import { BCTranslateModel } from 'src/app/shared/models/BCTranslateModel/bctranslate-model';
+import { DCTranslateModel } from 'src/app/shared/models/DCTranslateModel/dctranslate-model';
 import { DocumentAppend } from 'src/app/shared/models/DocumentAppend/document-append';
+import { MCTranslateModel } from 'src/app/shared/models/MCTranslateModel/mctranslate-model';
 import { PassporTranslateModel } from 'src/app/shared/models/PassportTranslateModel/passpor-translate-model';
+import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { NICTranslator } from 'src/app/shared/models/TranslatorModel/nictranslator';
 
 @Component({
@@ -32,15 +36,19 @@ export class UploadRequiredDocsComponent implements OnInit {
   schoolLeaveTranslateService = false;
   nicTranslatorModel = new NICTranslator();
   bcTranslateModel = new BCTranslateModel();
+  mcTranslateModel = new MCTranslateModel();
   passportTranslateModel = new PassporTranslateModel();
+  dcTranslateModel = new DCTranslateModel();
   documentAppendModel = new DocumentAppend();
   appendDocList: DocumentAppend[] = [];
+  searchParamModel = new SearchParam();
   deliveryTime!: string;
   deliveryMethod!: string;
   paymentMethod!: string;
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
-            , private fromBuilder: FormBuilder) {
+            , private fromBuilder: FormBuilder
+            , private serviceService: ServiceService) {
   }
 
   ngOnInit() {
@@ -53,6 +61,62 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.passportTranslateFormInit();
     this.marriageTranslateFormInit();
     this.deathCertificateTranslateFormInit();
+  }
+
+  onChangeDeliveryTime() {
+
+    this.searchParamModel.token = sessionStorage.getItem("authToken");
+    this.searchParamModel.flag = sessionStorage.getItem("role");
+
+    this.selectedServiceList[0].forEach((eachDoc: any) => {
+      console.log(eachDoc.serviceId);
+      this.searchParamModel.serviceId = eachDoc.serviceId;
+      this.searchParamModel.deliveryTimeType = this.deliveryTime;
+
+      this.serviceService.getServicePriceByDeliveryTime(this.searchParamModel).subscribe((resp: any) => {
+
+        const priceInfo = JSON.parse(JSON.stringify(resp));
+
+        if (resp.code === 1) {
+          if (eachDoc.serviceId == 1) {
+            this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
+          }
+        }
+      })
+    })
+  }
+
+  onSubmitDeathCertificateTranslateForm() {
+    const name = this.deathTranslateForm.controls['name'].value;
+    const fatherName = this.deathTranslateForm.controls['fatherName'].value;
+    const motherName = this.deathTranslateForm.controls['motherName'].value;
+    const frontImg = this.deathTranslateForm.controls['frontImg'].value;
+    const backImg = this.deathTranslateForm.controls['backImg'].value;
+
+    if (name == "") {
+
+    } else if (fatherName == "") {
+
+    } else if (motherName == "") {
+
+    } else if (frontImg == "") {
+
+    } else if (backImg == "") {
+
+    } else {
+      this.dcTranslateModel.name = name;
+      this.dcTranslateModel.fatherName = fatherName;
+      this.dcTranslateModel.motherName = motherName;
+      this.dcTranslateModel.frontImg = frontImg;
+      this.dcTranslateModel.backImg = backImg;
+
+      let dcDocumentAppendModel = new DocumentAppend();
+
+      dcDocumentAppendModel.dcTranslateModel = this.dcTranslateModel;
+      dcDocumentAppendModel.translationTitle = "Death Certificate Translate Model";
+      dcDocumentAppendModel.submitedDate = (new Date());
+      dcDocumentAppendModel.pages = 2;
+    }
   }
 
   deathCertificateTranslateFormInit() {
@@ -106,7 +170,21 @@ export class UploadRequiredDocsComponent implements OnInit {
     } else if (backImg == "") {
 
     } else {
-      
+      this.mcTranslateModel.maleName = maleName;
+      this.mcTranslateModel.maleFatherName = maleFatherName;
+      this.mcTranslateModel.maleResidence = maleResidence;
+      this.mcTranslateModel.femaleName = femaleName;
+      this.mcTranslateModel.femaleFatherName = femaleFathersName;
+      this.mcTranslateModel.femaleResidencae = femaleResidence;
+
+      let mcTranslateAppendModel = new DocumentAppend();
+
+      mcTranslateAppendModel.mcTranslateModel = this.mcTranslateModel;
+      mcTranslateAppendModel.pages = 2;
+      mcTranslateAppendModel.translationTitle = "Mariage Certificate Translate";
+      mcTranslateAppendModel.submitedDate = (new Date());
+
+      this.appendDocList.push(mcTranslateAppendModel);
     }
   }
 
@@ -123,13 +201,23 @@ export class UploadRequiredDocsComponent implements OnInit {
     })
   }
 
+  onChangeDCFrontImage(event: any) {
+    const file = (event.target as any).files[0];
+    this.marriageTranslateForm.patchValue({"frontImg": file});
+  }
+
+  onChangeDCBackImage(event: any) {
+    const file = (event.target as any).files[0];
+    this.marriageTranslateForm.patchValue({"backImg": file});
+  }
+
   onChangeMariageFrontImage(event: any) {
     const file = (event.target as any).files[0];
     this.marriageTranslateForm.patchValue({"frontImg": file});
   }
 
   onChangeMariageBackImage(event: any) {
-    const file = (event.target as any).files[0];
+    const file = (event.target as any).files[0]; 
     this.marriageTranslateForm.patchValue({"frontImg": file});
   }
 
@@ -165,6 +253,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.documentAppendModel.passportTranslateModel = this.passportTranslateModel;
       this.documentAppendModel.translationTitle = "Passport Translation";
       this.documentAppendModel.submitedDate = new Date();
+      this.documentAppendModel.pages = 2;
 
       this.appendDocList.push(this.documentAppendModel);
     }
@@ -174,6 +263,8 @@ export class UploadRequiredDocsComponent implements OnInit {
     const name = this.bcTranslateForm.controls['name'].value;
     const fatherName = this.bcTranslateForm.controls['fatherName'].value;
     const motherName = this.bcTranslateForm.controls['motherName'].value;
+    const frontImg = this.bcTranslateForm.controls['frontImg'].value;
+    const backImg = this.bcTranslateForm.controls['backImg'].value;
 
     if (name == "") {
 
@@ -185,6 +276,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.bcTranslateModel.name = name;
       this.bcTranslateModel.fatherName = fatherName;
       this.bcTranslateModel.motherName = motherName;
+      this.bcTranslateModel.frontImage = frontImg;
+      this.bcTranslateModel.backImage = backImg;
 
       let bcTranslateAppend = new DocumentAppend();
 
@@ -200,7 +293,9 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.bcTranslateForm = this.fromBuilder.group({
       name: ['', Validators.required],
       fatherName: ['', Validators.required],
-      motherName: ['', Validators.required]
+      motherName: ['', Validators.required],
+      frontImg: ['',Validators.required],
+      backImg: ['', Validators.required]
     })
   }
 
@@ -260,6 +355,16 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.nicTranslateForm.patchValue({"backImg": file});
   }
 
+  onChangeBCFrontImage(event: any) {
+    const file = (event.target as any).files[0];
+    this.bcTranslateForm.patchValue({"frontImg": file});
+  }
+
+  onChangeBCBackImage(event: any) {
+    const file = (event.target as any).files[0];
+    this.bcTranslateForm.patchValue({"backImg": file});
+  }
+
   onSubmitNicTranslateForm() {
     const nicName = this.nicTranslateForm.controls['nicName'].value;
     const birthPlace = this.nicTranslateForm.controls['birthPlace'].value;
@@ -285,12 +390,14 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.nicTranslatorModel.address = address;
       this.nicTranslatorModel.frontImg = frontImg;
       this.nicTranslatorModel.backImg = backImg;
+      this.nicTranslatorModel.pages = 2;
 
       let nicModelAppend = new DocumentAppend();
 
       nicModelAppend.nicTranslateModel = this.nicTranslatorModel;
       nicModelAppend.translationTitle = "NIC Translation";
       nicModelAppend.submitedDate = new Date();
+      nicModelAppend.pages = 2;
 
       this.appendDocList.push(nicModelAppend);
     }

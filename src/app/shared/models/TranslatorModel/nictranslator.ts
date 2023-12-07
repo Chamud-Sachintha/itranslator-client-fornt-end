@@ -4,4 +4,6 @@ export class NICTranslator {
     address!: string;
     frontImg!: File;
     backImg!: File;
+    pages!: number;
+    price!: number;
 }

@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 
 const routes: Routes = [
+
   {
     path: '',
     redirectTo: 'auth',

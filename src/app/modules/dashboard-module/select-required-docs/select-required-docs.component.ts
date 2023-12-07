@@ -46,7 +46,7 @@ export class SelectRequiredDocsComponent implements OnInit {
       const requestServiceModel = {
         serviceId: serviceId,
         serviceName: serviceName,
-        description: description
+        description: description,
       }
 
       this.enableServiceList.push(requestServiceModel);
