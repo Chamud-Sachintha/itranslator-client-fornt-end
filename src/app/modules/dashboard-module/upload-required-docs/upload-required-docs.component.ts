@@ -80,6 +80,8 @@ export class UploadRequiredDocsComponent implements OnInit {
         if (resp.code === 1) {
           if (eachDoc.serviceId == 1) {
             this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 2) {
+            this.bcTranslateModel.price = priceInfo.data[0].servicePrice;
           }
         }
       })
@@ -284,6 +286,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       bcTranslateAppend.bcTranslateModel = this.bcTranslateModel;
       bcTranslateAppend.translationTitle = "BC Translation";
       bcTranslateAppend.submitedDate = new Date();
+      bcTranslateAppend.pages = 2;
 
       this.appendDocList.push(bcTranslateAppend);
     }

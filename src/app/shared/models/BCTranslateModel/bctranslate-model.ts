@@ -4,4 +4,5 @@ export class BCTranslateModel {
     motherName!: string;
     frontImage!: File
     backImage!: File;
+    price!: number;
 }

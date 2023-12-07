@@ -23,17 +23,21 @@ export class InvoiceComponent implements OnInit {
 
       let totalAmount = 0;
       dataList.uploadedDocList.forEach((eachDoc: any) => {
-        console.log(eachDoc)
-        this.inviceTableObj.documentTitle = eachDoc.translationTitle;
-        this.inviceTableObj.pages = eachDoc.pages;
         
-        if (eachDoc.nicTranslateModel != 'undifined') {
-          this.inviceTableObj.unitPrice = eachDoc.nicTranslateModel.price;
+        let invoiceObj = new InvoiceTable();
+
+        invoiceObj.documentTitle = eachDoc.translationTitle;
+        invoiceObj.pages = eachDoc.pages;
+        
+        if (eachDoc.nicTranslateModel !== undefined) {
+          invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
+        } else if (eachDoc.bcTranslateModel !== undefined) {
+          invoiceObj.unitPrice = eachDoc.bcTranslateModel.price;
         }
 
-        totalAmount += Number(this.inviceTableObj.unitPrice);
+        totalAmount += Number(invoiceObj.unitPrice);
 
-        this.invoiceItemList.push(this.inviceTableObj);
+        this.invoiceItemList.push(invoiceObj);
       })
 
       this.inviceTableObj.amount = totalAmount;
