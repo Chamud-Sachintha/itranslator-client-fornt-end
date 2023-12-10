@@ -10,6 +10,8 @@ import { SelectServicesComponent } from './select-services/select-services.compo
 import { UploadRequiredDocsComponent } from './upload-required-docs/upload-required-docs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderRequestsComponent } from './order-requests/order-requests.component';
+import { CheckOrderComponent } from './check-order/check-order.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { OrderRequestsComponent } from './order-requests/order-requests.componen
     MainServicesComponent,
     SelectServicesComponent,
     UploadRequiredDocsComponent,
-    OrderRequestsComponent
+    OrderRequestsComponent,
+    CheckOrderComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
