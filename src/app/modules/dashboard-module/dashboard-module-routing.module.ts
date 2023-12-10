@@ -7,6 +7,9 @@ import { UploadRequiredDocsComponent } from './upload-required-docs/upload-requi
 import { InvoiceComponent } from './invoice/invoice.component';
 import { SelectServicesComponent } from './select-services/select-services.component';
 import { OrderRequestsComponent } from './order-requests/order-requests.component';
+import { NotaryServiceComponent } from './notary-service/notary-service.component';
+import { NotaryServiceStep01Component } from './notary-service-step-01/notary-service-step-01.component';
+import { NotaryServiceStep02Component } from './notary-service-step-02/notary-service-step-02.component';
 
 const routes: Routes = [
   {
@@ -44,6 +47,28 @@ const routes: Routes = [
       {
         path: 'step-04',
         component: InvoiceComponent
+      },
+
+      // second main service steppers
+
+      {
+        path: 'notary-service',
+        component: NotaryServiceComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'step-01',
+            pathMatch: 'full'
+          },
+          {
+            path: 'step-01',
+            component: NotaryServiceStep01Component
+          },
+          {
+            path: 'step-02',
+            component: NotaryServiceStep02Component
+          }
+        ]
       }
     ]
   },

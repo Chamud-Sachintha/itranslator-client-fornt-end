@@ -15,13 +15,13 @@ export class MainServicesComponent implements OnInit {
     
   }
 
-  onSelectMainService(serviceId: number) {
-    const data = {
-      serviceId: serviceId
-    }
+  onSelectMainService(mainServiceId: number) {
 
-    this.dataShareService.setComponentValueObj(data);
-    this.router.navigate(['app/select-services/step-02']);
+    if (mainServiceId == 1) {
+      this.router.navigate(['app/select-services/step-02']);
+    } else if (mainServiceId == 2) {
+      this.router.navigate(['app/select-services/notary-service'])
+    }
 
     return false;
   }

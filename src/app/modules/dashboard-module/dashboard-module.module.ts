@@ -12,6 +12,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderRequestsComponent } from './order-requests/order-requests.component';
 import { CheckOrderComponent } from './check-order/check-order.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NotaryServiceComponent } from './notary-service/notary-service.component';
+import { NotaryServiceStep01Component } from './notary-service-step-01/notary-service-step-01.component';
+import { NotaryServiceStep02Component } from './notary-service-step-02/notary-service-step-02.component';
+import { NotaryServiceStep03Component } from './notary-service-step-03/notary-service-step-03.component';
 
 
 @NgModule({
@@ -24,7 +28,11 @@ import { ProfileComponent } from './profile/profile.component';
     UploadRequiredDocsComponent,
     OrderRequestsComponent,
     CheckOrderComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotaryServiceComponent,
+    NotaryServiceStep01Component,
+    NotaryServiceStep02Component,
+    NotaryServiceStep03Component,
   ],
   imports: [
     CommonModule,

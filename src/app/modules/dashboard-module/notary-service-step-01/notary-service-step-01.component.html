@@ -1,0 +1,34 @@
+<h5 class="card-header">Step 1</h5>
+<div class="card-body">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmitBasicInfoForm()">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-12">
+                        <label for="">Select First Category:</label>
+                        <select name="" id="" class="form-control">
+                            <option value="">-- Select Option --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-12">
+                        <label for="">Select Sub Category:</label>
+                        <select name="" id="" class="form-control">
+                            <option value="">-- Select Option --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 col-lg-6 col-sm-12">
+                        <label for="">Description of the required service</label>
+                        <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-sm" type="submit">Next Step</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
