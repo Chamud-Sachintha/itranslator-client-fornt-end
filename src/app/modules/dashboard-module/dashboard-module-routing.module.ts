@@ -6,6 +6,7 @@ import { SelectRequiredDocsComponent } from './select-required-docs/select-requi
 import { UploadRequiredDocsComponent } from './upload-required-docs/upload-required-docs.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { SelectServicesComponent } from './select-services/select-services.component';
+import { OrderRequestsComponent } from './order-requests/order-requests.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'order-requests',
+    component: OrderRequestsComponent
+  }
 ];
 
 @NgModule({

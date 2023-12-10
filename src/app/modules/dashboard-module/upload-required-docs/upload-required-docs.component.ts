@@ -45,6 +45,7 @@ export class UploadRequiredDocsComponent implements OnInit {
   deliveryTime!: string;
   deliveryMethod!: string;
   paymentMethod!: string;
+  bankSlip!: File;;
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
             , private fromBuilder: FormBuilder
@@ -61,6 +62,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.passportTranslateFormInit();
     this.marriageTranslateFormInit();
     this.deathCertificateTranslateFormInit();
+  }
+
+  onChangeBankSlip(event: any) {
+    const file = (event.target as any).files[0]; 
+    this.bankSlip = file as File;
   }
 
   onChangeDeliveryTime() {
@@ -137,8 +143,11 @@ export class UploadRequiredDocsComponent implements OnInit {
       uploadedDocList: this.appendDocList,
       deliveryTime: this.deliveryTime,
       deliveryMethod: this.deliveryMethod,
-      paymentMethod: this.paymentMethod
+      paymentMethod: this.paymentMethod,
+      bankSlip: this.convertImageToBase64(this.bankSlip)
     }
+
+    console.log(completeDocObj);
 
     this.dataShareService.setComponentValueObj(completeDocObj);
     this.router.navigate(['app/select-services/step-04']);
@@ -388,15 +397,24 @@ export class UploadRequiredDocsComponent implements OnInit {
     } else if (backImg == "") {
 
     } else {
+
       this.nicTranslatorModel.nicName = nicName;
       this.nicTranslatorModel.birthPlace = birthPlace;
       this.nicTranslatorModel.address = address;
-      this.nicTranslatorModel.frontImg = frontImg;
-      this.nicTranslatorModel.backImg = backImg;
+
+      this.convertImageToBase64(frontImg).then((base64String) => {
+        this.nicTranslatorModel.frontImg = base64String;
+      });
+
+      this.convertImageToBase64(backImg).then((base64String) => {
+        this.nicTranslatorModel.backImg = base64String;
+      });
+
       this.nicTranslatorModel.pages = 2;
 
       let nicModelAppend = new DocumentAppend();
 
+      nicModelAppend.serviceId = 1;
       nicModelAppend.nicTranslateModel = this.nicTranslatorModel;
       nicModelAppend.translationTitle = "NIC Translation";
       nicModelAppend.submitedDate = new Date();
@@ -427,6 +445,26 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   onClickPreviousBtn() {
     this.location.back();
+  }
+
+  convertImageToBase64(fileInput: any): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const file: File = fileInput;
+      const reader: FileReader = new FileReader();
+
+      reader.onloadend = () => {
+        // The result attribute contains the base64 string
+        const base64String: string = reader.result as string;
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      // Read the image file as a Data URL
+      reader.readAsDataURL(file);
+    });
   }
 
 }

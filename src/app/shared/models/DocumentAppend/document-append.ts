@@ -7,6 +7,7 @@ import { NICTranslator } from "../TranslatorModel/nictranslator";
 export class DocumentAppend {
     token!: any;
     flag!: any;
+    serviceId!: number;
     translationTitle!: string;
     nicTranslateModel!: NICTranslator;
     bcTranslateModel!: BCTranslateModel;

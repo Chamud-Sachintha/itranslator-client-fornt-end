@@ -9,6 +9,7 @@ import { MainServicesComponent } from './main-services/main-services.component';
 import { SelectServicesComponent } from './select-services/select-services.component';
 import { UploadRequiredDocsComponent } from './upload-required-docs/upload-required-docs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OrderRequestsComponent } from './order-requests/order-requests.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     InvoiceComponent,
     MainServicesComponent,
     SelectServicesComponent,
-    UploadRequiredDocsComponent
+    UploadRequiredDocsComponent,
+    OrderRequestsComponent
   ],
   imports: [
     CommonModule,

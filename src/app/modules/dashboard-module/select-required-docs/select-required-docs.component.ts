@@ -50,6 +50,12 @@ export class SelectRequiredDocsComponent implements OnInit {
       }
 
       this.enableServiceList.push(requestServiceModel);
+    } else {
+      this.enableServiceList.forEach((eachRow: any, index) => {
+        if (eachRow.serviceId == serviceId) {
+          this.enableServiceList.splice(index, 1);
+        }
+      })
     }
   }
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataShareService } from 'src/app/services/data/data-share.service';
+import { OrderService } from 'src/app/services/order/order.service';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
+import { Order } from 'src/app/shared/models/Order/order';
 
 @Component({
   selector: 'app-invoice',
@@ -11,15 +13,28 @@ export class InvoiceComponent implements OnInit {
 
   invoiceItemList: InvoiceTable[] = [];
   inviceTableObj = new InvoiceTable();
+  orderDetails = new Order();
+  sendDataObj!: any;
+  bankSlip: boolean = false;
+  uploadedSlip: any[] = [];
+  uploadeDocumentList: any[] = [];
 
-  constructor(private dataShareService: DataShareService) {}
+  constructor(private dataShareService: DataShareService, private orderService: OrderService) {}
 
   ngOnInit(): void {
 
     this.getClientInfo();
 
     this.dataShareService.getComponentValueObj().subscribe((data: any) => {
+
+      this.uploadedSlip.push(data.bankSlip);
+
       const dataList = JSON.parse(JSON.stringify(data));
+      this.sendDataObj = data;
+
+      if (data.bankSlip.__zone_symbol__value) {
+        this.bankSlip = true;
+      }
 
       let totalAmount = 0;
       dataList.uploadedDocList.forEach((eachDoc: any) => {
@@ -41,6 +56,27 @@ export class InvoiceComponent implements OnInit {
       })
 
       this.inviceTableObj.amount = totalAmount;
+    })
+  }
+
+  placeOrderWithBankSlip() {
+
+    this.orderDetails.token = sessionStorage.getItem("authToken");
+    this.orderDetails.flag = sessionStorage.getItem("role");
+    this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
+
+    this.orderDetails.bankSlip = this.sendDataObj.bankSlip.__zone_symbol__value;
+    this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
+    this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
+    this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
+    this.orderDetails.totalAmount = this.inviceTableObj.amount;
+
+    const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({type, value}));
+
+    this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
+
+    this.orderService.placeOrderWithBankSlip(this.orderDetails).subscribe((resp: any) => {
+      console.log(resp)
     })
   }
 
