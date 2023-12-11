@@ -1,1 +1,109 @@
-<p>notary-service-step-03 works!</p>
+<h5 class="card-header">Step 3</h5>
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            <label for="">Select Person:</label>
+        </div>
+        <div class="col-6">
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <select name="" id="" class="form-control">
+                <option value="1">තෑගි දීමනාකරු / Donor</option>
+                <option value="2">තෑගි ලැබුම්කරු / Donee</option>
+                <option value="3">ණය හිමියා / Lender</option>
+                <option value="4">ණය ගැතියා / the borrower</option>
+                <option value="5">විකුණුම්කරු / the Vendor</option>
+                <option value="6">ගැණුම්කරු / the Vendee</option>
+                <option value="7">බද දීමනාකරු / Lessor</option>
+                <option value="8">බද ගැනුම්කරු / Lessee </option>
+                <option value="9">ප්‍රකාශක / Declaran</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Create</button>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <button class="btn btn-primary btn-sm">Save & Finish</button>
+        </div>
+    </div>
+</div>
+  <!-- model starts here -->
+  <div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
+        <form [formGroup]="this.addPersonForm" (ngSubmit)="onSubmitAddPersonForm()">
+            <div class="row">
+                <div class="col-12">
+                    <label for="">නම / Name:</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">ලිපිනය / Address:</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">ජාතික හැ දණුම්පත් අංකය / National Identity Card Number</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">විසද්ශ ගමන් බලපර අංකය / Passport No</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">රිය දරු බලපත් අංකය / Driving license No</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">වැයාහිි හැ දනුම්පත් අංකය / Adult ID Number</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">උප්පැන්න හතික අංකය / Birth Certificate Number</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">විවාහ හතික අංකය / Marriage certificate No</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">අත් සනහි ්වභාවය / Nature of signature</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">දරකථන අංකය / Phone number</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12">
+                    <label for="">විෙුත් තැපැල / Email</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm">Save</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- models ends here -->

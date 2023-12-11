@@ -10,6 +10,7 @@ import { OrderRequestsComponent } from './order-requests/order-requests.componen
 import { NotaryServiceComponent } from './notary-service/notary-service.component';
 import { NotaryServiceStep01Component } from './notary-service-step-01/notary-service-step-01.component';
 import { NotaryServiceStep02Component } from './notary-service-step-02/notary-service-step-02.component';
+import { NotaryServiceStep03Component } from './notary-service-step-03/notary-service-step-03.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,10 @@ const routes: Routes = [
           {
             path: 'step-02',
             component: NotaryServiceStep02Component
+          },
+          {
+            path: 'step-03',
+            component: NotaryServiceStep03Component
           }
         ]
       }
