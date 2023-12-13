@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataShareService } from 'src/app/services/data/data-share.service';
+import { NotaryServiceFirstStep } from 'src/app/shared/models/NotaryServiceFirstStep/notary-service-first-step';
 
 @Component({
   selector: 'app-notary-service-step-02',
@@ -10,10 +12,18 @@ import { Router } from '@angular/router';
 export class NotaryServiceStep02Component implements OnInit {
 
   documentAndOtherInfoForm!: FormGroup;
+  firstStepModel = new NotaryServiceFirstStep();
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService) {}
 
   ngOnInit(): void {
+
+    this.dataShareService.getComponentValueObj().subscribe((data: NotaryServiceFirstStep) => {
+      this.firstStepModel = data;
+
+      console.log(this.firstStepModel);
+    })
+
     this.initdocumentAndOtherInfoForm();
   }
 
