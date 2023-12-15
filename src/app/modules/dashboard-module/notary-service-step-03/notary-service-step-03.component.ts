@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DataShareService } from 'src/app/services/data/data-share.service';
+import { NotaryService } from 'src/app/services/notary/notary.service';
 import { NotaryServicePerson } from 'src/app/shared/models/NotaryServicePerson/notary-service-person';
 import { NotaryServicePersonList } from 'src/app/shared/models/NotaryServicePersonList/notary-service-person-list';
+import { NotaryServiceSecondStep } from 'src/app/shared/models/NotaryServiceSecondStep/notary-service-second-step';
+import { Request } from 'src/app/shared/models/Request/request';
 
 @Component({
   selector: 'app-notary-service-step-03',
@@ -14,12 +18,51 @@ export class NotaryServiceStep03Component implements OnInit {
   addPersonForm!: FormGroup;
   addedPersonList = new NotaryServicePersonList();
   notaryServicePerson = new NotaryServicePerson();
+  secondStepData = new NotaryServiceSecondStep();
+  requestParamModel = new Request();
   personCategory!: string;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
+            , private notaryService: NotaryService) {}
 
   ngOnInit(): void {
     this.initAddPersonForm();
+
+    this.dataShareService.getComponentValueObj().subscribe((data: NotaryServiceSecondStep) => {
+      this.secondStepData = data;
+    })
+  }
+
+  onClickSaveProcess() {
+    this.addedPersonList.secondStepData = this.secondStepData;
+
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.mainNotaryCategory = this.addedPersonList.secondStepData.firstStepData.mainCategory;
+    this.requestParamModel.subNotaryCategory = this.addedPersonList.secondStepData.firstStepData.subCategory;
+    this.requestParamModel.serviceDescription = this.addedPersonList.secondStepData.firstStepData.descriptionOfService;
+    this.requestParamModel.firstDoc = this.addedPersonList.secondStepData.firstDocList;
+    this.requestParamModel.secondDoc = this.addedPersonList.secondStepData.secondDoc;
+    this.requestParamModel.thirdDoc = this.addedPersonList.secondStepData.thirdDoc;
+    this.requestParamModel.dateOfSigning = this.addedPersonList.secondStepData.dateOfSigning;
+    this.requestParamModel.startDate = this.addedPersonList.secondStepData.startDate;
+    this.requestParamModel.endDate = this.addedPersonList.secondStepData.endDate;
+    this.requestParamModel.value = this.addedPersonList.secondStepData.value;
+    this.requestParamModel.monthlyRent = this.addedPersonList.secondStepData.monthlyRent;
+    this.requestParamModel.advanceAmt = this.addedPersonList.secondStepData.advanceAmount;
+    this.requestParamModel.vodNumber = this.addedPersonList.secondStepData.VODNumber;
+    this.requestParamModel.ds = this.addedPersonList.secondStepData.ds;
+    this.requestParamModel.lg = this.addedPersonList.secondStepData.localGov;
+    this.requestParamModel.district = this.addedPersonList.secondStepData.district;
+    this.requestParamModel.lro = this.addedPersonList.secondStepData.lro;
+    this.requestParamModel.notaryServicePersonList = this.addedPersonList.notaryPerson;
+
+    this.notaryService.placeNotaryServiceOrder(this.requestParamModel).subscribe((resp: any) => {
+
+      if (resp.code === 1) {
+        
+      }
+    })
   }
 
   setPersonCatgeory(category: string) {

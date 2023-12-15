@@ -1,76 +1,76 @@
 <h5 class="card-header">Step 2</h5>
 <div class="card-body">
-    <form [formGroup]="documentAndOtherInfoForm" (ngSubmit)="onSubmitDocumentAndAditionalInfoForm()">
+    <form [formGroup]="documentAndOtherInfoForm" (ngSubmit)="onSubmitDocumentAndAditionalInfoForm()" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">National Identity Card / Passport / Driving License / Adult Identity Card</label>
-                <input type="file" class="form-control">
+                <input type="file" class="form-control" formControlName="firstDoc" multiple (change)="onChangeFirstDoc($event)">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Extracts</label>
-                <input type="file" class="form-control">
+                <input type="file" class="form-control" formControlName="secondDoc" multiple (change)="onChangeSecondDoc($event)">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Deeds / Certificates of Title </label>
-                <input type="file" class="form-control">
+                <input type="file" class="form-control" formControlName="thirdDoc" multiple (change)="onChangeThirdDoc($event)">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Date of signing</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="dateOfSigning">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Start date</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="startDate">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">End Date</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="endDate">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Value</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="value">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Monthly Rent</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="monthlyRent">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Advance Amount</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="advanceAmt">
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Village Officer Division and Number</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="VODNumber">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Divisional Secretariat</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="devitionalSec">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Local Government</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="localGov">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">District</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="district">
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Land Registration Office</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="landRegOffice">
             </div>
         </div>
         <div class="row mt-3">

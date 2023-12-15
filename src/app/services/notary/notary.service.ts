@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Request } from 'src/app/shared/models/Request/request';
 import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { environment } from 'src/environments/environment.development';
 
@@ -18,5 +19,10 @@ export class NotaryService {
   getSubCatListByMainCategory(searchParamModel: SearchParam) {
     const path = environment.appURL + "get-first-cat-list-by-main-cat-code";
     return this.http.post(path, searchParamModel);
+  }
+
+  placeNotaryServiceOrder(notaryServiceOrderModel: Request) {
+    const path = environment.appURL + "place-notary-service-order";
+    return this.http.post(path, notaryServiceOrderModel);
   }
 }
