@@ -7,6 +7,7 @@ export class Request {
     mainNotaryCategory!: string;
     subNotaryCategory!: string;
     serviceDescription!: string;
+    invoiceNo!: string;
     firstDoc: any[] = [];
     secondDoc: any[] = [];
     thirdDoc: any[] = [];

@@ -1,15 +1,16 @@
 export class OrderRequest {
     id!: string;
+    invoiceNo!: string;
     token!: any;
     flag!: any;
     bankSlip!: File;
-    payment_status!: number;
-    create_time!: number;
-    order_status!: number;
-    total_amount!: number;
-    payment_type!: number;
+    paymentStatus!: number;
+    createTime!: number;
+    orderStatus!: number;
+    totalAmount!: number;
+    paymentType!: number;
     deliveryTimeType!: Number;
     deliveryMethod!: Number;
     paymentMethod!: Number;
-    totalAmount!: Number;
+    // totalAmount!: Number;
 }

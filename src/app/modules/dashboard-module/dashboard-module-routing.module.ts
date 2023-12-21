@@ -11,6 +11,8 @@ import { NotaryServiceComponent } from './notary-service/notary-service.componen
 import { NotaryServiceStep01Component } from './notary-service-step-01/notary-service-step-01.component';
 import { NotaryServiceStep02Component } from './notary-service-step-02/notary-service-step-02.component';
 import { NotaryServiceStep03Component } from './notary-service-step-03/notary-service-step-03.component';
+import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-order-requests.component';
+import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
 
 const routes: Routes = [
   {
@@ -80,6 +82,14 @@ const routes: Routes = [
   {
     path: 'order-requests',
     component: OrderRequestsComponent
+  },
+  {
+    path: 'check-order/:invoiceNo',
+    component: CheckTrOrderComponent
+  },
+  {
+    path: 'notary-order-requests',
+    component: NotaryOrderRequestsComponent
   }
 ];
 
