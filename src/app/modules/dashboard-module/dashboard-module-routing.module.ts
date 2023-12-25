@@ -13,6 +13,7 @@ import { NotaryServiceStep02Component } from './notary-service-step-02/notary-se
 import { NotaryServiceStep03Component } from './notary-service-step-03/notary-service-step-03.component';
 import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-order-requests.component';
 import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
+import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
 
 const routes: Routes = [
   {
@@ -86,6 +87,10 @@ const routes: Routes = [
   {
     path: 'check-order/:invoiceNo',
     component: CheckTrOrderComponent
+  },
+  {
+    path: 'check-ns-order/:invoiceNo',
+    component: CheckNsOrderComponent
   },
   {
     path: 'notary-order-requests',

@@ -30,7 +30,6 @@
                                     <th>Submited Date</th>
                                     <th>Order Status</th>
                                     <th>Total Amount</th>
-                                    <th>Payment Method</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -45,10 +44,8 @@
                                 <td *ngIf="eachRow.orderStatus == 2">Processing</td>
                                 <td *ngIf="eachRow.orderStatus == 3">Complete</td>
                                 <td>LKR. {{ eachRow.totalAmount }} .00</td>
-                                <td *ngIf="eachRow.paymentType == 1">Bank Deposit</td>
-                                <td *ngIf="eachRow.paymentType == 2">Online Payment</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm">Check</button>
+                                    <button class="btn btn-primary btn-sm" (click)="onClickCheckOrder(eachRow.invoiceNo)">Check</button>
                                 </td>
                             </tr>
                            </tbody>
@@ -59,7 +56,6 @@
                                     <th>Submited Date</th>
                                     <th>Order Status</th>
                                     <th>Total Amount</th>
-                                    <th>Payment Method</th>
                                     <th>Actions</th>
                                 </tr>
                             </tfoot>

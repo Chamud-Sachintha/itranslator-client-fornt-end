@@ -20,6 +20,10 @@ export class NotaryOrderRequestsComponent implements OnInit {
     this.loadNotaryServiceOrderList();
   }
 
+  onClickCheckOrder(invoiceNo: string) {
+    this.router.navigate(['app/check-ns-order', invoiceNo])
+  }
+
   loadNotaryServiceOrderList() {
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
@@ -30,6 +34,9 @@ export class NotaryOrderRequestsComponent implements OnInit {
 
       if (resp.code === 1) {
         dataList.data[0].forEach((eachRow: OrderRequest) => {
+          const formatedDate = eachRow.createTime * 1000;
+          eachRow.createTime = formatedDate;
+
           this.orderRequestsList.push(eachRow);
         })
       }
