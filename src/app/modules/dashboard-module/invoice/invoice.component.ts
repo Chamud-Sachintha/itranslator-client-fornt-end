@@ -48,6 +48,8 @@ export class InvoiceComponent implements OnInit {
           invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
         } else if (eachDoc.bcTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.bcTranslateModel.price;
+        } else if (eachDoc.otherDocumentModel !== undefined) {
+          invoiceObj.unitPrice = eachDoc.otherDocumentModel.price * invoiceObj.pages;
         }
 
         totalAmount += Number(invoiceObj.unitPrice);

@@ -5,6 +5,6 @@ export class MCTranslateModel {
     femaleName!: string;
     femaleFatherName!: string;
     femaleResidencae!: string;
-    frontImg!: File;
-    backImg!: File
+    frontImg!: string;
+    backImg!: string;
 }

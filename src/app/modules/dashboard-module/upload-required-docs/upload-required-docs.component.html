@@ -205,22 +205,22 @@
           </div>
         </form>
 
-        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateService">
+        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateService" (ngSubmit)="onSubmitMariageTranslateForm()">
           <!-- male details starts here -->
           <div class="row">
             <div class="col-12">
               <h6>Male Details</h6>
               <hr>
               <label for="">Name:</label>
-              <input type="text" class="form-control" placeholder="Saman Kumara">
+              <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="maleName">
             </div>
             <div class="col-12">
               <label for="">Father's Name:</label>
-              <input type="text" class="form-control" placeholder="Nishantha bandara">
+              <input type="text" class="form-control" placeholder="Nishantha bandara" formControlName="maleFathersName">
             </div>
             <div class="col-12">
               <label for="">Residences:</label>
-              <input type="text" class="form-control" placeholder="Makola">
+              <input type="text" class="form-control" placeholder="Makola" formControlName="maleResidence">
             </div>
           </div>
           <!-- male details end here -->
@@ -232,15 +232,15 @@
               <hr>
 
               <label for="">Name:</label>
-              <input type="text" class="form-control" placeholder="Saman Kumara">
+              <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="femaleName">
             </div>
             <div class="col-12">
               <label for="">Father's Name:</label>
-              <input type="text" class="form-control" placeholder="Nishantha Bandara">
+              <input type="text" class="form-control" placeholder="Nishantha Bandara" formControlName="femaleFathersName">
             </div>
             <div class="col-12">
               <label for="">Recidencies:</label>
-              <input type="text" class="form-control" placeholder="Makola">
+              <input type="text" class="form-control" placeholder="Makola" formControlName="femaleResidence">
             </div>
           </div>
           <!-- femaledetails ends here -->
@@ -283,6 +283,150 @@
             <div class="col-12">
               <label for="">Back Image</label>
               <input type="file" class="form-control" (change)="onChangeDCBackImage($event)">
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="this.otherDocumentTranslateForm" *ngIf="this.otherDocumentTranslateService" (ngSubmit)="onSubmitOtherDocumentTranslateForm()">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Full Name:</label>
+              <input type="text" class="form-control" formControlName="fullName">
+            </div>
+            <div class="col-12">
+              <label for="">Father Name:</label>
+              <input type="text" class="form-control" formControlName="fatherName">
+            </div>
+            <div class="col-12">
+              <label for="">Mother Name:</label>
+              <input type="text" class="form-control" formControlName="motherName">
+            </div>
+            <div class="col-12">
+              <label for="">Page 1</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage1Change($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 2</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage2Change($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 3</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage3Change($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 4</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage4Change($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 5</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage5Change($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 6</label>
+              <input type="file" class="form-control" (change)="onChangeOtherDocPage6Change($event)">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="this.schoolLeavingTranslateForm" *ngIf="this.schoolLeaveTranslateService" (ngSubmit)="onSubmitSchoolLeavingCertificateForm()">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Full Name</label>
+              <input type="text" class="form-control" formControlName="fullName">
+            </div>
+            <div class="col-12">
+              <label for="">School Name</label>
+              <input type="text" class="form-control" formControlName="schoolName">
+            </div>
+            <div class="col-12">
+              <label for="">Front Image</label>
+              <input type="file" class="form-control" (change)="onChangeSchoolLeavingCertificateFrontImage($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Back Image</label>
+              <input type="file" class="form-control" (change)="onChangeSchoolLeavingCertificateBackImage($event)">
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary btn-sm" type="submit">Save Changes</button>
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="affidavitForm" *ngIf="this.affidavitTranslateionService" (ngSubmit)="onSubmitAffidavitForm()">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Full Name</label>
+              <input type="text" class="form-control" formControlName="fullName">
+            </div>
+            <div class="col-12">
+              <label for="">Address</label>
+              <input type="text" class="form-control" formControlName="address">
+            </div>
+            <div class="col-12">
+              <label for="">Description Of Service</label>
+              <textarea name="" id="" cols="30" rows="10" class="form-control" formControlName="descriptionOfService"></textarea>
+            </div>
+            <div class="col-12">
+              <label for="">Page 1</label>
+              <input type="text" class="form-control" (change)="onChangeAffidavirPage1($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 2</label>
+              <input type="text" class="form-control" (change)="onChangeAffidavirPage2($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 3</label>
+              <input type="text" class="form-control" (change)="onChangeAffidavirPage3($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 4</label>
+              <input type="text" class="form-control" (change)="onChangeAffidavirPage4($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 5</label>
+              <input type="text" class="form-control" (change)="onChangeAffidavirPage5($event)">
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="this.deedForm" *ngIf="this.deedTranslationService" (ngSubmit)="onSubmitDeedForm()">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Full Name</label>
+              <input type="text" class="form-control" formControlName="fullName">
+            </div>
+            <div class="col-12">
+              <label for="">Address</label>
+              <input type="text" class="form-control" formControlName="address">
+            </div>
+            <div class="col-12">
+              <label for="">Page 1</label>
+              <input type="file"  class="form-control" (change)="onChangeDeedPage1($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 2</label>
+              <input type="file" class="form-control" (change)="onChangeDeedPage2($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 3</label>
+              <input type="file" class="form-control" (change)="onChangeDeedPage3($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 4</label>
+              <input type="file" class="form-control" (change)="onChangeDeedPage4($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 5</label>
+              <input type="file" class="form-control" (change)="onChangeDeedPage5($event)">
+            </div>
+            <div class="col-12">
+              <label for="">Page 6</label>
+              <input type="file" class="form-control" (change)="onChangeDeedPage6($event)">
             </div>
           </div>
         </form>

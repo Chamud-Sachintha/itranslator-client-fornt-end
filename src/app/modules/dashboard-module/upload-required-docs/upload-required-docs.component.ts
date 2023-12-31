@@ -4,11 +4,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { ServiceService } from 'src/app/services/service/service.service';
+import { AffidavitModel } from 'src/app/shared/models/AffidavitModel/affidavit-model';
 import { BCTranslateModel } from 'src/app/shared/models/BCTranslateModel/bctranslate-model';
 import { DCTranslateModel } from 'src/app/shared/models/DCTranslateModel/dctranslate-model';
+import { DeedModel } from 'src/app/shared/models/DeedModel/deed-model';
 import { DocumentAppend } from 'src/app/shared/models/DocumentAppend/document-append';
 import { MCTranslateModel } from 'src/app/shared/models/MCTranslateModel/mctranslate-model';
+import { OtherDocumentTranslateModel } from 'src/app/shared/models/OtherDocumentTranslateModel/other-document-translate-model';
 import { PassporTranslateModel } from 'src/app/shared/models/PassportTranslateModel/passpor-translate-model';
+import { SchoolLeavingCertificateModel } from 'src/app/shared/models/SchoolLeavingCertificateModel/school-leaving-certificate-model';
 import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { NICTranslator } from 'src/app/shared/models/TranslatorModel/nictranslator';
 
@@ -28,24 +32,35 @@ export class UploadRequiredDocsComponent implements OnInit {
   deathTranslateForm!: FormGroup;
   schoolLeavingTranslateForm!: FormGroup;
   additionalInfoForm!: FormGroup;
+  otherDocumentTranslateForm!: FormGroup;
+  affidavitForm!: FormGroup;
+  deedForm!: FormGroup;
   nicTranslateService = false;
   birthCertificateTranslateService = false;
   passportTranslateService = false;
   marriageTranslateService = false;
   deathTranslateService = false;
   schoolLeaveTranslateService = false;
+  otherDocumentTranslateService = false;
+  affidavitTranslateionService = false;
+  deedTranslationService = false;
   nicTranslatorModel = new NICTranslator();
   bcTranslateModel = new BCTranslateModel();
   mcTranslateModel = new MCTranslateModel();
   passportTranslateModel = new PassporTranslateModel();
   dcTranslateModel = new DCTranslateModel();
   documentAppendModel = new DocumentAppend();
+  otherDocumentTranslateModel = new OtherDocumentTranslateModel();
+  schoolLeavingCertificateNModel = new SchoolLeavingCertificateModel();
+  affidavitModel = new AffidavitModel();
+  deedModel = new DeedModel();
   appendDocList: DocumentAppend[] = [];
   searchParamModel = new SearchParam();
   deliveryTime!: string;
   deliveryMethod!: string;
   paymentMethod!: string;
-  bankSlip!: File;;
+  bankSlip!: File;
+  serviceId!: number;
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
             , private fromBuilder: FormBuilder
@@ -62,6 +77,440 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.passportTranslateFormInit();
     this.marriageTranslateFormInit();
     this.deathCertificateTranslateFormInit();
+    this.initOtherDocumenTranslateForm();
+    this.initSchoolLeavingCertificateForm();
+    this.initAffidavitForm();
+    this.initDeedForm();
+  }
+
+  onSubmitDeedForm() {
+
+    const fullName = this.deedForm.controls['fullName'].value;
+    const address = this.deedForm.controls['address'].value;
+    const page1 = this.deedForm.controls['page1'].value;
+    const page2 = this.deedForm.controls['page2'].value;
+    const page3 = this.deedForm.controls['page3'].value;
+    const page4 = this.deedForm.controls['page4'].value;
+    const page5 = this.deedForm.controls['page5'].value;
+    const page6 = this.deedForm.controls['page6'].value;
+
+    if (fullName == "") {
+
+    } else if (address == "") {
+
+    } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
+
+    } else {
+
+      let pageCount = 0;
+
+      this.deedModel.fullName = fullName;
+      this.deedModel.address = address;
+      
+      if (page1 != "") {
+        this.convertImageToBase64(page1).then((base64String) => {
+          this.deedModel.page1 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page2 != "") {
+        this.convertImageToBase64(page2).then((base64String) => {
+          this.deedModel.page2= base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page3 != "") {
+        this.convertImageToBase64(page3).then((base64String) => {
+          this.deedModel.page3 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page4 != "") {
+        this.convertImageToBase64(page4).then((base64String) => {
+          this.deedModel.page4 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page5 != "") {
+        this.convertImageToBase64(page5).then((base64String) => {
+          this.deedModel.page5 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page6 != "") {
+        this.convertImageToBase64(page6).then((base64String) => {
+          this.deedModel.page6 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      let deedAppend = new DocumentAppend();
+      
+      deedAppend.serviceId = this.serviceId;
+      deedAppend.deedModel = this.deedModel;
+      deedAppend.translationTitle = "Deed Translation Service";
+      deedAppend.submitedDate = new Date();
+      deedAppend.pages = pageCount;
+
+      this.appendDocList.push(deedAppend);
+    }
+  }
+
+  onChangeDeedPage1($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page1": file});
+  }
+
+  onChangeDeedPage2($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page2": file});
+  }
+
+  onChangeDeedPage3($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page3": file});
+  }
+
+  onChangeDeedPage4($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page4": file});
+  }
+
+  onChangeDeedPage5($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page5": file});
+  }
+
+  onChangeDeedPage6($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.deedForm.patchValue({"page6": file});
+  }
+
+  initDeedForm() {
+    this.deedForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      address: ['', Validators.required],
+      page1: ['', Validators.required],
+      page2: ['', Validators.required],
+      page3: ['', Validators.required],
+      page4: ['', Validators.required],
+      page5: ['', Validators.required],
+      page6: ['', Validators.required]
+    })
+  }
+
+  onSubmitAffidavitForm() {
+    const fullName = this.affidavitForm.controls['fullName'].value;
+    const address = this.affidavitForm.controls['address'].value;
+    const descriptionOfService = this.affidavitForm.controls['descriptionOfService'].value;
+    const page1 = this.affidavitForm.controls['page1'].value;
+    const page2 = this.affidavitForm.controls['page2'].value;
+    const page3 = this.affidavitForm.controls['page3'].value;
+    const page4 = this.affidavitForm.controls['page4'].value;
+    const page5 = this.affidavitForm.controls['page5'].value;
+
+    if (fullName == "") {
+
+    } else if (address == "") {
+
+    } else if (descriptionOfService == "") {
+
+    } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "") {
+
+    } else {
+      let pageCount = 0;
+      this.affidavitModel.fullName = fullName;
+      this.affidavitModel.address = address;
+      this.affidavitModel.descriptionOfService = descriptionOfService;
+      
+      if (page1 != null) {
+        this.convertImageToBase64(page1).then((base64String) => {
+          this.affidavitModel.page1 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page2 != null) {
+        this.convertImageToBase64(page2).then((base64String) => {
+          this.affidavitModel.page2 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page3 != null) {
+        this.convertImageToBase64(page3).then((base64String) => {
+          this.affidavitModel.page3 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page4 != null) {
+        this.convertImageToBase64(page4).then((base64String) => {
+          this.affidavitModel.page4 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page5 != null) {
+        this.convertImageToBase64(page5).then((base64String) => {
+          this.affidavitModel.page5 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      let affidavitModelAppend = new DocumentAppend();
+
+      affidavitModelAppend.serviceId = this.serviceId;
+      affidavitModelAppend.affidavitModel = this.affidavitModel;
+      affidavitModelAppend.translationTitle = "Affidavit Translation Service";
+      affidavitModelAppend.submitedDate = new Date();
+      affidavitModelAppend.pages = pageCount;
+
+      this.appendDocList.push(affidavitModelAppend);
+    }
+  }
+
+  initAffidavitForm() {
+    this.affidavitForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      address: ['', Validators.required],
+      descriptionOfService: ['', Validators.required],
+      page1: ['', Validators.required],
+      page2: ['', Validators.required],
+      page3: ['', Validators.required],
+      page4: ['', Validators.required],
+      page5: ['', Validators.required]
+    })
+  }
+
+  onChangeAffidavirPage1($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.affidavitForm.patchValue({"page1": file});
+  }
+
+  onChangeAffidavirPage2($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.affidavitForm.patchValue({"page2": file});
+  }
+
+  onChangeAffidavirPage3($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.affidavitForm.patchValue({"page3": file});
+  }
+
+  onChangeAffidavirPage4($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.affidavitForm.patchValue({"page4": file});
+  }
+
+  onChangeAffidavirPage5($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.affidavitForm.patchValue({"page5": file});
+  }
+
+  onChangeSchoolLeavingCertificateFrontImage($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.schoolLeavingTranslateForm.patchValue({"frontImage": file});
+  }
+
+  onChangeSchoolLeavingCertificateBackImage($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.schoolLeavingTranslateForm.patchValue({"backImage": file});
+  }
+
+  onSubmitSchoolLeavingCertificateForm() {
+
+    const fullName = this.schoolLeavingTranslateForm.controls['fullName'].value;
+    const schoolName = this.schoolLeavingTranslateForm.controls['schoolName'].value;
+    const frontImage = this.schoolLeavingTranslateForm.controls['frontImage'].value;
+    const backImage = this.schoolLeavingTranslateForm.controls['backImage'].value;
+
+    if (fullName == "") {
+
+    } else if (schoolName == "") {
+
+    } else if (frontImage == "") {
+
+    } else if (backImage == "") {
+
+    } else {
+      this.schoolLeavingCertificateNModel.fullName = fullName;
+      this.schoolLeavingCertificateNModel.schoolname = schoolName;
+      
+      this.convertImageToBase64(frontImage).then((base64String) => {
+        this.schoolLeavingCertificateNModel.frontImage = base64String;
+      })
+
+      this.convertImageToBase64(backImage).then((base64String) => {
+        this.schoolLeavingCertificateNModel.backImage = base64String;
+      })
+
+      let schoolLeavingCertificateAppend = new DocumentAppend();
+
+      schoolLeavingCertificateAppend.serviceId = this.serviceId;
+      schoolLeavingCertificateAppend.schoolLeavingCertificateModel = this.schoolLeavingCertificateNModel;
+      schoolLeavingCertificateAppend.translationTitle = "School Leaving Certificate";
+      schoolLeavingCertificateAppend.submitedDate = new Date();
+      schoolLeavingCertificateAppend.pages = 2;
+
+      this.appendDocList.push(schoolLeavingCertificateAppend);
+    }
+  }
+
+  initSchoolLeavingCertificateForm() {
+    this.schoolLeavingTranslateForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      schoolName: ['', Validators.required],
+      frontImage: ['', Validators.required],
+      backImage: ['', Validators.required]
+    })
+  }
+
+  onChangeOtherDocPage1Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image1": file});
+  }
+
+  onChangeOtherDocPage2Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image2": file});
+  }
+
+  onChangeOtherDocPage3Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image3": file});
+  }
+
+  onChangeOtherDocPage4Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image4": file});
+  }
+
+  onChangeOtherDocPage5Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image5": file});
+  }
+
+  onChangeOtherDocPage6Change($event: any) {
+    const file = ($event.target as any).files[0]; 
+    this.otherDocumentTranslateForm.patchValue({"image6": file});
+  }
+
+  onSubmitOtherDocumentTranslateForm() {
+    const fullName = this.otherDocumentTranslateForm.controls['fullName'].value;
+    const fatherName = this.otherDocumentTranslateForm.controls['fatherName'].value;
+    const motherName = this.otherDocumentTranslateForm.controls['motherName'].value;
+    const page1 = this.otherDocumentTranslateForm.controls['image1'].value;
+    const page2 = this.otherDocumentTranslateForm.controls['image2'].value;
+    const page3 = this.otherDocumentTranslateForm.controls['image3'].value;
+    const page4 = this.otherDocumentTranslateForm.controls['image4'].value;
+    const page5 = this.otherDocumentTranslateForm.controls['image5'].value;
+    const page6 = this.otherDocumentTranslateForm.controls['image6'].value;
+
+    if (fullName == "") {
+
+    } else if (fatherName == "") {
+
+    } else if (motherName == "") {
+
+    } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
+
+    } else {
+      let pageCount = 0;
+      this.otherDocumentTranslateModel.fullName = fullName;
+      this.otherDocumentTranslateModel.fatherName = fatherName;
+      this.otherDocumentTranslateModel.motherName = motherName;
+      
+      if (page1 != "") {
+        this.convertImageToBase64(page1).then((base64String) => {
+          this.otherDocumentTranslateModel.page1 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page2 != "") {
+        this.convertImageToBase64(page2).then((base64String) => {
+          this.otherDocumentTranslateModel.page2 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page3 != "") {
+        this.convertImageToBase64(page3).then((base64String) => {
+          this.otherDocumentTranslateModel.page3 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page4 != "") {
+        this.convertImageToBase64(page4).then((base64String) => {
+          this.otherDocumentTranslateModel.page4 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page5 != "") {
+        this.convertImageToBase64(page2).then((base64String) => {
+          this.otherDocumentTranslateModel.page5 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      if (page6 != "") {
+        this.convertImageToBase64(page6).then((base64String) => {
+          this.otherDocumentTranslateModel.page6 = base64String;
+        })
+
+        pageCount += 1;
+      }
+
+      this.otherDocumentTranslateModel.pages = pageCount;
+
+      let otherDocumentAppend = new DocumentAppend();
+
+      otherDocumentAppend.serviceId = this.serviceId;
+      otherDocumentAppend.otherDocumentModel = this.otherDocumentTranslateModel;
+      otherDocumentAppend.translationTitle = "Other Document";
+      otherDocumentAppend.submitedDate = new Date();
+      otherDocumentAppend.pages = pageCount;
+
+      this.appendDocList.push(otherDocumentAppend);
+    }
+  }
+
+  initOtherDocumenTranslateForm() {
+    this.otherDocumentTranslateForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      image1: ['', Validators.required],
+      image2: ['', Validators.required],
+      image3: ['', Validators.required],
+      image4: ['', Validators.required],
+      image5: ['', Validators.required],
+      image6: ['', Validators.required],
+    })
   }
 
   onChangeBankSlip(event: any) {
@@ -88,6 +537,8 @@ export class UploadRequiredDocsComponent implements OnInit {
             this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
           } else if (eachDoc.serviceId == 2) {
             this.bcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 5) {
+            this.otherDocumentTranslateModel.price = priceInfo.data[0].servicePrice;
           }
         }
       })
@@ -115,15 +566,24 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.dcTranslateModel.name = name;
       this.dcTranslateModel.fatherName = fatherName;
       this.dcTranslateModel.motherName = motherName;
-      this.dcTranslateModel.frontImg = frontImg;
-      this.dcTranslateModel.backImg = backImg;
+      
+      this.convertImageToBase64(frontImg).then((base64String) => {
+        this.dcTranslateModel.frontImg = base64String;
+      })
+
+      this.convertImageToBase64(backImg).then((base64String) => {
+        this.dcTranslateModel.backImg = base64String;
+      })
 
       let dcDocumentAppendModel = new DocumentAppend();
 
+      dcDocumentAppendModel.serviceId = this.serviceId;
       dcDocumentAppendModel.dcTranslateModel = this.dcTranslateModel;
       dcDocumentAppendModel.translationTitle = "Death Certificate Translate Model";
       dcDocumentAppendModel.submitedDate = (new Date());
       dcDocumentAppendModel.pages = 2;
+
+      this.appendDocList.push(dcDocumentAppendModel);
     }
   }
 
@@ -188,8 +648,17 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.mcTranslateModel.femaleFatherName = femaleFathersName;
       this.mcTranslateModel.femaleResidencae = femaleResidence;
 
+      this.convertImageToBase64(frontImg).then((base64String) => {
+        this.mcTranslateModel.frontImg = base64String;
+      })
+
+      this.convertImageToBase64(backImg).then((base64String) => {
+        this.mcTranslateModel.backImg = base64String;
+      })
+
       let mcTranslateAppendModel = new DocumentAppend();
 
+      mcTranslateAppendModel.serviceId = this.serviceId;
       mcTranslateAppendModel.mcTranslateModel = this.mcTranslateModel;
       mcTranslateAppendModel.pages = 2;
       mcTranslateAppendModel.translationTitle = "Mariage Certificate Translate";
@@ -287,15 +756,23 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.bcTranslateModel.name = name;
       this.bcTranslateModel.fatherName = fatherName;
       this.bcTranslateModel.motherName = motherName;
-      this.bcTranslateModel.frontImage = frontImg;
-      this.bcTranslateModel.backImage = backImg;
+
+      this.convertImageToBase64(frontImg).then((base64String) => {
+        this.bcTranslateModel.frontImage = base64String;
+      })
+
+      this.convertImageToBase64(backImg).then((base64String) => {
+        this.bcTranslateModel.backImage = base64String;
+      })
+
+      this.bcTranslateModel.pages = 2;
 
       let bcTranslateAppend = new DocumentAppend();
 
+      bcTranslateAppend.serviceId = this.serviceId;
       bcTranslateAppend.bcTranslateModel = this.bcTranslateModel;
       bcTranslateAppend.translationTitle = "BC Translation";
       bcTranslateAppend.submitedDate = new Date();
-      bcTranslateAppend.pages = 2;
 
       this.appendDocList.push(bcTranslateAppend);
     }
@@ -312,6 +789,7 @@ export class UploadRequiredDocsComponent implements OnInit {
   }
 
   setTranslateModalId(serviceId: number) {
+    console.log(serviceId)
     if (serviceId === 1) {
       this.nicTranslateService = true;
       this.birthCertificateTranslateService = false;
@@ -319,6 +797,9 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.marriageTranslateService = false;
       this.deathTranslateService = false;
       this.schoolLeaveTranslateService = false;
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
     } else if (serviceId == 2) {
       this.nicTranslateService = false;
       this.birthCertificateTranslateService = true;
@@ -326,34 +807,83 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.marriageTranslateService = false;
       this.deathTranslateService = false;
       this.schoolLeaveTranslateService = false;
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
     } else if (serviceId == 3) {
       this.nicTranslateService = false;
       this.birthCertificateTranslateService = false;
-      this.passportTranslateService = true;
-      this.marriageTranslateService = false;
-      this.deathTranslateService = false;
-      this.schoolLeaveTranslateService = false;
-    } else if (serviceId == 4) {
-      this.nicTranslateService = false;
-      this.birthCertificateTranslateService = true;
       this.passportTranslateService = false;
       this.marriageTranslateService = true;
       this.deathTranslateService = false;
       this.schoolLeaveTranslateService = false;
-    } else if (serviceId == 5) {
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
+    } else if (serviceId == 4) {
       this.nicTranslateService = false;
       this.birthCertificateTranslateService = false;
       this.passportTranslateService = false;
       this.marriageTranslateService = false;
       this.deathTranslateService = true;
       this.schoolLeaveTranslateService = false;
-    } else if (serviceId == 6) {
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
+    } else if (serviceId == 5 || serviceId == 6 || serviceId == 8 || serviceId == 10 || serviceId == 11 || serviceId == 12 || serviceId == 14) {
+      this.nicTranslateService = false;
+      this.birthCertificateTranslateService = false;
+      this.passportTranslateService = false;
+      this.marriageTranslateService = false;
+      this.deathTranslateService = false;
+      this.schoolLeaveTranslateService = false;
+      this.otherDocumentTranslateService = true;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
+    } else if (serviceId == 7) {
+      this.nicTranslateService = false;
+      this.birthCertificateTranslateService = false;
+      this.passportTranslateService = false;
+      this.marriageTranslateService = false;
+      this.deathTranslateService = false;
+      this.schoolLeaveTranslateService = false;
+      this.otherDocumentTranslateService = false;;
+      this.affidavitTranslateionService = true;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
+    } else if (serviceId == 9) {
       this.nicTranslateService = false;
       this.birthCertificateTranslateService = false;
       this.passportTranslateService = false;
       this.marriageTranslateService = false;
       this.deathTranslateService = false;
       this.schoolLeaveTranslateService = true;
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = false;
+
+      this.serviceId = serviceId;
+    } else if (serviceId == 13 || serviceId == 15) {
+      this.nicTranslateService = false;
+      this.birthCertificateTranslateService = false;
+      this.passportTranslateService = false;
+      this.marriageTranslateService = false;
+      this.deathTranslateService = false;
+      this.schoolLeaveTranslateService = false;
+      this.otherDocumentTranslateService = false;
+      this.affidavitTranslateionService = false;
+      this.deedTranslationService = true;
+
+      this.serviceId = serviceId;
     }
   }
 

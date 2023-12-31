@@ -2,7 +2,8 @@ export class BCTranslateModel {
     name!: string;
     fatherName!: string;
     motherName!: string;
-    frontImage!: File
-    backImage!: File;
+    frontImage!: string
+    backImage!: string;
     price!: number;
+    pages!: number;
 }
