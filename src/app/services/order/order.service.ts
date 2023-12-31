@@ -17,6 +17,11 @@ export class OrderService {
     return this.http.post(path, orderDetails);
   }
 
+  placeOrderWithPaymentGateWay(orderDetails: Order) {
+    const path = environment.appURL + "place-new-order-with-gateway";
+    return this.http.post(path, orderDetails);
+  }
+
   getOrderRequests(searchParamModel: SearchParam) {
     const path = environment.appURL + "get-order-requests";
     return this.http.post(path, searchParamModel);

@@ -604,7 +604,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       deliveryTime: this.deliveryTime,
       deliveryMethod: this.deliveryMethod,
       paymentMethod: this.paymentMethod,
-      bankSlip: this.convertImageToBase64(this.bankSlip)
+      bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
     }
 
     console.log(completeDocObj);

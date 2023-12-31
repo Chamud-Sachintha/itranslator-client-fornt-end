@@ -32,8 +32,10 @@ export class InvoiceComponent implements OnInit {
       const dataList = JSON.parse(JSON.stringify(data));
       this.sendDataObj = data;
 
-      if (data.bankSlip.__zone_symbol__value) {
-        this.bankSlip = true;
+      if (data.bankSlip != null) {
+        if (data.bankSlip.__zone_symbol__value) {
+          this.bankSlip = true;
+        }
       }
 
       let totalAmount = 0;
@@ -58,6 +60,24 @@ export class InvoiceComponent implements OnInit {
       })
 
       this.inviceTableObj.amount = totalAmount;
+    })
+  }
+
+  placeOnlinePayment() {
+
+    this.orderDetails.token = sessionStorage.getItem("authToken");
+    this.orderDetails.flag = sessionStorage.getItem("role");
+    this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
+
+    this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
+    this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
+    this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
+    this.orderDetails.totalAmount = this.inviceTableObj.amount;
+
+    this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
+
+    this.orderService.placeOrderWithPaymentGateWay(this.orderDetails).subscribe((resp: any) => {
+      console.log(resp)
     })
   }
 
