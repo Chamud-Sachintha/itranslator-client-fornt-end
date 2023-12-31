@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
 import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
@@ -21,7 +22,7 @@ export class CheckTrOrderComponent implements OnInit {
   subscription!: Subscription;
   adminLessageList: AdminMessage[] = [];
 
-  constructor(private activatedRouter: ActivatedRoute, private orderService: OrderService) {}
+  constructor(private activatedRouter: ActivatedRoute, private orderService: OrderService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
     this.invoiceNo = this.activatedRouter.snapshot.params['invoiceNo'];
@@ -87,7 +88,7 @@ export class CheckTrOrderComponent implements OnInit {
           this.taskList.push(eachRow);
         })
       } else {
-        
+        this.tostr.error("Order Assign", resp.message)
       }
     })
   }
