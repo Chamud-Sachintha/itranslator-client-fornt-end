@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-invoice',
@@ -19,7 +22,7 @@ export class InvoiceComponent implements OnInit {
   uploadedSlip: any[] = [];
   uploadeDocumentList: any[] = [];
 
-  constructor(private dataShareService: DataShareService, private orderService: OrderService) {}
+  constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
 
@@ -76,14 +79,19 @@ export class InvoiceComponent implements OnInit {
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
+    this.spinner.show();
     this.orderService.placeOrderWithPaymentGateWay(this.orderDetails).subscribe((resp: any) => {
       
-      const data = JSON.parse(JSON.stringify(resp));
+      const dataList = JSON.parse(JSON.stringify(resp));
 
       if (resp.code === 1) {
-        const redirectUrl = data.data[0].redirect_url;
+        const redirectUrl = dataList.data[0].redirect_url;
         window.open(redirectUrl);
+
+        $('#exampleModal').show();
       }
+
+      this.spinner.hide();
     })
   }
 

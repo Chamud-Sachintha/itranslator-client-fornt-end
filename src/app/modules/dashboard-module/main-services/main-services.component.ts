@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataShareService } from 'src/app/services/data/data-share.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-main-services',
@@ -9,10 +10,20 @@ import { DataShareService } from 'src/app/services/data/data-share.service';
 })
 export class MainServicesComponent implements OnInit {
 
-  constructor(private router: Router, private dataShareService: DataShareService) {}
+  paymentStatus = false;
+
+  constructor(private router: Router, private dataShareService: DataShareService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    
+    this.paymentStatus = this.activatedRoute.snapshot.params['paymentStatus'];
+    const paySuccessLog = sessionStorage.getItem("paymentSuccessLog");
+
+    console.log(paySuccessLog);
+
+    if (this.paymentStatus && paySuccessLog) {
+      $('#exampleModal').show();
+      sessionStorage.setItem("paymentSuccessLog", "1");
+    }
   }
 
   onSelectMainService(mainServiceId: number) {
