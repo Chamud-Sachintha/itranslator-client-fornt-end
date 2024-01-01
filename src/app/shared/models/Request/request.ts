@@ -23,4 +23,5 @@ export class Request {
     district!: string;
     lro!: string;
     notaryServicePersonList: NotaryServicePerson[] = [];
+    reference!: any;
 }

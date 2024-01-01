@@ -22,6 +22,11 @@ export class OrderService {
     return this.http.post(path, orderDetails);
   }
 
+  addPaymentGatewaySuccessLog(requestParamModel: Request) {
+    const path = environment.appURL + "add-pay-success-log";
+    return this.http.post(path, requestParamModel);
+  }
+
   getOrderRequests(searchParamModel: SearchParam) {
     const path = environment.appURL + "get-order-requests";
     return this.http.post(path, searchParamModel);

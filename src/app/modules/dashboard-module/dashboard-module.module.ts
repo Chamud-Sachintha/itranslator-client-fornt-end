@@ -18,6 +18,7 @@ import { NotaryServiceStep03Component } from './notary-service-step-03/notary-se
 import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-order-requests.component';
 import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
 import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component
     CommonModule,
     DashboardModuleRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ]
 })
 export class DashboardModuleModule { }

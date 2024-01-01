@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataShareService } from 'src/app/services/data/data-share.service';
-import * as $ from 'jquery';
+import { OrderService } from 'src/app/services/order/order.service';
+import { Request } from 'src/app/shared/models/Request/request';
+declare var $: any; 
 
 @Component({
   selector: 'app-main-services',
@@ -10,20 +12,36 @@ import * as $ from 'jquery';
 })
 export class MainServicesComponent implements OnInit {
 
+  requestParamModel = new Request();
   paymentStatus = false;
 
-  constructor(private router: Router, private dataShareService: DataShareService, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router, private dataShareService: DataShareService, private activatedRoute: ActivatedRoute
+            , private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.paymentStatus = this.activatedRoute.snapshot.params['paymentStatus'];
-    const paySuccessLog = sessionStorage.getItem("paymentSuccessLog");
+    this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.paymentStatus = params['payment_success'];
 
-    console.log(paySuccessLog);
+      console.log(this.paymentStatus);
 
-    if (this.paymentStatus && paySuccessLog) {
-      $('#exampleModal').show();
-      sessionStorage.setItem("paymentSuccessLog", "1");
-    }
+      if (this.paymentStatus) {
+        this.addPaymentGateWaySuccessLog();
+      }
+    })
+  }
+
+  addPaymentGateWaySuccessLog() {
+
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.reference = sessionStorage.getItem("reference");
+
+    this.orderService.addPaymentGatewaySuccessLog(this.requestParamModel).subscribe((resp: any) => {
+
+      if (resp.code === 1) {
+        $('#exampleModal').modal('show');
+      }
+    })
   }
 
   onSelectMainService(mainServiceId: number) {

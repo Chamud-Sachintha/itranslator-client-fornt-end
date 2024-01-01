@@ -5,7 +5,7 @@ import { DataShareService } from 'src/app/services/data/data-share.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
-import * as $ from 'jquery';
+declare var $: any; 
 
 @Component({
   selector: 'app-invoice',
@@ -86,9 +86,10 @@ export class InvoiceComponent implements OnInit {
 
       if (resp.code === 1) {
         const redirectUrl = dataList.data[0].redirect_url;
-        window.open(redirectUrl);
+        $('#exampleModal').modal('show');
+        sessionStorage.setItem("reference", dataList.data[0].reference);
 
-        $('#exampleModal').show();
+        window.open(redirectUrl);
       }
 
       this.spinner.hide();
