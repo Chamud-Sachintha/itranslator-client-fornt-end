@@ -77,7 +77,13 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
     this.orderService.placeOrderWithPaymentGateWay(this.orderDetails).subscribe((resp: any) => {
-      console.log(resp)
+      
+      const data = JSON.parse(JSON.stringify(resp));
+
+      if (resp.code === 1) {
+        const redirectUrl = data.data[0].redirect_url;
+        window.open(redirectUrl);
+      }
     })
   }
 
