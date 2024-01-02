@@ -1,6 +1,6 @@
 export class AdminMessage {
-    id!: string;
-    orderId!: string;
+    fromUser!: string;
+    toUser!: string;
     message!: string;
-    createTime!: string;
+    time!: string;
 }

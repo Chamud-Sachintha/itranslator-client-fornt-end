@@ -42,12 +42,26 @@ export class CheckTrOrderComponent implements OnInit {
       const data = JSON.parse(JSON.stringify(result))
 
       data.data[0].forEach((eachData: AdminMessage) => {
-        const formatedDate = parseInt(eachData.createTime) * 1000;
-        eachData.createTime = formatedDate.toString();
+        const formatedDate = parseInt(eachData.time) * 1000;
+        eachData.time = formatedDate.toString();
 
         this.adminLessageList.push(eachData);
       })
     });
+  }
+
+  sendOrderMessageToAdmin(message: string) {
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.message = message;
+    this.requestParamModel.invoiceNo = this.invoiceNo;
+
+    this.orderService.sendOrderMessageToAdmin(this.requestParamModel).subscribe((resp: any) => {
+
+      if (resp.code === 1) {
+
+      }
+    })
   }
 
   getTranslatedOrderDocs() {
