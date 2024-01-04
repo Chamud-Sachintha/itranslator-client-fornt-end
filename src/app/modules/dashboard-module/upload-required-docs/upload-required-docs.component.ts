@@ -2,6 +2,7 @@ import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { ServiceService } from 'src/app/services/service/service.service';
 import { AffidavitModel } from 'src/app/shared/models/AffidavitModel/affidavit-model';
@@ -15,6 +16,7 @@ import { PassporTranslateModel } from 'src/app/shared/models/PassportTranslateMo
 import { SchoolLeavingCertificateModel } from 'src/app/shared/models/SchoolLeavingCertificateModel/school-leaving-certificate-model';
 import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { NICTranslator } from 'src/app/shared/models/TranslatorModel/nictranslator';
+declare var $: any; 
 
 @Component({
   selector: 'app-upload-required-docs',
@@ -56,22 +58,34 @@ export class UploadRequiredDocsComponent implements OnInit {
   deedModel = new DeedModel();
   appendDocList: DocumentAppend[] = [];
   searchParamModel = new SearchParam();
-  deliveryTime!: string;
-  deliveryMethod!: string;
-  paymentMethod!: string;
+  deliveryTime = '';
+  deliveryMethod = '';
+  paymentMethod = '';
   bankSlip!: File;
   serviceId!: number;
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
             , private fromBuilder: FormBuilder
-            , private serviceService: ServiceService) {
+            , private serviceService: ServiceService
+            , private tostr: ToastrService) {
   }
 
   ngOnInit() {
+
+    // if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    //   const confirmd = confirm("Are you sure want to leave this page ?");
+
+    //   if (confirmd) {
+    //     this.location.back();
+    //   }
+    // } else {
+    //   console.info( "This page is not reloaded");
+    // }
+
     this.dataShareService.getComponentValueObj().subscribe((data) => {
       this.selectedServiceList.push(data);
     })
-
+ 
     this.initNicTranslateForm();
     this.bcTranslateFormInit();
     this.passportTranslateFormInit();
@@ -95,11 +109,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     const page6 = this.deedForm.controls['page6'].value;
 
     if (fullName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required.");
     } else if (address == "") {
-
+      this.tostr.error("Empty Feilds Found", "Address is required.");
     } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
-
+      this.tostr.error("Empty Feilds Found", "Upload Minimum 1 Pge");
     } else {
 
       let pageCount = 0;
@@ -164,6 +178,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       deedAppend.pages = pageCount;
 
       this.appendDocList.push(deedAppend);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -221,11 +237,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     const page5 = this.affidavitForm.controls['page5'].value;
 
     if (fullName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required.");
     } else if (address == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required.");
     } else if (descriptionOfService == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required.");
     } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "") {
 
     } else {
@@ -283,6 +299,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       affidavitModelAppend.pages = pageCount;
 
       this.appendDocList.push(affidavitModelAppend);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -342,13 +360,13 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImage = this.schoolLeavingTranslateForm.controls['backImage'].value;
 
     if (fullName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required");
     } else if (schoolName == "") {
-
+      this.tostr.error("Empty Feilds Found", "School Name is required");
     } else if (frontImage == "") {
-
+      this.tostr.error("Empty Feilds Found", "Front Image is required");
     } else if (backImage == "") {
-
+      this.tostr.error("Empty Feilds Found", "Back Image is required");
     } else {
       this.schoolLeavingCertificateNModel.fullName = fullName;
       this.schoolLeavingCertificateNModel.schoolname = schoolName;
@@ -370,6 +388,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       schoolLeavingCertificateAppend.pages = 2;
 
       this.appendDocList.push(schoolLeavingCertificateAppend);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -424,13 +444,13 @@ export class UploadRequiredDocsComponent implements OnInit {
     const page6 = this.otherDocumentTranslateForm.controls['image6'].value;
 
     if (fullName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Full Name is required");
     } else if (fatherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Father Name is required");
     } else if (motherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Mother Name is required");
     } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
-
+      this.tostr.error("Empty Feilds Found", "Minimum One Page is required");
     } else {
       let pageCount = 0;
       this.otherDocumentTranslateModel.fullName = fullName;
@@ -496,6 +516,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       otherDocumentAppend.pages = pageCount;
 
       this.appendDocList.push(otherDocumentAppend);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -553,15 +575,15 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImg = this.deathTranslateForm.controls['backImg'].value;
 
     if (name == "") {
-
+      this.tostr.error("Empty Feilds Found", "Name is required");
     } else if (fatherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Father Name is required");
     } else if (motherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Mother Name is required");
     } else if (frontImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Front Image is required");
     } else if (backImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Back Image is required");
     } else {
       this.dcTranslateModel.name = name;
       this.dcTranslateModel.fatherName = fatherName;
@@ -584,6 +606,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       dcDocumentAppendModel.pages = 2;
 
       this.appendDocList.push(dcDocumentAppendModel);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -598,19 +622,23 @@ export class UploadRequiredDocsComponent implements OnInit {
   }
 
   onClickNextStep() {
-    
-    const completeDocObj = {
-      uploadedDocList: this.appendDocList,
-      deliveryTime: this.deliveryTime,
-      deliveryMethod: this.deliveryMethod,
-      paymentMethod: this.paymentMethod,
-      bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+
+    if (this.appendDocList.length == 0) {
+      this.tostr.error("Upload Documents", "Please Upload Required Documents.");
+    } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
+      this.tostr.error("Empty Properties.", "Please Select Order Properties.");
+    } else {
+      const completeDocObj = {
+        uploadedDocList: this.appendDocList,
+        deliveryTime: this.deliveryTime,
+        deliveryMethod: this.deliveryMethod,
+        paymentMethod: this.paymentMethod,
+        bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+      }
+  
+      this.dataShareService.setComponentValueObj(completeDocObj);
+      this.router.navigate(['app/select-services/step-04']);
     }
-
-    console.log(completeDocObj);
-
-    this.dataShareService.setComponentValueObj(completeDocObj);
-    this.router.navigate(['app/select-services/step-04']);
   }
 
   onSubmitMariageTranslateForm() {
@@ -625,21 +653,21 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImg = this.marriageTranslateForm.controls['backImg'].value;
 
     if (maleName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Male Name is required");
     } else if (maleFatherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Male Father Name is required");
     } else if (maleResidence == "") {
-
+      this.tostr.error("Empty Feilds Found", "Male residance is required");
     } else if (femaleName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Female Name is required");
     } else if (femaleFathersName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Female Father Name is required");
     } else if (femaleResidence == "") {
-
+      this.tostr.error("Empty Feilds Found", "Female Residance is required");
     } else if (frontImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Front Image is required");
     } else if (backImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Back Image is required");
     } else {
       this.mcTranslateModel.maleName = maleName;
       this.mcTranslateModel.maleFatherName = maleFatherName;
@@ -665,6 +693,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       mcTranslateAppendModel.submitedDate = (new Date());
 
       this.appendDocList.push(mcTranslateAppendModel);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -723,9 +753,9 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImg = this.passportTranslateForm.controls['backImg'].value;
 
     if (frontImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Front Image is required");
     } else if (backImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Back Image is required");
     } else {
       this.passportTranslateModel.frontImg = frontImg;
       this.passportTranslateModel.backImg = backImg;
@@ -736,6 +766,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.documentAppendModel.pages = 2;
 
       this.appendDocList.push(this.documentAppendModel);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -747,11 +779,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImg = this.bcTranslateForm.controls['backImg'].value;
 
     if (name == "") {
-
+      this.tostr.error("Empty Feilds Found", "Name is required");
     } else if (fatherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Father Name is required");
     } else if (motherName == "") {
-
+      this.tostr.error("Empty Feilds Found", "Mother Name is required");
     } else {
       this.bcTranslateModel.name = name;
       this.bcTranslateModel.fatherName = fatherName;
@@ -775,6 +807,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       bcTranslateAppend.submitedDate = new Date();
 
       this.appendDocList.push(bcTranslateAppend);
+
+      $('#exampleModal').modal().hide();
     }
   }
 
@@ -915,17 +949,15 @@ export class UploadRequiredDocsComponent implements OnInit {
     const backImg = this.nicTranslateForm.controls['backImg'].value;
 
     if (nicName == "") {
-
+      this.tostr.error("Empty Feilds Found", "NIC Name is required");
     } else if (birthPlace == "") {
-
+      this.tostr.error("Empty Feilds Found", "Birth Place is required");
     } else if (address == "") {
-
-    } else if (address == "") {
-
+      this.tostr.error("Empty Feilds Found", "Address is required");
     } else if (frontImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Front Image is required");
     } else if (backImg == "") {
-
+      this.tostr.error("Empty Feilds Found", "Back Image is required");
     } else {
 
       this.nicTranslatorModel.nicName = nicName;
@@ -951,6 +983,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       nicModelAppend.pages = 2;
 
       this.appendDocList.push(nicModelAppend);
+
+      $('#exampleModal').modal().hide();
     }
 
     return false;

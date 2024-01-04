@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { ServiceService } from 'src/app/services/service/service.service';
 import { Request } from 'src/app/shared/models/Request/request';
@@ -19,7 +20,7 @@ export class SelectRequiredDocsComponent implements OnInit {
   serviceList: Service[] = [];
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
-            , private serviceService: ServiceService) {}
+            , private serviceService: ServiceService, private tostr: ToastrService) {}
 
   ngOnInit() {
     this.getServiceList();
@@ -60,8 +61,13 @@ export class SelectRequiredDocsComponent implements OnInit {
   }
 
   goToStep2($event: any) {
-    this.dataShareService.setComponentValueObj(this.enableServiceList);
-    this.router.navigate(['app/select-services/step-03']);
+
+    if (this.enableServiceList.length == 0) {
+      this.tostr.error("Select Translation Document", "Select One or More Translation Docuemnts to Proceed.");
+    } else {
+      this.dataShareService.setComponentValueObj(this.enableServiceList);
+      this.router.navigate(['app/select-services/step-03']);
+    }
   }
 
   onClickPreviousBtn() {

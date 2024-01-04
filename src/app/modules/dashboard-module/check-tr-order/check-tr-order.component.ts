@@ -7,6 +7,7 @@ import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
 import { Request } from 'src/app/shared/models/Request/request';
 import { TranslateTask } from 'src/app/shared/models/TranslateTask/translate-task';
 import { TranslatedDocument } from 'src/app/shared/models/TranslatedDocument/translated-document';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-check-tr-order',
@@ -50,6 +51,11 @@ export class CheckTrOrderComponent implements OnInit {
     });
   }
 
+  onClickViewDocument(documentName: string) {
+    const filePath = environment.fileServerURL + documentName;
+    window.open(filePath);
+  }
+
   sendOrderMessageToAdmin(message: string) {
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
@@ -59,7 +65,7 @@ export class CheckTrOrderComponent implements OnInit {
     this.orderService.sendOrderMessageToAdmin(this.requestParamModel).subscribe((resp: any) => {
 
       if (resp.code === 1) {
-
+        
       }
     })
   }
