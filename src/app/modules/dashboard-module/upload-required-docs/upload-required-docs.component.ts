@@ -520,7 +520,23 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       otherDocumentAppend.serviceId = this.serviceId;
       otherDocumentAppend.otherDocumentModel = this.otherDocumentTranslateModel;
-      otherDocumentAppend.translationTitle = "Other Document";
+
+      if (this.serviceId == 5) {
+        otherDocumentAppend.translationTitle = "Exam Result Sheet";
+      } else if (this.serviceId == 6) {
+        otherDocumentAppend.translationTitle = "Police Report";
+      } else if (this.serviceId == 8) {
+        otherDocumentAppend.translationTitle = "Other Exam Sheet";
+      } else if (this.serviceId == 10) {
+        otherDocumentAppend.translationTitle = "Other Certificate";
+      } else if (this.serviceId == 11) {
+        otherDocumentAppend.translationTitle = "Grama Niladari Certificate";
+      } else if (this.serviceId == 12) {
+        otherDocumentAppend.translationTitle = "Character Certificate";
+      } else if (this.serviceId == 14) {
+        otherDocumentAppend.translationTitle = "Title Report";
+      }
+
       otherDocumentAppend.submitedDate = new Date();
       otherDocumentAppend.pages = pageCount;
 
