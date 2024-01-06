@@ -845,6 +845,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       bcTranslateAppend.bcTranslateModel = this.bcTranslateModel;
       bcTranslateAppend.translationTitle = "BC Translation";
       bcTranslateAppend.submitedDate = new Date();
+      bcTranslateAppend.pages = 2;
 
       this.appendDocList.push(bcTranslateAppend);
 
