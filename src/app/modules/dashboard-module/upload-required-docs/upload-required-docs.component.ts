@@ -179,7 +179,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(deedAppend);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -300,7 +300,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(affidavitModelAppend);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -389,7 +389,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(schoolLeavingCertificateAppend);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -517,7 +517,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(otherDocumentAppend);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -607,7 +607,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(dcDocumentAppendModel);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -694,7 +694,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(mcTranslateAppendModel);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -713,12 +713,12 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   onChangeDCFrontImage(event: any) {
     const file = (event.target as any).files[0];
-    this.marriageTranslateForm.patchValue({"frontImg": file});
+    this.deathTranslateForm.patchValue({"frontImg": file});
   }
 
   onChangeDCBackImage(event: any) {
     const file = (event.target as any).files[0];
-    this.marriageTranslateForm.patchValue({"backImg": file});
+    this.deathTranslateForm.patchValue({"backImg": file});
   }
 
   onChangeMariageFrontImage(event: any) {
@@ -767,7 +767,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(this.documentAppendModel);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -808,7 +808,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(bcTranslateAppend);
 
-      $('#exampleModal').modal().hide();
+      $("#exampleModal .close").click();
     }
   }
 
@@ -984,7 +984,8 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(nicModelAppend);
 
-      $('#exampleModal').modal().hide();
+      // $('#exampleModal').modal().close();
+      $("#exampleModal .close").click()
     }
 
     return false;
