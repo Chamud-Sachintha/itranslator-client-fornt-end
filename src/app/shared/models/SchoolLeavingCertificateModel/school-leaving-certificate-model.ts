@@ -3,4 +3,5 @@ export class SchoolLeavingCertificateModel {
     schoolname!: string;
     frontImage!: string;
     backImage!: string;
+    price!: string;
 }

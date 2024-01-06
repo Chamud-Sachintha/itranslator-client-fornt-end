@@ -48,6 +48,8 @@ export class InvoiceComponent implements OnInit {
 
         invoiceObj.documentTitle = eachDoc.translationTitle;
         invoiceObj.pages = eachDoc.pages;
+
+        console.log(eachDoc)
         
         if (eachDoc.nicTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
@@ -55,6 +57,16 @@ export class InvoiceComponent implements OnInit {
           invoiceObj.unitPrice = eachDoc.bcTranslateModel.price;
         } else if (eachDoc.otherDocumentModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.otherDocumentModel.price * invoiceObj.pages;
+        } else if (eachDoc.dcTranslateModel !== undefined) {
+          invoiceObj.unitPrice = eachDoc.bcTranslateModel.price;
+        } else if (eachDoc.affidavitModel != undefined) {
+          invoiceObj.unitPrice = eachDoc.affidavitModel.price * invoiceObj.pages;
+        } else if (eachDoc.deedModel != undefined) {
+          invoiceObj.unitPrice = eachDoc.deedModel.price * invoiceObj.pages;
+        } else if (eachDoc.schoolLeavingCertificateNModel != undefined) {
+          invoiceObj.unitPrice = eachDoc.schoolLeavingCertificateNModel.price;
+        } else if (eachDoc.mcTranslateModel != undefined) {
+          invoiceObj.unitPrice = eachDoc.mcTranslateModel.price;
         }
 
         totalAmount += Number(invoiceObj.unitPrice);

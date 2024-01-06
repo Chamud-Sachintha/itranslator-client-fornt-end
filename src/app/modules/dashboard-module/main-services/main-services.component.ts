@@ -22,8 +22,6 @@ export class MainServicesComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.paymentStatus = params['payment_success'];
 
-      console.log(this.paymentStatus);
-
       if (this.paymentStatus) {
         this.addPaymentGateWaySuccessLog();
       }

@@ -4,4 +4,5 @@ export class DCTranslateModel {
     motherName!: string;
     frontImg!: string;
     backImg!: string;
+    price!: string;
 }

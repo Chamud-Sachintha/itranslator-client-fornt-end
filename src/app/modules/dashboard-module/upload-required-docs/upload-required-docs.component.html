@@ -1,4 +1,5 @@
 <h5 class="card-header">Step 2</h5>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="card-body">
   <div class="row">
     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.selectedServiceList[0]">
@@ -308,27 +309,27 @@
             </div>
             <div class="col-12">
               <label for="">Page 1</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage1Change($event)">
+              <input type="file" class="form-control" #fileInput1 (change)="onChangeOtherDocPage1Change($event)">
             </div>
             <div class="col-12">
               <label for="">Page 2</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage2Change($event)">
+              <input type="file" class="form-control" #fileInput2 (change)="onChangeOtherDocPage2Change($event)">
             </div>
             <div class="col-12">
               <label for="">Page 3</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage3Change($event)">
+              <input type="file" class="form-control" #fileInput3 (change)="onChangeOtherDocPage3Change($event)">
             </div>
             <div class="col-12">
               <label for="">Page 4</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage4Change($event)">
+              <input type="file" class="form-control" #fileInput4 (change)="onChangeOtherDocPage4Change($event)">
             </div>
             <div class="col-12">
               <label for="">Page 5</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage5Change($event)">
+              <input type="file" class="form-control" #fileInput5 (change)="onChangeOtherDocPage5Change($event)">
             </div>
             <div class="col-12">
               <label for="">Page 6</label>
-              <input type="file" class="form-control" (change)="onChangeOtherDocPage6Change($event)">
+              <input type="file" class="form-control" #fileInput6 (change)="onChangeOtherDocPage6Change($event)">
             </div>
           </div>
           <div class="modal-footer">
@@ -378,23 +379,23 @@
             </div>
             <div class="col-12">
               <label for="">Page 1</label>
-              <input type="text" class="form-control" (change)="onChangeAffidavirPage1($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage1($event)">
             </div>
             <div class="col-12">
               <label for="">Page 2</label>
-              <input type="text" class="form-control" (change)="onChangeAffidavirPage2($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage2($event)">
             </div>
             <div class="col-12">
               <label for="">Page 3</label>
-              <input type="text" class="form-control" (change)="onChangeAffidavirPage3($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage3($event)">
             </div>
             <div class="col-12">
               <label for="">Page 4</label>
-              <input type="text" class="form-control" (change)="onChangeAffidavirPage4($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage4($event)">
             </div>
             <div class="col-12">
               <label for="">Page 5</label>
-              <input type="text" class="form-control" (change)="onChangeAffidavirPage5($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage5($event)">
             </div>
             <div class="modal-footer">
               <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>

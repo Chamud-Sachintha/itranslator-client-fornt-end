@@ -1,7 +1,8 @@
 import { DatePipe, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { ServiceService } from 'src/app/services/service/service.service';
@@ -64,10 +65,18 @@ export class UploadRequiredDocsComponent implements OnInit {
   bankSlip!: File;
   serviceId!: number;
 
+  @ViewChild('fileInput1') fileInput1!:ElementRef;
+  @ViewChild('fileInput2') fileInput2!:ElementRef;
+  @ViewChild('fileInput3') fileInput3!:ElementRef;
+  @ViewChild('fileInput4') fileInput4!:ElementRef;
+  @ViewChild('fileInput5') fileInput5!:ElementRef;
+  @ViewChild('fileInput6') fileInput6!:ElementRef;
+
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
             , private fromBuilder: FormBuilder
             , private serviceService: ServiceService
-            , private tostr: ToastrService) {
+            , private tostr: ToastrService
+            , private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
@@ -250,7 +259,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.affidavitModel.address = address;
       this.affidavitModel.descriptionOfService = descriptionOfService;
       
-      if (page1 != null) {
+      if (page1 != "") {
         this.convertImageToBase64(page1).then((base64String) => {
           this.affidavitModel.page1 = base64String;
         })
@@ -258,7 +267,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         pageCount += 1;
       }
 
-      if (page2 != null) {
+      if (page2 != "") {
         this.convertImageToBase64(page2).then((base64String) => {
           this.affidavitModel.page2 = base64String;
         })
@@ -266,7 +275,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         pageCount += 1;
       }
 
-      if (page3 != null) {
+      if (page3 != "") {
         this.convertImageToBase64(page3).then((base64String) => {
           this.affidavitModel.page3 = base64String;
         })
@@ -274,7 +283,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         pageCount += 1;
       }
 
-      if (page4 != null) {
+      if (page4 != "") {
         this.convertImageToBase64(page4).then((base64String) => {
           this.affidavitModel.page4 = base64String;
         })
@@ -282,7 +291,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         pageCount += 1;
       }
 
-      if (page5 != null) {
+      if (page5 != "") {
         this.convertImageToBase64(page5).then((base64String) => {
           this.affidavitModel.page5 = base64String;
         })
@@ -505,7 +514,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         pageCount += 1;
       }
 
-      this.otherDocumentTranslateModel.pages = pageCount;
+      // this.otherDocumentTranslateModel.pages = pageCount;
 
       let otherDocumentAppend = new DocumentAppend();
 
@@ -514,6 +523,24 @@ export class UploadRequiredDocsComponent implements OnInit {
       otherDocumentAppend.translationTitle = "Other Document";
       otherDocumentAppend.submitedDate = new Date();
       otherDocumentAppend.pages = pageCount;
+
+      console.log(page3);
+
+      pageCount = 0;
+      this.otherDocumentTranslateForm.reset();
+      this.fileInput1.nativeElement.value = null;
+      this.fileInput2.nativeElement.value = null;
+      this.fileInput3.nativeElement.value = null;
+      this.fileInput4.nativeElement.value = null;
+      this.fileInput5.nativeElement.value = null;
+      this.fileInput6.nativeElement.value = null;
+
+      this.otherDocumentTranslateForm.controls['image1'].setValue("");
+      this.otherDocumentTranslateForm.controls['image2'].setValue("");
+      this.otherDocumentTranslateForm.controls['image3'].setValue("");
+      this.otherDocumentTranslateForm.controls['image4'].setValue("");
+      this.otherDocumentTranslateForm.controls['image5'].setValue("");
+      this.otherDocumentTranslateForm.controls['image6'].setValue("");
 
       this.appendDocList.push(otherDocumentAppend);
 
@@ -550,6 +577,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.searchParamModel.serviceId = eachDoc.serviceId;
       this.searchParamModel.deliveryTimeType = this.deliveryTime;
 
+      this.spinner.show();
       this.serviceService.getServicePriceByDeliveryTime(this.searchParamModel).subscribe((resp: any) => {
 
         const priceInfo = JSON.parse(JSON.stringify(resp));
@@ -559,10 +587,22 @@ export class UploadRequiredDocsComponent implements OnInit {
             this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
           } else if (eachDoc.serviceId == 2) {
             this.bcTranslateModel.price = priceInfo.data[0].servicePrice;
-          } else if (eachDoc.serviceId == 5) {
+          } else if (eachDoc.serviceId == 3) {
+            this.mcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 4) {
+            this.dcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 5 || eachDoc.serviceId == 6 || eachDoc.serviceId == 8 || eachDoc.serviceId == 10 || eachDoc.serviceId == 11 || eachDoc.serviceId == 12 || eachDoc.serviceId == 14) {
             this.otherDocumentTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 7) {
+            this.affidavitModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId == 9) {
+            this.schoolLeavingCertificateNModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.service == 13 || eachDoc.serviceId == 15) {
+            this.deedModel.price = priceInfo.data[0].servicePrice;
           }
         }
+
+        this.spinner.hide();
       })
     })
   }
@@ -728,7 +768,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   onChangeMariageBackImage(event: any) {
     const file = (event.target as any).files[0]; 
-    this.marriageTranslateForm.patchValue({"frontImg": file});
+    this.marriageTranslateForm.patchValue({"backImg": file});
   }
 
   onChangePassportFrontImage(event: any) {

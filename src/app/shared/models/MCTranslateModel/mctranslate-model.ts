@@ -7,4 +7,5 @@ export class MCTranslateModel {
     femaleResidencae!: string;
     frontImg!: string;
     backImg!: string;
+    price!: string;
 }

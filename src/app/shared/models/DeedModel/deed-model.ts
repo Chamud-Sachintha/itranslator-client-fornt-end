@@ -7,4 +7,5 @@ export class DeedModel {
     page4!: string;
     page5!: string;
     page6!: string;
+    price!: string;
 }

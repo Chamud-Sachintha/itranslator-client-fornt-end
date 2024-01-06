@@ -7,4 +7,5 @@ export class AffidavitModel {
     page4!: string;
     page5!: string;
     descriptionOfService!: string;
+    price!: string;
 }

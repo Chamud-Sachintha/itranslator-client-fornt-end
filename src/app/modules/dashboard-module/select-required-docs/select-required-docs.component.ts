@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { ServiceService } from 'src/app/services/service/service.service';
@@ -20,7 +21,7 @@ export class SelectRequiredDocsComponent implements OnInit {
   serviceList: Service[] = [];
 
   constructor(private router: Router, private dataShareService: DataShareService, private location: Location
-            , private serviceService: ServiceService, private tostr: ToastrService) {}
+            , private serviceService: ServiceService, private tostr: ToastrService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.getServiceList();
@@ -30,6 +31,7 @@ export class SelectRequiredDocsComponent implements OnInit {
     this.requestModel.token = sessionStorage.getItem("authToken");
     this.requestModel.flag = sessionStorage.getItem("role");
 
+    this.spinner.show();
     this.serviceService.getServiceList(this.requestModel).subscribe((resp: any) => {
 
       const dataList = JSON.parse(JSON.stringify(resp));
@@ -39,6 +41,8 @@ export class SelectRequiredDocsComponent implements OnInit {
           this.serviceList.push(eachService)
         })
       }
+
+      this.spinner.hide();
     }, (err) => {})
   }
 
