@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Auth } from 'src/app/shared/models/Auth/auth';
 
@@ -14,7 +16,8 @@ export class SigninComponent implements OnInit {
   authModel = new Auth();
   userAuthForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private tostr: ToastrService
+              , private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.initCreateSigninForm();
@@ -26,14 +29,15 @@ export class SigninComponent implements OnInit {
     const flag = this.userAuthForm.controls['flag'].value;
 
     if (username == "") {
-
+      this.tostr.error("Empty Feilds Found", "Username is Required.");
     } else if (password == "") {
-
+      this.tostr.error("Empty Feilds Found", "Password is required.");
     } else {
       this.authModel.username = username;
       this.authModel.password = password;
       this.authModel.flag = flag;
 
+      this.spinner.show();
       this.authService.authenticateUser(this.authModel).subscribe((resp: any) => {
 
         const dataList = JSON.parse(JSON.stringify(resp));
@@ -43,8 +47,12 @@ export class SigninComponent implements OnInit {
           sessionStorage.setItem("email", dataList.data[0].email);
           sessionStorage.setItem("role", dataList.data[0].userRole);
 
+          this.tostr.success("Client Login", "Client Authentication Successfully.");
+
           this.router.navigate(['app'])
         }
+
+        this.spinner.hide();
       }, (err) => {})
     }
   }
