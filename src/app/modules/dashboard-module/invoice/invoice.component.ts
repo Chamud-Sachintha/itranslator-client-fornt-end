@@ -63,8 +63,8 @@ export class InvoiceComponent implements OnInit {
           invoiceObj.unitPrice = eachDoc.affidavitModel.price * invoiceObj.pages;
         } else if (eachDoc.deedModel != undefined) {
           invoiceObj.unitPrice = eachDoc.deedModel.price * invoiceObj.pages;
-        } else if (eachDoc.schoolLeavingCertificateNModel != undefined) {
-          invoiceObj.unitPrice = eachDoc.schoolLeavingCertificateNModel.price;
+        } else if (eachDoc.schoolLeavingCertificateModel != undefined) {
+          invoiceObj.unitPrice = eachDoc.schoolLeavingCertificateModel.price;
         } else if (eachDoc.mcTranslateModel != undefined) {
           invoiceObj.unitPrice = eachDoc.mcTranslateModel.price;
         }
