@@ -64,6 +64,7 @@ export class SignupComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("New Client Registration", "Client Registration Succcessfully.");
+          this.router.navigate(['/auth/login']);
         } else {
           this.tostr.error("New Client Registration", resp.message);
         }

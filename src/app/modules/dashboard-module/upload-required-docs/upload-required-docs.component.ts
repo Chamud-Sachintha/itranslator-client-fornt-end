@@ -924,7 +924,7 @@ export class UploadRequiredDocsComponent implements OnInit {
             this.affidavitModel.price = priceInfo.data[0].servicePrice;
           } else if (eachDoc.serviceId == 9) {
             this.schoolLeavingCertificateNModel.price = priceInfo.data[0].servicePrice;
-          } else if (eachDoc.service == 13 || eachDoc.serviceId == 15) {
+          } else if (eachDoc.serviceId == 13 || eachDoc.serviceId == 15) {
             this.deedModel.price = priceInfo.data[0].servicePrice;
           }
         }
