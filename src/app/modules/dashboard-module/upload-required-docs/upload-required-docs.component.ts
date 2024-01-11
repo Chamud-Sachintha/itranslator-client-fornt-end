@@ -17,6 +17,7 @@ import { PassporTranslateModel } from 'src/app/shared/models/PassportTranslateMo
 import { SchoolLeavingCertificateModel } from 'src/app/shared/models/SchoolLeavingCertificateModel/school-leaving-certificate-model';
 import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { NICTranslator } from 'src/app/shared/models/TranslatorModel/nictranslator';
+import { environment } from 'src/environments/environment.development';
 declare var $: any; 
 
 @Component({
@@ -65,6 +66,26 @@ export class UploadRequiredDocsComponent implements OnInit {
   bankSlip!: File;
   serviceId!: number;
 
+  viewNICFormModel = false;
+  viewBCFormModel = false;
+  viewMCFormModel = false;
+  viewDCFormModel = false;
+  viewSchoolLeavingModel = false;
+  viewOtherModel = false;
+  viewAffidavitModel = false;
+  viewDeedModel = false;
+
+  viewNICForm!: FormGroup;
+  viewBCForm!: FormGroup;
+  viewMCForm!: FormGroup;
+  viewDCForm!: FormGroup;
+  viewSchoolLeavingForm!: FormGroup;
+  viewOtherForm!: FormGroup;
+  viewAffidavitForm!: FormGroup;
+  viewDeedForm!: FormGroup;
+
+  viewFormImageList: string[] = [];
+
   @ViewChild('fileInput1') fileInput1!:ElementRef;
   @ViewChild('fileInput2') fileInput2!:ElementRef;
   @ViewChild('fileInput3') fileInput3!:ElementRef;
@@ -104,6 +125,296 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.initSchoolLeavingCertificateForm();
     this.initAffidavitForm();
     this.initDeedForm();
+
+    this.initVieForms();
+  }
+
+  initVieForms() {
+    this.viewNICForm = this.fromBuilder.group({
+      nicName: ['', Validators.required],
+      birthPlace: ['', Validators.required],
+      address: ['', Validators.required],
+      frontImg: ['',Validators.required],
+      backImg: ['', Validators.required]
+    })
+
+    this.viewBCForm = this.fromBuilder.group({
+      name: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      frontImg: ['',Validators.required],
+      backImg: ['', Validators.required]
+    })
+
+    this.viewMCForm = this.fromBuilder.group({
+      maleName: ['', Validators.required],
+      maleFathersName: ['', Validators.required],
+      maleResidence: ['', Validators.required],
+      femaleName: ['', Validators.required],
+      femaleFathersName: ['', Validators.required],
+      femaleResidence: ['', Validators.required],
+      frontImg: ['', Validators.required],
+      backImg: ['', Validators.required]
+    })
+
+    this.viewSchoolLeavingForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      schoolName: ['', Validators.required],
+      frontImage: ['', Validators.required],
+      backImage: ['', Validators.required]
+    })
+
+    this.viewDCForm = this.fromBuilder.group({
+      name: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      frontImg: ['', Validators.required],
+      backImg: ['', Validators.required]
+    })
+
+    this.viewAffidavitForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      address: ['', Validators.required],
+      descriptionOfService: ['', Validators.required],
+      page1: ['', Validators.required],
+      page2: ['', Validators.required],
+      page3: ['', Validators.required],
+      page4: ['', Validators.required],
+      page5: ['', Validators.required]
+    })
+
+    this.viewOtherForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      image1: ['', Validators.required],
+      image2: ['', Validators.required],
+      image3: ['', Validators.required],
+      image4: ['', Validators.required],
+      image5: ['', Validators.required],
+      image6: ['', Validators.required],
+    })
+
+    this.viewDeedForm = this.fromBuilder.group({
+      fullName: ['', Validators.required],
+      address: ['', Validators.required],
+      page1: ['', Validators.required],
+      page2: ['', Validators.required],
+      page3: ['', Validators.required],
+      page4: ['', Validators.required],
+      page5: ['', Validators.required],
+      page6: ['', Validators.required]
+    })
+  }
+
+  onClickViewDetails(index: number) {
+    this.viewFormImageList = [];
+
+    if (this.appendDocList[index].serviceId == 1) {
+      this.viewNICFormModel = true;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewNICForm.controls['nicName'].setValue(this.appendDocList[index].nicTranslateModel.nicName);
+      this.viewNICForm.controls['birthPlace'].setValue(this.appendDocList[index].nicTranslateModel.birthPlace);
+      this.viewNICForm.controls['address'].setValue(this.appendDocList[index].nicTranslateModel.address);
+
+      this.viewFormImageList.push(this.appendDocList[index].nicTranslateModel.frontImg);
+      this.viewFormImageList.push(this.appendDocList[index].nicTranslateModel.backImg);
+
+    } else if (this.appendDocList[index].serviceId == 2) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = true;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewBCForm.controls['name'].setValue(this.appendDocList[index].bcTranslateModel.name);
+      this.viewBCForm.controls['fatherName'].setValue(this.appendDocList[index].bcTranslateModel.fatherName);
+      this.viewBCForm.controls['motherName'].setValue(this.appendDocList[index].bcTranslateModel.motherName);
+
+      this.viewFormImageList.push(this.appendDocList[index].bcTranslateModel.frontImage);
+      this.viewFormImageList.push(this.appendDocList[index].bcTranslateModel.backImage);
+    } else if (this.appendDocList[index].serviceId == 3) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = true;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewMCForm.controls['maleName'].setValue(this.appendDocList[index].mcTranslateModel.maleName);
+      this.viewMCForm.controls['maleFathersName'].setValue(this.appendDocList[index].mcTranslateModel.maleFatherName);
+      this.viewMCForm.controls['maleResidence'].setValue(this.appendDocList[index].mcTranslateModel.maleResidence);
+      this.viewMCForm.controls['femaleName'].setValue(this.appendDocList[index].mcTranslateModel.femaleName);
+      this.viewMCForm.controls['femaleFathersName'].setValue(this.appendDocList[index].mcTranslateModel.femaleFatherName);
+      this.viewMCForm.controls['femaleResidence'].setValue(this.appendDocList[index].mcTranslateModel.femaleResidencae);
+
+      this.viewFormImageList.push(this.appendDocList[index].mcTranslateModel.frontImg);
+      this.viewFormImageList.push(this.appendDocList[index].mcTranslateModel.backImg);
+    } else if (this.appendDocList[index].serviceId == 4) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = true;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewDCForm.controls['name'].setValue(this.appendDocList[index].dcTranslateModel.name);
+      this.viewDCForm.controls['fatherName'].setValue(this.appendDocList[index].dcTranslateModel.fatherName);
+      this.viewDCForm.controls['motherName'].setValue(this.appendDocList[index].dcTranslateModel.motherName);
+
+      this.viewFormImageList.push(this.appendDocList[index].dcTranslateModel.frontImg);
+      this.viewFormImageList.push(this.appendDocList[index].dcTranslateModel.backImg);
+    } else if (this.appendDocList[index].serviceId == 5 || this.appendDocList[index].serviceId == 6 || this.appendDocList[index].serviceId == 8 || this.appendDocList[index].serviceId == 10 || this.appendDocList[index].serviceId == 11 || this.appendDocList[index].serviceId == 12 || this.appendDocList[index].serviceId == 14 ) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = true;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewOtherForm.controls['fullName'].setValue(this.appendDocList[index].otherDocumentModel.fullName);
+      this.viewOtherForm.controls['fatherName'].setValue(this.appendDocList[index].otherDocumentModel.fatherName);
+      this.viewOtherForm.controls['motherName'].setValue(this.appendDocList[index].otherDocumentModel.motherName);
+
+      if (this.appendDocList[index].otherDocumentModel.page1 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page1);
+      }
+
+      if (this.appendDocList[index].otherDocumentModel.page2 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page2);
+      }
+
+      if (this.appendDocList[index].otherDocumentModel.page3 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page3);
+      }
+
+      if (this.appendDocList[index].otherDocumentModel.page4 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page4);
+      }
+
+      if (this.appendDocList[index].otherDocumentModel.page5 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page5);
+      }
+
+      if (this.appendDocList[index].otherDocumentModel.page6 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].otherDocumentModel.page6);
+      }
+    } else if (this.appendDocList[index].serviceId == 7) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = true;
+      this.viewDeedModel = false;
+
+      this.viewAffidavitForm.controls['fullName'].setValue(this.appendDocList[index].affidavitModel.fullName);
+      this.viewAffidavitForm.controls['address'].setValue(this.appendDocList[index].affidavitModel.address);
+      this.viewAffidavitForm.controls['desvriptionOfService'].setValue(this.appendDocList[index].affidavitModel.descriptionOfService);
+
+      if (this.appendDocList[index].affidavitModel.page1 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].affidavitModel.page1)
+      }
+
+      if (this.appendDocList[index].affidavitModel.page2 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].affidavitModel.page2)
+      }
+
+      if (this.appendDocList[index].affidavitModel.page3 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].affidavitModel.page3)
+      }
+
+      if (this.appendDocList[index].affidavitModel.page4 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].affidavitModel.page4)
+      }
+
+      if (this.appendDocList[index].affidavitModel.page5 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].affidavitModel.page5)
+      }
+    } else if (this.appendDocList[index].serviceId == 9) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = true;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = false;
+
+      this.viewSchoolLeavingForm.controls['fullName'].setValue(this.appendDocList[index].schoolLeavingCertificateModel.fullName);
+      this.viewSchoolLeavingForm.controls['schoolName'].setValue(this.appendDocList[index].schoolLeavingCertificateModel.schoolname);
+
+      this.viewFormImageList.push(this.appendDocList[index].schoolLeavingCertificateModel.frontImage)
+      this.viewFormImageList.push(this.appendDocList[index].schoolLeavingCertificateModel.backImage);
+    } else if (this.appendDocList[index].serviceId == 13 || this.appendDocList[index].serviceId == 15) {
+      this.viewNICFormModel = false;
+      this.viewBCFormModel = false;
+      this.viewMCFormModel = false;
+      this.viewDCFormModel = false;
+      this.viewSchoolLeavingModel = false;
+      this.viewOtherModel = false;
+      this.viewAffidavitModel = false;
+      this.viewDeedModel = true;
+
+      this.viewDeedForm.controls['fullName'].setValue(this.appendDocList[index].deedModel.fullName);
+      this.viewDeedForm.controls['address'].setValue(this.appendDocList[index].deedModel.address)
+
+      if (this.appendDocList[index].deedModel.page1 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page1);
+      }
+
+      if (this.appendDocList[index].deedModel.page2 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page2);
+      }
+
+      if (this.appendDocList[index].deedModel.page3 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page3);
+      }
+
+      if (this.appendDocList[index].deedModel.page4 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page4);
+      }
+
+      if (this.appendDocList[index].deedModel.page5 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page5);
+      }
+
+      if (this.appendDocList[index].deedModel.page6 != undefined) {
+        this.viewFormImageList.push(this.appendDocList[index].deedModel.page6);
+      }
+    }
+  }
+
+  onClickViewImage(imageName: string) {
+    var image = new Image();
+    image.src = imageName;
+
+    var w: any = window.open("");
+    w.document.write(image.outerHTML);
+  }
+
+  onClickRemoveRow(index: number) {
+    // const index = this.appendDocList.indexOf(arrIndex);
+    if (index > -1) { // only splice array when item is found
+      this.appendDocList.splice(index, 1); // 2nd parameter means remove one item only
+    }
   }
 
   onSubmitDeedForm() {

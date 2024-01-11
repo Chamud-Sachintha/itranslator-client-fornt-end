@@ -70,10 +70,12 @@ hr {
     padding-top: .75rem!important;
 }
 .bgc-default-tp1 {
-    background-color: rgba(121,169,197,.92)!important;
+    /* background-color: rgba(121,169,197,.92)!important; */
+    background-color: #7c0000 !important;
 }
 .bgc-default-l4, .bgc-h-default-l4:hover {
-    background-color: #f3f8fa!important;
+    /* background-color: #f3f8fa!important; */
+    background-color: #ff0000;
 }
 .page-header .page-tools {
     -ms-flex-item-align: end;

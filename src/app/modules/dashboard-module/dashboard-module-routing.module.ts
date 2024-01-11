@@ -18,7 +18,7 @@ import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'select-services',
     pathMatch: 'full'
   },
 

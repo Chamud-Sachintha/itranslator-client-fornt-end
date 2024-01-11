@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { Invoice } from 'src/app/shared/models/Invoice/invoice';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
+import { Request } from 'src/app/shared/models/Request/request';
 declare var $: any; 
 
 @Component({
@@ -16,13 +19,17 @@ export class InvoiceComponent implements OnInit {
 
   invoiceItemList: InvoiceTable[] = [];
   inviceTableObj = new InvoiceTable();
+  requestParamModel = new Request();
+  invoiceModel = new Invoice();
   orderDetails = new Order();
   sendDataObj!: any;
   bankSlip: boolean = false;
   uploadedSlip: any[] = [];
   uploadeDocumentList: any[] = [];
+  invoiceIssuedDate = new Date();
 
-  constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService) {}
+  constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
+            , private authService: AuthService) {}
 
   ngOnInit(): void {
 
@@ -88,6 +95,7 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
+    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
@@ -119,18 +127,38 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
+    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
 
     const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({type, value}));
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
+    this.spinner.show();
     this.orderService.placeOrderWithBankSlip(this.orderDetails).subscribe((resp: any) => {
-      console.log(resp)
+      if (resp.code === 1) {
+        this.tostr.success("Place New Order", "Order Placed Successfully");
+      } else {
+        this.tostr.error("Place New Order", resp.message);
+      }
+
+      this.spinner.hide();
     })
   }
 
   getClientInfo() {
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
 
+    this.authService.getProfileInfo(this.requestParamModel).subscribe((resp: any) => {
+
+      const dataList = JSON.parse(JSON.stringify(resp));
+
+      if (resp.code === 1) {
+        this.invoiceModel.invoiceTo = dataList.data[0].full_name;
+        this.invoiceModel.invoiceAddress = dataList.data[0].address;
+        this.invoiceModel.mobileNumber = dataList.data[0].mobile_number;
+      }
+    })
   }
 
 }

@@ -1,5 +1,7 @@
-<h5 class="card-header">Step 2</h5>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<h5 class="card-header" style="font-weight: bolder;">පරිවර්තනය කිරීමට අවශ්‍ය ලිපිගොණු ඇතුලත් කරන්න.</h5>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
 <div class="card-body">
   <div class="row">
     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.selectedServiceList[0]">
@@ -11,10 +13,13 @@
           </p>
           <div class="form-group row">
             <div class="col-8 pt-1">
-              <a href="#" data-toggle="modal" data-target="#exampleModal" (click)="setTranslateModalId(eachService.serviceId)">Upload Documents</a>
+              <!-- <a href="#" ></a> -->
+              <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"
+              (click)="setTranslateModalId(eachService.serviceId)">Upload Documents</button>
             </div>
             <div class="col-4 pt-1">
-              <a href="#" (click)="onClickRemove()">Remove</a>
+              <!-- <a href="#" (click)="onClickRemove()">Remove</a> -->
+              <button class="btn btn-danger btn-sm" (click)="onClickRemove()">Remove</button>
             </div>
           </div>
         </div>
@@ -30,7 +35,8 @@
           <div class="row">
             <div class="col-md-6 col-lg-6 col-sm-12">
               <label for="">Select Delivery Time</label>
-              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryTime" (change)="onChangeDeliveryTime()">
+              <select name="" id="" class="form-control" [(ngModel)]="this.deliveryTime"
+                (change)="onChangeDeliveryTime()">
                 <option value="">--- Select Option ---</option>
                 <option value="1">2 Working Day</option>
                 <option value="2">1 Working Day</option>
@@ -92,7 +98,16 @@
                   <td>{{ eachDocument.pages }}</td>
                   <td>{{ eachDocument.submitedDate | date }}</td>
                   <td>
-                    <button class="btn btn-primary btn-sm">Check Details</button>
+                    <div class="row">
+                      <div class="col-4">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal1"
+                          (click)="onClickViewDetails(i)">Check
+                          Details</button>
+                      </div>
+                      <div class="col-8">
+                        <button class="btn btn-danger btn-sm" (click)="onClickRemoveRow(i)">Delete</button>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -112,19 +127,13 @@
     </div>
   </div>
 
-  <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()">
+  <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">
     Previous
   </button>
-  <button class="btn btn-primary btn-sm" style="margin-left: 10px" (click)="onClickNextStep()">Next</button>
+  <button class="btn btn-primary btn-sm" style="margin-left: 10px" (click)="onClickNextStep()" style="background-color: #ff0000; border: none;">Go to Next Step</button>
 </div>
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -134,65 +143,68 @@
         </a>
       </div>
       <div class="modal-body">
-        <form [formGroup]="nicTranslateForm" (ngSubmit)="onSubmitNicTranslateForm()" enctype="multipart/form-data" *ngIf="this.nicTranslateService">
-            <div class="row">
-                <div class="col-12">
-                    <label for="">NIC Name</label>
-                    <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="nicName">
-                </div>
-                <div class="col-12 mt-3">
-                    <label for="">Birth Place</label>
-                    <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="birthPlace">
-                </div>
-                <div class="col-12 mt-3">
-                    <label for="">Address</label>
-                    <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="address">
-                </div>
-                <div class="col-12 mt-3">
-                    <label for="">Select Front Side Of NIC </label>
-                    <input type="file" class="form-control" (change)="onChangeFrontImage($event)">
-                </div>
-                <div class="col-12 mt-3">
-                    <label for="">Select Back Side Of NIC </label>
-                    <input type="file" class="form-control" (change)="onChangeBackImage($event)">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-
-        <form [formGroup]="this.bcTranslateForm" (ngSubmit)="onSubmitBirthCertificateTranslateForm()" *ngIf="this.birthCertificateTranslateService">
+        <form [formGroup]="nicTranslateForm" (ngSubmit)="onSubmitNicTranslateForm()" enctype="multipart/form-data"
+          *ngIf="this.nicTranslateService">
           <div class="row">
-              <div class="col-12">
-                  <label for="">Name</label>
-                  <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="name">
-              </div>
-              <div class="col-12 mt-3">
-                  <label for="">Father Name</label>
-                  <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="fatherName">
-              </div>
-              <div class="col-12 mt-3">
-                  <label for="">Mother Name</label>
-                  <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="motherName">
-              </div>
-              <div class="col-12 mt-3">
-                <label for="">Select Front Side Of Birth Certificate </label>
-                <input type="file" class="form-control" (change)="onChangeBCFrontImage($event)">
-              </div>
-              <div class="col-12 mt-3">
-                  <label for="">Select Back Side Of Birth Certificate </label>
-                  <input type="file" class="form-control" (change)="onChangeBCBackImage($event)">
-              </div>
+            <div class="col-12">
+              <label for="">NIC Name</label>
+              <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="nicName">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Birth Place</label>
+              <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="birthPlace">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Address</label>
+              <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="address">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Select Front Side Of NIC </label>
+              <input type="file" class="form-control" (change)="onChangeFrontImage($event)">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Select Back Side Of NIC </label>
+              <input type="file" class="form-control" (change)="onChangeBackImage($event)">
+            </div>
           </div>
           <div class="modal-footer">
-              <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+            <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
 
-        <form [formGroup]="this.passportTranslateForm" (ngSubmit)="onSubmitPassportTranslateForm()" *ngIf="this.passportTranslateService">
+        <form [formGroup]="this.bcTranslateForm" (ngSubmit)="onSubmitBirthCertificateTranslateForm()"
+          *ngIf="this.birthCertificateTranslateService">
+          <div class="row">
+            <div class="col-12">
+              <label for="">Name</label>
+              <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="name">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Father Name</label>
+              <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="fatherName">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Mother Name</label>
+              <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="motherName">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Select Front Side Of Birth Certificate </label>
+              <input type="file" class="form-control" (change)="onChangeBCFrontImage($event)">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="">Select Back Side Of Birth Certificate </label>
+              <input type="file" class="form-control" (change)="onChangeBCBackImage($event)">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+
+        <form [formGroup]="this.passportTranslateForm" (ngSubmit)="onSubmitPassportTranslateForm()"
+          *ngIf="this.passportTranslateService">
           <div class="row">
             <div class="col-12">
               <label for="">Front Image:</label>
@@ -209,7 +221,8 @@
           </div>
         </form>
 
-        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateService" (ngSubmit)="onSubmitMariageTranslateForm()">
+        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateService"
+          (ngSubmit)="onSubmitMariageTranslateForm()">
           <!-- male details starts here -->
           <div class="row">
             <div class="col-12">
@@ -240,7 +253,8 @@
             </div>
             <div class="col-12">
               <label for="">Father's Name:</label>
-              <input type="text" class="form-control" placeholder="Nishantha Bandara" formControlName="femaleFathersName">
+              <input type="text" class="form-control" placeholder="Nishantha Bandara"
+                formControlName="femaleFathersName">
             </div>
             <div class="col-12">
               <label for="">Recidencies:</label>
@@ -266,7 +280,8 @@
           </div>
         </form>
 
-        <form [formGroup]="this.deathTranslateForm" *ngIf="this.deathTranslateService" (ngSubmit)="onSubmitDeathCertificateTranslateForm()">
+        <form [formGroup]="this.deathTranslateForm" *ngIf="this.deathTranslateService"
+          (ngSubmit)="onSubmitDeathCertificateTranslateForm()">
           <div class="row">
             <div class="col-12">
               <label for="">Name:</label>
@@ -295,7 +310,8 @@
           </div>
         </form>
 
-        <form [formGroup]="this.otherDocumentTranslateForm" *ngIf="this.otherDocumentTranslateService" (ngSubmit)="onSubmitOtherDocumentTranslateForm()">
+        <form [formGroup]="this.otherDocumentTranslateForm" *ngIf="this.otherDocumentTranslateService"
+          (ngSubmit)="onSubmitOtherDocumentTranslateForm()">
           <div class="row">
             <div class="col-12">
               <label for="">Full Name:</label>
@@ -340,7 +356,8 @@
           </div>
         </form>
 
-        <form [formGroup]="this.schoolLeavingTranslateForm" *ngIf="this.schoolLeaveTranslateService" (ngSubmit)="onSubmitSchoolLeavingCertificateForm()">
+        <form [formGroup]="this.schoolLeavingTranslateForm" *ngIf="this.schoolLeaveTranslateService"
+          (ngSubmit)="onSubmitSchoolLeavingCertificateForm()">
           <div class="row">
             <div class="col-12">
               <label for="">Full Name</label>
@@ -365,7 +382,8 @@
           </div>
         </form>
 
-        <form [formGroup]="affidavitForm" *ngIf="this.affidavitTranslateionService" (ngSubmit)="onSubmitAffidavitForm()">
+        <form [formGroup]="affidavitForm" *ngIf="this.affidavitTranslateionService"
+          (ngSubmit)="onSubmitAffidavitForm()">
           <div class="row">
             <div class="col-12">
               <label for="">Full Name</label>
@@ -377,7 +395,8 @@
             </div>
             <div class="col-12">
               <label for="">Description Of Service</label>
-              <textarea name="" id="" cols="30" rows="10" class="form-control" formControlName="descriptionOfService"></textarea>
+              <textarea name="" id="" cols="30" rows="10" class="form-control"
+                formControlName="descriptionOfService"></textarea>
             </div>
             <div class="col-12">
               <label for="">Page 1</label>
@@ -418,7 +437,7 @@
             </div>
             <div class="col-12">
               <label for="">Page 1</label>
-              <input type="file"  class="form-control" (change)="onChangeDeedPage1($event)">
+              <input type="file" class="form-control" (change)="onChangeDeedPage1($event)">
             </div>
             <div class="col-12">
               <label for="">Page 2</label>
@@ -443,6 +462,217 @@
             <div class="modal-footer">
               <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
               <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <form [formGroup]="viewNICForm" *ngIf="this.viewNICFormModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">NIC Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha"
+                      formControlName="nicName">
+                  </div>
+                  <div class="col-12 mt-3">
+                    <label for="">Birth Place</label>
+                    <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="birthPlace">
+                  </div>
+                  <div class="col-12 mt-3">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="address">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewBCForm" *ngIf="this.viewBCFormModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="name">
+                  </div>
+                  <div class="col-12 mt-3">
+                    <label for="">Father Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="fatherName">
+                  </div>
+                  <div class="col-12 mt-3">
+                    <label for="">Mother Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. 340/A Colombo"
+                      formControlName="motherName">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewMCForm" *ngIf="this.viewMCFormModel">
+                <!-- male details starts here -->
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Male Details</h6>
+                    <hr>
+                    <label for="">Name:</label>
+                    <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="maleName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Father's Name:</label>
+                    <input type="text" class="form-control" placeholder="Nishantha bandara"
+                      formControlName="maleFathersName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Residences:</label>
+                    <input type="text" class="form-control" placeholder="Makola" formControlName="maleResidence">
+                  </div>
+                </div>
+                <!-- male details end here -->
+
+                <!-- female details starts here -->
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Female Detailss</h6>
+                    <hr>
+
+                    <label for="">Name:</label>
+                    <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="femaleName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Father's Name:</label>
+                    <input type="text" class="form-control" placeholder="Nishantha Bandara"
+                      formControlName="femaleFathersName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Recidencies:</label>
+                    <input type="text" class="form-control" placeholder="Makola" formControlName="femaleResidence">
+                  </div>
+                </div>
+                <!-- femaledetails ends here -->
+
+                <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                  <label for="">View Image</label>
+                  <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewDCForm" *ngIf="this.viewDCFormModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Name:</label>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Father Name</label>
+                    <input type="text" class="form-control" placeholder="Father Name" formControlName="fatherName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Mother Name</label>
+                    <input type="text" class="form-control" placeholder="Mother Name" formControlName="motherName">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewOtherForm" *ngIf="this.viewOtherModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Full Name:</label>
+                    <input type="text" class="form-control" formControlName="fullName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Father Name:</label>
+                    <input type="text" class="form-control" formControlName="fatherName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Mother Name:</label>
+                    <input type="text" class="form-control" formControlName="motherName">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewSchoolLeavingForm" *ngIf="this.viewSchoolLeavingModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Full Name</label>
+                    <input type="text" class="form-control" formControlName="fullName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">School Name</label>
+                    <input type="text" class="form-control" formControlName="schoolName">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="viewAffidavitForm" *ngIf="this.viewAffidavitModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Full Name</label>
+                    <input type="text" class="form-control" formControlName="fullName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" formControlName="address">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Description Of Service</label>
+                    <textarea name="" id="" cols="30" rows="10" class="form-control"
+                      formControlName="descriptionOfService"></textarea>
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
+
+              <form [formGroup]="this.viewDeedForm" *ngIf="this.viewDeedModel">
+                <div class="row">
+                  <div class="col-12">
+                    <label for="">Full Name</label>
+                    <input type="text" class="form-control" formControlName="fullName">
+                  </div>
+                  <div class="col-12">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" formControlName="address">
+                  </div>
+                  <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
+                    <label for="">View Image</label>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </form>

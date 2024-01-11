@@ -9,4 +9,5 @@ export class Order {
     paymentMethod!: Number;
     totalAmount!: Number;
     valueObjModel!: any;
+    invoiceNo!: string;
 }

@@ -31,8 +31,9 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="text-center text-150">
-                                <i class="fa fa-book fa-2x text-success-m2 mr-1"></i>
-                                <span class="text-default-d3">itranslator.com</span>
+                                <!-- <i class="fa fa-book fa-2x text-success-m2 mr-1"></i> -->
+                                <img src="../../../../assets/images/itlogo.png" style="width: 40px; margin-top: -10px;" alt="">&nbsp;  
+                                <span class="text-default-d3" style="font-size: 35px; color: red;">itranslator.com</span>
                             </div>
                         </div>
                     </div>
@@ -44,17 +45,17 @@
                         <div class="col-sm-6">
                             <div>
                                 <span class="text-sm text-grey-m2 align-middle">To:</span>
-                                <span class="text-600 text-110 text-blue align-middle">Alex Doe</span>
+                                <span class="text-600 text-110 text-blue align-middle">&nbsp;{{ this.invoiceModel.invoiceTo }}</span>
                             </div>
                             <div class="text-grey-m2">
                                 <div class="my-1">
-                                    Street, City
+                                    {{ this.invoiceModel.invoiceAddress }}
                                 </div>
-                                <div class="my-1">
+                                <!-- <div class="my-1">
                                     State, Country
-                                </div>
+                                </div> -->
                                 <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b
-                                        class="text-600">111-111-111</b></div>
+                                        class="text-600">{{ this.invoiceModel.mobileNumber }}</b></div>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -70,7 +71,7 @@
                                         class="text-600 text-90">ID:</span> #111-222</div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                        class="text-600 text-90">Issue Date:</span> Oct 12, 2019</div>
+                                        class="text-600 text-90">Issue Date:</span> {{ this.invoiceIssuedDate | date }}</div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                         class="text-600 text-90">Status:</span> <span
@@ -177,8 +178,8 @@
                         <hr />
 
                         <div>
-                            <span class="text-secondary-d1 text-105">Thank you for your business</span>
-                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()">Pay Now</button>
+                            <span class="text-secondary-d1 text-105">Thank you for your Order</span>
+                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay Now</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip" (click)="placeOrderWithBankSlip()">Place Order</button>
                         </div>
                     </div>

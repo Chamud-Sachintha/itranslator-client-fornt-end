@@ -1,4 +1,4 @@
-<h5 class="card-header">Step 1</h5>
+<h5 class="card-header" style="font-weight: bolder;">ඔබට පරිවර්තනය කිරීමට අවශ්‍ය ලිපිගොණු තෝරාගන්න.</h5>
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
 <div class="card-body">
     <div class="row">
@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <p class="card-text" style="text-align: justify;">{{ this.eachService.description }}</p>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Success</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Selected</label>
                         <div class="col-12 col-sm-8 col-lg-6 pt-1">
                             <div class="switch-button switch-button-success">
                                 <input type="checkbox" name="{{ i + 1 }}" id="{{ i + 1 }}" (change)="onChangeToggle(eachService.serviceId,eachService.serviceName, eachService.description, $event)"><span>
@@ -22,6 +22,10 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary btn-sm" (click)="goToStep2($event)">Go Next Step</button>
-    <button class="btn btn-primary btn-sm " style="margin-left: 10px;" (click)="onClickPreviousBtn()">Previous</button>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()"  style="margin-right: 10px; background-color: #ff0000; border: none;">Previous</button>
+            <button class="btn btn-primary btn-sm" style="margin-left: 10px;" style="background-color: #ff0000; border: none;" (click)="goToStep2($event)">Go to Next Step</button>
+        </div>
+    </div>
 </div>

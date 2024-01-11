@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth } from 'src/app/shared/models/Auth/auth';
 import { Client } from 'src/app/shared/models/Client/client';
+import { Request } from 'src/app/shared/models/Request/request';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -19,5 +20,10 @@ export class AuthService {
   registerUser(client: Client) {
     const path = environment.appURL + "signup";
     return this.http.post(path, client);
+  }
+
+  getProfileInfo(requestModel: Request) {
+    const path = environment.appURL + "get-profile-info";
+    return this.http.post(path, requestModel);
   }
 }
