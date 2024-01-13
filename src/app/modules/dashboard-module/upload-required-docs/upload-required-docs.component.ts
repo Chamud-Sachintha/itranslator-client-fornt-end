@@ -1369,9 +1369,15 @@ export class UploadRequiredDocsComponent implements OnInit {
     })
   }
 
-  onClickRemove() {
+  onClickRemove(index: number) {
     localStorage.removeItem("selectedData");
-    this.router.navigate(['app/select-services/step-02']);
+
+    // const index = this.appendDocList.indexOf(arrIndex);
+    if (index > -1) { // only splice array when item is found
+      this.selectedServiceList[0].splice(index, 1); // 2nd parameter means remove one item only
+    }
+    
+    // this.router.navigate(['app/select-services/step-02']);
 
     return false;
   }
