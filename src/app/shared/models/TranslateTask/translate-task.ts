@@ -3,4 +3,5 @@ export class TranslateTask {
     pages!: string;
     createTime!: string;
     assignedTime!: string;
+    orderStatus!: string;
 }

@@ -3,4 +3,5 @@ export class AdminMessage {
     toUser!: string;
     message!: string;
     time!: string;
+    avatar!: string;
 }

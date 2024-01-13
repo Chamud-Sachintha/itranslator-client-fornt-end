@@ -51,6 +51,22 @@ export class CheckTrOrderComponent implements OnInit {
     });
   }
 
+  onClickUpdateOrderStatus(orderStatus: string) {
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.invoiceNo = this.invoiceNo;
+    this.requestParamModel.orderStatus = orderStatus;
+
+    this.orderService.updateOrderStatus(this.requestParamModel).subscribe((resp: any) => {
+
+      if (resp.code === 1) {
+        this.tostr.success("Update Order Status", "Order Status Updated Successfully.");
+      } else {
+        this.tostr.error("Update Order Status", resp.message);
+      }
+    })
+  }
+
   onClickViewDocument(documentName: string) {
     const filePath = environment.fileServerURL + documentName;
     window.open(filePath);
