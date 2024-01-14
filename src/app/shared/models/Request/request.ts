@@ -26,4 +26,5 @@ export class Request {
     reference!: any;
     message!: string;
     orderStatus!: string;
+    type!: string;
 }

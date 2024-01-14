@@ -56,4 +56,9 @@ export class OrderService {
     const path = environment.appURL + "update-order-status";
     return this.http.post(path, requestParamModel);
   }
+
+  getCompleteOrderList(requestParamModel: Request) {
+    const path = environment.appURL + "get-complete-orders";
+    return this.http.post(path, requestParamModel);
+  }
 }

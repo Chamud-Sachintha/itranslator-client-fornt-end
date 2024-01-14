@@ -57,7 +57,8 @@
                                         <td>{{ eachRow.createTime | date }}</td>
                                         <td>{{ eachRow.assignedTime | date }}</td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm" disabled>Update</button>
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal" (click)="onClickViewDoc(eachRow.serviceId, eachRow.valueObj)">View</button>
+                                            <button class="btn btn-primary btn-sm" style="margin-left: 10px;" disabled>Update</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -142,7 +143,7 @@
                         <label for="">Order Status</label>
                         <select name="" id="" class="form-control" #orderStatus>
                             <option value="">-- Select Option --</option>
-                            <option value="3">Complete</option>
+                            <option value="1">Complete</option>
                         </select>
                     </div>
                     <div class="col-12 mt-3">
@@ -152,4 +153,263 @@
             </div>
         </div>
     </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="nicTranslateModelForm" *ngIf="this.nicTranslateModel">
+            <div class="row">
+                <div class="col-12">
+                    <label for="">NIC Name</label>
+                    <input type="text" class="form-control" formControlName="nicName">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Address</label>
+                    <input type="text" class="form-control" formControlName="address">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Birth Place</label>
+                    <input type="text" class="form-control" formControlName="birthPlace">
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewFrontImg()">View Front Image</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewBackImg()">View Back Image</button>
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="bcTranslateModelForm" *ngIf="this.bcTranslateModel">
+            <div class="row">
+                <div class="col-12">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Chamud Sachintha" formControlName="name">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Father Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. Colombo" formControlName="fatherName">
+                </div>
+                <div class="col-12 mt-3">
+                    <label for="">Mother Name</label>
+                    <input type="text" class="form-control" placeholder="Eg. 340/A Colombo" formControlName="motherName">
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewBcFrontImage()">View Front Image</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewBcBackImage()">View Back Image</button>
+                </div>
+            </div>
+        </form>
+  
+        <form [formGroup]="this.marriageTranslateForm" *ngIf="this.marriageTranslateModel">
+            <!-- male details starts here -->
+            <div class="row">
+              <div class="col-12">
+                <h6>Male Details</h6>
+                <hr>
+                <label for="">Name:</label>
+                <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="maleName">
+              </div>
+              <div class="col-12">
+                <label for="">Father's Name:</label>
+                <input type="text" class="form-control" placeholder="Nishantha bandara" formControlName="maleFathersName">
+              </div>
+              <div class="col-12">
+                <label for="">Residences:</label>
+                <input type="text" class="form-control" placeholder="Makola" formControlName="maleResidence">
+              </div>
+            </div>
+            <!-- male details end here -->
+  
+            <!-- female details starts here -->
+            <div class="row">
+              <div class="col-12">
+                <h6>Female Detailss</h6>
+                <hr>
+  
+                <label for="">Name:</label>
+                <input type="text" class="form-control" placeholder="Saman Kumara" formControlName="femaleName">
+              </div>
+              <div class="col-12">
+                <label for="">Father's Name:</label>
+                <input type="text" class="form-control" placeholder="Nishantha Bandara" formControlName="femaleFathersName">
+              </div>
+              <div class="col-12">
+                <label for="">Recidencies:</label>
+                <input type="text" class="form-control" placeholder="Makola" formControlName="femaleResidence">
+              </div>
+            </div>
+            <!-- femaledetails ends here -->
+  
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewMCFrontImg()">View Front Image</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewMCBackImg()">View Back Image</button>
+                </div>
+            </div>
+  
+            <div class="modal-footer">
+              <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+
+        <form [formGroup]="this.deathTranslateForm" *ngIf="this.deathTranslateService">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Name:</label>
+                <input type="text" class="form-control" placeholder="Name" formControlName="name">
+              </div>
+              <div class="col-12">
+                <label for="">Father Name</label>
+                <input type="text" class="form-control" placeholder="Father Name" formControlName="fatherName">
+              </div>
+              <div class="col-12">
+                <label for="">Mother Name</label>
+                <input type="text" class="form-control" placeholder="Mother Name" formControlName="motherName">
+              </div>
+              <div class="row">
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewDCFrontImage()">View Front Image</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewDCBackImage()">View Back Image</button>
+                </div>
+            </div>
+              <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+
+        <form [formGroup]="this.otherDocumentTranslateForm" *ngIf="this.otherDocumentTranslateService">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Full Name:</label>
+                <input type="text" class="form-control" formControlName="fullName">
+              </div>
+              <div class="col-12">
+                <label for="">Father Name:</label>
+                <input type="text" class="form-control" formControlName="fatherName">
+              </div>
+              <div class="col-12">
+                <label for="">Mother Name:</label>
+                <input type="text" class="form-control" formControlName="motherName">
+              </div>
+              <div class="col-12">
+                <div class="row" *ngFor="let eachImage of this.otherFormImagesList; index as i">
+                    <div class="col-12 mt-3">
+                        <button style="width: 100%;" class="btn btn-primary btn-sm" (click)="onClickViewOtherImage(eachImage)">View Page {{ i + 1 }}</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+
+        <form [formGroup]="this.schoolLeavingTranslateForm" *ngIf="this.schoolLeaveTranslateService">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Full Name</label>
+                <input type="text" class="form-control" formControlName="fullName">
+              </div>
+              <div class="col-12">
+                <label for="">School Name</label>
+                <input type="text" class="form-control" formControlName="schoolName">
+              </div>
+              <div class="row">
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewSchoolLeavingFrontImage()">View Front Image</button>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-primary btn-sm" style="width: 100%;" (click)="onClickViewSchoolLeavingBackImage()">View Back Image</button>
+                </div>
+            </div>
+              <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+
+        <form [formGroup]="affidavitForm" *ngIf="this.affidavitTranslateionService">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Full Name</label>
+                <input type="text" class="form-control" formControlName="fullName">
+              </div>
+              <div class="col-12">
+                <label for="">Address</label>
+                <input type="text" class="form-control" formControlName="address">
+              </div>
+              <div class="col-12">
+                <label for="">Description Of Service</label>
+                <textarea name="" id="" cols="30" rows="10" class="form-control" formControlName="descriptionOfService"></textarea>
+              </div>
+
+              <div class="col-12">
+                <div class="row" *ngFor="let eachImage of this.affidavitImageList; index as i">
+                    <div class="col-12 mt-3">
+                        <button style="width: 100%;" class="btn btn-primary btn-sm" (click)="onClickViewOtherImage(eachImage)">View Page {{ i + 1 }}</button>
+                    </div>
+                </div>
+              </div>
+              
+              <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+  
+        <form [formGroup]="this.deedForm" *ngIf="this.deedTranslationService">
+            <div class="row">
+              <div class="col-12">
+                <label for="">Full Name</label>
+                <input type="text" class="form-control" formControlName="fullName">
+              </div>
+              <div class="col-12">
+                <label for="">Address</label>
+                <input type="text" class="form-control" formControlName="address">
+              </div>
+
+              <div class="col-12">
+                <div class="row" *ngFor="let eachImage of this.deedImageList; index as i">
+                    <div class="col-12 mt-3">
+                        <button style="width: 100%;" class="btn btn-primary btn-sm" (click)="onClickViewOtherImage(eachImage)">View Page {{ i + 1 }}</button>
+                    </div>
+                </div>
+              </div>
+              
+              <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

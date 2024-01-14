@@ -14,6 +14,7 @@ import { NotaryServiceStep03Component } from './notary-service-step-03/notary-se
 import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-order-requests.component';
 import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
 import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
+import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orders.component';
 
 const routes: Routes = [
   {
@@ -95,6 +96,10 @@ const routes: Routes = [
   {
     path: 'notary-order-requests',
     component: NotaryOrderRequestsComponent
+  },
+  {
+    path: 'complete-tr-orders',
+    component: CompleteTrOrdersComponent
   }
 ];
 

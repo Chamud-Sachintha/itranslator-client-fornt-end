@@ -19,6 +19,7 @@ import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-ord
 import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
 import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orders.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NotaryOrderRequestsComponent,
     CheckTrOrderComponent,
     CheckNsOrderComponent,
+    CompleteTrOrdersComponent,
   ],
   imports: [
     CommonModule,
