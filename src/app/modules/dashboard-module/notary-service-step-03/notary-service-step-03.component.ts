@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { NotaryService } from 'src/app/services/notary/notary.service';
 import { NotaryServicePerson } from 'src/app/shared/models/NotaryServicePerson/notary-service-person';
@@ -23,7 +24,7 @@ export class NotaryServiceStep03Component implements OnInit {
   personCategory!: string;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
-            , private notaryService: NotaryService) {}
+            , private notaryService: NotaryService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
     this.initAddPersonForm();
@@ -60,7 +61,9 @@ export class NotaryServiceStep03Component implements OnInit {
     this.notaryService.placeNotaryServiceOrder(this.requestParamModel).subscribe((resp: any) => {
 
       if (resp.code === 1) {
-        
+        this.tostr.success("Place Notary Servuice Order", "Order Placed Successfully");
+      } else {
+        this.tostr.error("Place Notary Servuice Order", resp.message);
       }
     })
   }
@@ -93,42 +96,44 @@ export class NotaryServiceStep03Component implements OnInit {
     const email = this.addPersonForm.controls['email'].value;
 
     if (name == "") {
-
+      this.tostr.error("Empty Feilds Found", "Name is required.");
     } else if (address == "") {
-
+      this.tostr.error("Empty Feilds Found", "Address is required.");
     } else if (nicNumber == "") {
-
+      this.tostr.error("Empty Feilds Found", "NIC Number is required.");
     } else if (passport == "") {
-      
+      this.tostr.error("Empty Feilds Found", "Passport is required.");
     } else if (drivingLic == "") {
-
+      this.tostr.error("Empty Feilds Found", "Driving Licence is required.");
     } else if (adultNic == "") {
-
+      this.tostr.error("Empty Feilds Found", "Adult NIC is required.");
     } else if (bcNumber == "") {
-
+      this.tostr.error("Empty Feilds Found", "Birth Certificate Number is required.");
     } else if (mcNumber == "") {
-
+      this.tostr.error("Empty Feilds Found", "MC Number is required.");
     } else if (natureOfSig == "") {
-
+      this.tostr.error("Empty Feilds Found", "Nature Of Signing is required.");
     } else if (phoneNumber == "") {
-
+      this.tostr.error("Empty Feilds Found", "Phone Number is required.");
     } else if (email == "") {
-
+      this.tostr.error("Empty Feilds Found", "Email is required.");
     } else {
-      this.notaryServicePerson.personCategory = this.personCategory;
-      this.notaryServicePerson.name = name;
-      this.notaryServicePerson.address = address;
-      this.notaryServicePerson.nicNumber = nicNumber;
-      this.notaryServicePerson.passportNo = passport;
-      this.notaryServicePerson.drivingLicNo = drivingLic;
-      this.notaryServicePerson.adultIdNumber = adultNic;
-      this.notaryServicePerson.bcNumber = bcNumber;
-      this.notaryServicePerson.mcNumber = mcNumber;
-      this.notaryServicePerson.natureOfSignature = natureOfSig;
-      this.notaryServicePerson.phoneNumber = phoneNumber;
-      this.notaryServicePerson.email = email;
+      const notaryServicePersonObj = new NotaryServicePerson();
 
-      this.addedPersonList.notaryPerson.push(this.notaryServicePerson);
+      notaryServicePersonObj.personCategory = this.personCategory;
+      notaryServicePersonObj.name = name;
+      notaryServicePersonObj.address = address;
+      notaryServicePersonObj.nicNumber = nicNumber;
+      notaryServicePersonObj.passportNo = passport;
+      notaryServicePersonObj.drivingLicNo = drivingLic;
+      notaryServicePersonObj.adultIdNumber = adultNic;
+      notaryServicePersonObj.bcNumber = bcNumber;
+      notaryServicePersonObj.mcNumber = mcNumber;
+      notaryServicePersonObj.natureOfSignature = natureOfSig;
+      notaryServicePersonObj.phoneNumber = phoneNumber;
+      notaryServicePersonObj.email = email;
+
+      this.addedPersonList.notaryPerson.push(notaryServicePersonObj);
     }
   }
 

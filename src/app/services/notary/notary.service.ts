@@ -30,4 +30,9 @@ export class NotaryService {
     const path = environment.appURL + "get-notary-order-list";
     return this.http.post(path, requestParamModel);
   }
+
+  getNoratyOrderByInvoice(requestParamModel: Request) {
+    const path = environment.appURL + "get-notary-order-by-invoice";
+    return this.http.post(path, requestParamModel);
+  }
 }

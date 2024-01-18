@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { NotaryService } from 'src/app/services/notary/notary.service';
 import { MainNotaryCategory } from 'src/app/shared/models/MainNotaryCategory/main-notary-category';
@@ -22,7 +23,7 @@ export class NotaryServiceStep01Component implements OnInit {
   subCategoryList: SubNotaryCategory[] = [];
 
   constructor(private dataShareService: DataShareService, private router: Router, private formBuilder: FormBuilder
-            , private notaryService: NotaryService) {}
+            , private notaryService: NotaryService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
     this.initBasicInfoForm();
@@ -77,11 +78,11 @@ export class NotaryServiceStep01Component implements OnInit {
     const description = this.basicInfoForm.controls['description'].value;
 
     if (mainCategory == "") {
-
+      this.tostr.error("Empty Feilds Found", "Main Category Is Required.");
     } else if (subCategory == "") {
-
+      this.tostr.error("Empty Feilds Found", "Sub Category Is Required.");
     } else if (description == "") {
-
+      this.tostr.error("Empty Feilds Found", "Description Is Required.");
     } else {
       this.firstStepModel.mainCategory = mainCategory;
       this.firstStepModel.subCategory = subCategory;

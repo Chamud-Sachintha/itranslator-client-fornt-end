@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { NotaryServiceFirstStep } from 'src/app/shared/models/NotaryServiceFirstStep/notary-service-first-step';
 import { NotaryServiceSecondStep } from 'src/app/shared/models/NotaryServiceSecondStep/notary-service-second-step';
@@ -19,7 +20,7 @@ export class NotaryServiceStep02Component implements OnInit {
   secondDocList: File[] = [];
   thirdDocList: File[] = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService) {}
+  constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
 
@@ -62,7 +63,33 @@ export class NotaryServiceStep02Component implements OnInit {
     console.log(firstDoc);
 
     if (firstDoc == "") {
-
+      this.tostr.error("Empty Feilds Found", "First Document is Reuired.");
+    } else if (secondDoc == "") {
+      this.tostr.error("Empty Feilds Found", "Second Document is Reuired.");
+    } else if (thirdDoc == "") {
+      this.tostr.error("Empty Feilds Found", "Third Document is Reuired.");
+    } else if (dateOfSigning == "") {
+      this.tostr.error("Empty Feilds Found", "Date of Signing is Reuired.");
+    } else if (startDate == "") {
+      this.tostr.error("Empty Feilds Found", "Start Date is Reuired.");
+    } else if (endDate == "") {
+      this.tostr.error("Empty Feilds Found", "End Date is Reuired.");
+    } else if (value == "") {
+      this.tostr.error("Empty Feilds Found", "Value is Reuired.");
+    } else if (monthlyRent == "") {
+      this.tostr.error("Empty Feilds Found", "Monthly Rent is Reuired.");
+    } else if (advanceAmount == "") {
+      this.tostr.error("Empty Feilds Found", "Advance Amount is Reuired.");
+    } else if (VODNumber == "") {
+      this.tostr.error("Empty Feilds Found", "VOD Number is Reuired.");
+    } else if (devitionalSec == "") {
+      this.tostr.error("Empty Feilds Found", "Devisitional is Reuired.");
+    } else if (localGov == "") {
+      this.tostr.error("Empty Feilds Found", "First Document is Reuired.");
+    } else if (district == "") {
+      this.tostr.error("Empty Feilds Found", "District is Reuired.");
+    } else if (landRegOffice == "") {
+      this.tostr.error("Empty Feilds Found", "Land Registration is Reuired.");
     } else {
 
       this.firstDocList.forEach((eachDoc: File) => {
