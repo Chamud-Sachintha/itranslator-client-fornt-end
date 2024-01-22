@@ -45,4 +45,9 @@ export class NotaryService {
     const path = environment.appURL + "update-notary-order-status";
     return this.http.post(path, requestParamModel);
   }
+
+  submitBankSlip(requestParamModel: Request) {
+    const path = environment.appURL + "submit-bank-slip-ns-order";
+    return this.http.post(path, requestParamModel);
+  }
 }

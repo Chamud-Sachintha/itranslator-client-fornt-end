@@ -27,4 +27,5 @@ export class Request {
     message!: string;
     orderStatus!: string;
     type!: string;
+    bankSlip!: string;
 }

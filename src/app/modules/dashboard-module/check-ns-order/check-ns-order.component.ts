@@ -24,7 +24,11 @@ export class CheckNsOrderComponent implements OnInit {
   ]
   showDocuments: any[] = [];
   notaryDocList: NotaryDocument[] = [];
+  totalOrderAmount!: number;
+  bankSlip!: string;
+  uploadedBankSlip = null;
   invoiceNo!: string;
+  paymentStatus!: number;
 
   constructor(private activatedRoute: ActivatedRoute, private notaryService: NotaryService, private tostr: ToastrService) {}
 
@@ -33,6 +37,31 @@ export class CheckNsOrderComponent implements OnInit {
 
     this.loadNotaryOrderInfo();
     this.getTranslatedOrderDocs();
+  }
+
+  uploadBankSlip() {
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.invoiceNo = this.invoiceNo;
+    
+    if (this.uploadedBankSlip != null) {
+      this.convertImageToBase64(this.uploadedBankSlip).then((base64String) => {
+        this.requestParamModel.bankSlip = base64String;
+      }).then(() => {
+        this.notaryService.submitBankSlip(this.requestParamModel).subscribe((resp: any) => {
+          
+          if (resp.code === 1) {
+            this.tostr.success("Upload Bank Slip", "Bank Slip U[plpaded successfully");
+          } else {
+            this.tostr.error("Uplaod Bank Slip", resp.message);
+          }
+        })
+      })
+    }
+  }
+
+  onChangeBankSlip(event: any) {
+    this.uploadedBankSlip = event.target.files[0];
   }
 
   onClickUpdateOrderStatus(orderStatus: string) {
@@ -104,8 +133,32 @@ export class CheckNsOrderComponent implements OnInit {
         this.firstDocList.push(dataList.data[0].firstDocType)
         this.secondDocList.push(dataList.data[0].secondDocType)
         this.thirdDocList.push(dataList.data[0].thirdDocType)
+
+        this.totalOrderAmount = dataList.data[0].totalAmount;
+        this.bankSlip = dataList.data[0].bankSlip;
+        this.paymentStatus = dataList.data[0].paymentStatus;
       }
     })
+  }
+
+  convertImageToBase64(fileInput: any): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const file: File = fileInput;
+      const reader: FileReader = new FileReader();
+
+      reader.onloadend = () => {
+        // The result attribute contains the base64 string
+        const base64String: string = reader.result as string;
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      // Read the image file as a Data URL
+      reader.readAsDataURL(file);
+    });
   }
 
 }

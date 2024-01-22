@@ -30,7 +30,14 @@
                 <div class="col-6">
                     <h5 class="card-header">List of All Documents to Be Translate</h5>
                 </div>
-                <div class="col-6">
+                <div class="col-6 mt-3">
+                    <div style="float: right; margin-right: 10px;">
+                        <label for="">Payment Status</label>
+                         <span class="badge badge-info" style="margin-left: 20px;">
+                            <p *ngIf="this.paymentStatus == 0">Pending</p>
+                            <p *ngIf="this.paymentStatus == 1">Paid</p>
+                        </span>
+                    </div>
                     <!-- <h5 class="card-header" style="float: right;">Order Status : {{ this. }}</h5> -->
                 </div>
             </div>
@@ -64,6 +71,40 @@
                                 </tfoot>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="card-header">Payment Informations</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="">Total Bill Amount</label>
+                        <h5>LKR. {{ totalOrderAmount }} .00</h5>
+                    </div>
+                    <div class="col-6">
+                        <a href="" style="float: right;">Check Payment Details</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" *ngIf="!this.bankSlip">
+                        <div class="alert alert-primary" role="alert">
+                            You Didn't Upload the Bank Slip Yet
+                            <hr>
+                            Please Upload Clear Bank slip of payment.
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="this.bankSlip">
+                        <div class="alert alert-success" role="alert">
+                            You Already Uploaded the Bank slip
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="">Upload Bank Slip</label>
+                        <input type="file" class="form-control" (change)="onChangeBankSlip($event)">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" (click)="uploadBankSlip()">Upload Slip</button>
                     </div>
                 </div>
             </div>
