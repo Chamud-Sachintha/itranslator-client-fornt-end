@@ -20,6 +20,9 @@ import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component
 import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orders.component';
+import { CsServiceComponent } from './cs-service/cs-service.component';
+import { CsServiceSubmitDetailsComponent } from './cs-service-submit-details/cs-service-submit-details.component';
+import { CsOrderRequestsComponent } from './cs-order-requests/cs-order-requests.component';
 
 
 @NgModule({
@@ -40,6 +43,9 @@ import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orde
     CheckTrOrderComponent,
     CheckNsOrderComponent,
     CompleteTrOrdersComponent,
+    CsServiceComponent,
+    CsServiceSubmitDetailsComponent,
+    CsOrderRequestsComponent,
   ],
   imports: [
     CommonModule,

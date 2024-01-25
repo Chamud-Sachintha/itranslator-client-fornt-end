@@ -15,6 +15,9 @@ import { NotaryOrderRequestsComponent } from './notary-order-requests/notary-ord
 import { CheckTrOrderComponent } from './check-tr-order/check-tr-order.component';
 import { CheckNsOrderComponent } from './check-ns-order/check-ns-order.component';
 import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orders.component';
+import { CsServiceComponent } from './cs-service/cs-service.component';
+import { CsServiceSubmitDetailsComponent } from './cs-service-submit-details/cs-service-submit-details.component';
+import { CsOrderRequestsComponent } from './cs-order-requests/cs-order-requests.component';
 
 const routes: Routes = [
   {
@@ -78,6 +81,22 @@ const routes: Routes = [
             component: NotaryServiceStep03Component
           }
         ]
+      },
+
+      {
+        path: 'cs-service',
+        component: CsServiceComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'submit-details',
+            pathMatch: 'full'
+          },
+          {
+            path: 'submit-details',
+            component: CsServiceSubmitDetailsComponent
+          }
+        ]
       }
     ]
   },
@@ -96,6 +115,10 @@ const routes: Routes = [
   {
     path: 'notary-order-requests',
     component: NotaryOrderRequestsComponent
+  },
+  {
+    path: 'cs-order-requests',
+    component: CsOrderRequestsComponent
   },
   {
     path: 'complete-tr-orders',

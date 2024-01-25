@@ -48,6 +48,8 @@ export class MainServicesComponent implements OnInit {
       this.router.navigate(['app/select-services/step-02']);
     } else if (mainServiceId == 2) {
       this.router.navigate(['app/select-services/notary-service'])
+    } else if (mainServiceId == 4) {
+      this.router.navigate(['app/select-services/cs-service'])
     }
 
     return false;

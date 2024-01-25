@@ -1,0 +1,315 @@
+<h5 class="card-header" style="font-weight: bolder;">පරිවර්තනය කිරීමට අවශ්‍ය ලිපිගොණු ඇතුලත් කරන්න.</h5>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="card-body">
+  <div class="row">
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.serviceList; index as i">
+      <div class="card">
+        <div class="card-header">{{ eachService.name }}</div>
+        <div class="card-body">
+          <p class="card-text">
+            {{ eachService.descriptiom }}
+          </p>
+          <div class="form-group row">
+            <div class="col-8 pt-1">
+              <!-- <a href="#" ></a> -->
+              <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"
+              (click)="onClickOpenFormModal(i + 1)" >Submit Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+            <form [formGroup]="this.firstServiceForm" *ngIf="this.firstServiceFormModelOpen" (ngSubmit)="submitFirstServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorNames">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorAddress">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorTelephones">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorEmails">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                        <input type="text" class="form-control" formControlName="devisionNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="devisionalSectrial">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="directorDistrict">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                        <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+                    </div>
+                    <div class="col-12">
+                        <label for="">හැ දණුම්පත් පිටපත් උඩුගත කරන්න / Upload ID copies</label>
+                        <input type="file" class="form-control" multiple (change)="onChangeNICImages($event, 1)">
+                    </div>
+                    <div class="col-12">
+                        <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 1)">
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="secondServiceForm" *ngIf="this.secondServiceFormModalOpen" (ngSubmit)="submitSecondServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for=""> මාගසම් නම / Name of company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                        <input type="text" class="form-control" formControlName="regNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for=""> ංසශෝධනය වියයුතු කරුණු / Change is to be made</label>
+                        <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 2)">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="thirdServiceForm" *ngIf="this.thirdServiceFormModalOpen" (ngSubmit)="submitThirdServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorNames">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorAddress">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorTelephones">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorEmails">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                        <input type="text" class="form-control" formControlName="devisionNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="devisionalSectrial">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="directorDistrict">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                        <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+                    </div>
+                    <div class="col-12">
+                        <label for="">පත්වන දිනය
+                            Date of Appointment</label>
+                        <input type="text" class="form-control" formControlName="dateOfAppointment">
+                    </div>
+                    <div class="col-12">
+                        <label for="">කැමැත්ත ප්‍රකාශ ණීීමසම් ලිපිය උඩුගත කරන්න
+                            Upload the Letter of Intent
+                            </label>
+                        <input type="file" class="form-control" (change)="setIntentLetterForThirdService($event)">
+                    </div>
+                    <div class="col-12">
+                        <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 3)">
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="fourthServiceForm" *ngIf="this.forthServiceFormModalOpen" (ngSubmit)="submitForthServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorNames">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorAddress">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorTelephones">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                        <input type="text" class="form-control" formControlName="directorEmails">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                        <input type="text" class="form-control" formControlName="devisionNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="devisionalSectrial">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                        <input type="text" class="form-control" formControlName="directorDistrict">
+                    </div>
+                    <div class="col-12">
+                        <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                        <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+                    </div>
+                    <div class="col-12">
+                        <label for="">ඉේලා අ ්වන දිනය
+                            Date of Resignation</label>
+                        <input type="text" class="form-control" formControlName="dateOfResign">
+                    </div>
+                    <div class="col-12">
+                        <label for="">ඉේලා අ ්වීසම් ලිපිය උඩුගත කරන්න
+                            Upload the resignation letter                            
+                            </label>
+                        <input type="file" class="form-control" (change)="setResignLetter($event)">
+                    </div>
+                    <div class="col-12">
+                        <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 4)">
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="fifthServiceForm" *ngIf="this.fifthServiceFormModalOpen" (ngSubmit)="submitFifthServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for=""> මාගසම් නම / Name of company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                        <input type="text" class="form-control" formControlName="regNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for=""> ඉේලා සිි න පිටපත්වල වි ්තරය
+                            Description of transcripts requested</label>
+                        <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 5)">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="sixthServiceForm" *ngIf="this.sixthServiceFormModalOpen" (ngSubmit)="submitSixthServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for=""> මාගසම් නම / Name of company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                        <input type="text" class="form-control" formControlName="regNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for=""> අවශය ස ේවාසේ වි ්තරය
+                            Description of service required</label>
+                        <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 6)">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+
+            <form [formGroup]="sevenServiceForm" *ngIf="this.sevenServiceFormModalOpen" (ngSubmit)="submitSeventhServiceForm()">
+                <div class="row">
+                    <div class="col-12">
+                        <label for=""> මාගසම් නම / Name of company</label>
+                        <input type="text" class="form-control" formControlName="companyName">
+                    </div>
+                    <div class="col-12">
+                        <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                        <input type="text" class="form-control" formControlName="regNumber">
+                    </div>
+                    <div class="col-12">
+                        <label for=""> ගා ්තු සගවන ස ේවාසේ වි ්තරය
+                            Description of Paid Service</label>
+                        <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="Description"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                        <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 7)">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
