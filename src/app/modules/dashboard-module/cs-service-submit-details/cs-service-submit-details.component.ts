@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { CsService } from 'src/app/services/cs/cs.service';
 
 @Component({
@@ -74,7 +75,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
   seventhServiceDocList: any[] = [];
   serviceIndex!: string;
 
-  constructor(private formBuilder: FormBuilder, private csService: CsService) {}
+  constructor(private formBuilder: FormBuilder, private csService: CsService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
     this.initFirstServiceForm();
@@ -117,7 +118,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(seventhServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -154,7 +157,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(sixthServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -191,7 +196,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(fifthServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -256,7 +263,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(forthServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -321,7 +330,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(thirdServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -358,7 +369,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(secondServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
@@ -423,7 +436,9 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.csService.placeCsOrder(firstServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-
+          this.tostr.success("Place New Order", "Order Placed Successfully");
+        } else {
+          this.tostr.error("Place New Order", resp.message);
         }
       })
     }
