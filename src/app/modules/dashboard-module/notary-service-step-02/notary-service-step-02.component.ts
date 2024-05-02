@@ -62,23 +62,23 @@ export class NotaryServiceStep02Component implements OnInit {
 
     console.log(firstDoc);
 
-    if (firstDoc == "") {
+    /*if (firstDoc == "") {
       this.tostr.error("Empty Feilds Found", "First Document is Reuired.");
     } else if (secondDoc == "") {
       this.tostr.error("Empty Feilds Found", "Second Document is Reuired.");
     } else if (thirdDoc == "") {
       this.tostr.error("Empty Feilds Found", "Third Document is Reuired.");
-    } else if (dateOfSigning == "") {
+    } else */ if (dateOfSigning == "") {
       this.tostr.error("Empty Feilds Found", "Date of Signing is Reuired.");
-    } else if (startDate == "") {
+    }/* else if (startDate == "") {
       this.tostr.error("Empty Feilds Found", "Start Date is Reuired.");
     } else if (endDate == "") {
       this.tostr.error("Empty Feilds Found", "End Date is Reuired.");
-    } else if (value == "") {
+    }*/ else if (value == "") {
       this.tostr.error("Empty Feilds Found", "Value is Reuired.");
-    } else if (monthlyRent == "") {
+    }/* else if (monthlyRent == "") {
       this.tostr.error("Empty Feilds Found", "Monthly Rent is Reuired.");
-    } else if (advanceAmount == "") {
+    }*/ else if (advanceAmount == "") {
       this.tostr.error("Empty Feilds Found", "Advance Amount is Reuired.");
     } else if (VODNumber == "") {
       this.tostr.error("Empty Feilds Found", "VOD Number is Reuired.");

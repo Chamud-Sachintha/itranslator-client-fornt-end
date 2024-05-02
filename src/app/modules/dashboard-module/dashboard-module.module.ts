@@ -23,6 +23,8 @@ import { CompleteTrOrdersComponent } from './complete-tr-orders/complete-tr-orde
 import { CsServiceComponent } from './cs-service/cs-service.component';
 import { CsServiceSubmitDetailsComponent } from './cs-service-submit-details/cs-service-submit-details.component';
 import { CsOrderRequestsComponent } from './cs-order-requests/cs-order-requests.component';
+import { CompleteNsOrdersComponent } from './complete-ns-orders/complete-ns-orders.component';
+import { CompleteCsOrdersComponent } from './complete-cs-orders/complete-cs-orders.component';
 
 
 @NgModule({
@@ -46,6 +48,8 @@ import { CsOrderRequestsComponent } from './cs-order-requests/cs-order-requests.
     CsServiceComponent,
     CsServiceSubmitDetailsComponent,
     CsOrderRequestsComponent,
+    CompleteNsOrdersComponent,
+    CompleteCsOrdersComponent,
   ],
   imports: [
     CommonModule,

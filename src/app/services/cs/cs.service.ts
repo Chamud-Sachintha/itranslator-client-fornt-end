@@ -19,4 +19,9 @@ export class CsService {
     const path = environment.appURL + "get-cs-order-requests";
     return this.http.post(path, requestParamModel);
   }
+
+  getCompeteCSOrderList(requestParamModel: Request) {
+    const path = environment.appURL + "get-complete-cs-order-requests";
+    return this.http.post(path, requestParamModel);
+  }
 }

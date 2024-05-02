@@ -8,7 +8,7 @@ export class NotaryServicePerson {
     adultIdNumber!: string;
     bcNumber!: string;
     mcNumber!: string;
-    natureOfSignature!: string;
+    natureOfSignature: any[] = [];
     phoneNumber!: string;
     email!: string;
 }

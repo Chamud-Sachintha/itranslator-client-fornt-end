@@ -81,9 +81,9 @@ export class NotaryServiceStep01Component implements OnInit {
       this.tostr.error("Empty Feilds Found", "Main Category Is Required.");
     } else if (subCategory == "") {
       this.tostr.error("Empty Feilds Found", "Sub Category Is Required.");
-    } else if (description == "") {
+    } /*else if (description == "") {
       this.tostr.error("Empty Feilds Found", "Description Is Required.");
-    } else {
+    }*/ else {
       this.firstStepModel.mainCategory = mainCategory;
       this.firstStepModel.subCategory = subCategory;
       this.firstStepModel.descriptionOfService = description;

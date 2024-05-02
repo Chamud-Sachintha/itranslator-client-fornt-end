@@ -31,6 +31,11 @@ export class NotaryService {
     return this.http.post(path, requestParamModel);
   }
 
+  getComplteNotaryOrderList(requestParamModel: Request) {
+    const path = environment.appURL + "get-complete-notary-order-list";
+    return this.http.post(path, requestParamModel);
+  }
+
   getNoratyOrderByInvoice(requestParamModel: Request) {
     const path = environment.appURL + "get-notary-order-by-invoice";
     return this.http.post(path, requestParamModel);
@@ -48,6 +53,16 @@ export class NotaryService {
 
   submitBankSlip(requestParamModel: Request) {
     const path = environment.appURL + "submit-bank-slip-ns-order";
+    return this.http.post(path, requestParamModel);
+  }
+
+  getOrderAdminMessageList(requestParamModel: Request) {
+    const path = environment.appURL + "get-message-list";
+    return this.http.post(path, requestParamModel);
+  }
+
+  sendOrderMessageToAdmin(requestParamModel: Request) {
+    const path = environment.appURL + "send-message";
     return this.http.post(path, requestParamModel);
   }
 }

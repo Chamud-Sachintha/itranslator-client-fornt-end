@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,9 @@ import { NotaryServicePerson } from 'src/app/shared/models/NotaryServicePerson/n
 import { NotaryServicePersonList } from 'src/app/shared/models/NotaryServicePersonList/notary-service-person-list';
 import { NotaryServiceSecondStep } from 'src/app/shared/models/NotaryServiceSecondStep/notary-service-second-step';
 import { Request } from 'src/app/shared/models/Request/request';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @Component({
   selector: 'app-notary-service-step-03',
@@ -16,27 +19,35 @@ import { Request } from 'src/app/shared/models/Request/request';
 })
 export class NotaryServiceStep03Component implements OnInit {
 
+  @ViewChild('exampleModal') modal!: ElementRef ;
+  
   addPersonForm!: FormGroup;
   addedPersonList = new NotaryServicePersonList();
   notaryServicePerson = new NotaryServicePerson();
   secondStepData = new NotaryServiceSecondStep();
   requestParamModel = new Request();
   personCategory!: string;
+  naturesignatureDoc: File[] = [];
+  model:boolean = false;
+  isVisible: boolean = false;
+  //private modalService = inject(NgbModal);
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
-            , private notaryService: NotaryService, private tostr: ToastrService) {}
+            , private notaryService: NotaryService, private tostr: ToastrService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.initAddPersonForm();
-
+    
     this.dataShareService.getComponentValueObj().subscribe((data: NotaryServiceSecondStep) => {
       this.secondStepData = data;
+      
     })
   }
 
   onClickSaveProcess() {
+   
     this.addedPersonList.secondStepData = this.secondStepData;
-
+ //console.log('Save Data',this.addedPersonList);
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
     this.requestParamModel.mainNotaryCategory = this.addedPersonList.secondStepData.firstStepData.mainCategory;
@@ -62,13 +73,42 @@ export class NotaryServiceStep03Component implements OnInit {
 
       if (resp.code === 1) {
         this.tostr.success("Place Notary Servuice Order", "Order Placed Successfully");
+        this.router.navigate(['app/select-services/step-01'])
       } else {
         this.tostr.error("Place Notary Servuice Order", resp.message);
       }
     })
   }
 
+  onChangeSecondDoc($event: any) {
+    this.naturesignatureDoc = Array.from($event.target.files);
+  }
+
+  convertImageToBase64(fileInput: any): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const file: File = fileInput;
+      const reader: FileReader = new FileReader();
+
+      reader.onloadend = () => {
+        // The result attribute contains the base64 string
+        const base64String: string = reader.result as string;
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      // Read the image file as a Data URL
+      reader.readAsDataURL(file);
+    });
+  }
+
   setPersonCatgeory(category: string) {
+    this.model = true;
+    this.isVisible = true;
+    console.log('visible',this.isVisible);
+
     if (category == "1") {
       this.personCategory = "තෑගි දීමනාකරු / Donor";
     } else if (category == "2") {
@@ -81,6 +121,8 @@ export class NotaryServiceStep03Component implements OnInit {
 
     }
   }
+
+  
 
   onSubmitAddPersonForm() {
     const name = this.addPersonForm.controls['name'].value;
@@ -101,23 +143,23 @@ export class NotaryServiceStep03Component implements OnInit {
       this.tostr.error("Empty Feilds Found", "Address is required.");
     } else if (nicNumber == "") {
       this.tostr.error("Empty Feilds Found", "NIC Number is required.");
-    } else if (passport == "") {
+    }/* else if (passport == "") {
       this.tostr.error("Empty Feilds Found", "Passport is required.");
     } else if (drivingLic == "") {
       this.tostr.error("Empty Feilds Found", "Driving Licence is required.");
     } else if (adultNic == "") {
       this.tostr.error("Empty Feilds Found", "Adult NIC is required.");
-    } else if (bcNumber == "") {
+    } */else if (bcNumber == "") {
       this.tostr.error("Empty Feilds Found", "Birth Certificate Number is required.");
-    } else if (mcNumber == "") {
+    } /*else if (mcNumber == "") {
       this.tostr.error("Empty Feilds Found", "MC Number is required.");
-    } else if (natureOfSig == "") {
+    } */else if (natureOfSig == "") {
       this.tostr.error("Empty Feilds Found", "Nature Of Signing is required.");
     } else if (phoneNumber == "") {
       this.tostr.error("Empty Feilds Found", "Phone Number is required.");
-    } else if (email == "") {
+    } /*else if (email == "") {
       this.tostr.error("Empty Feilds Found", "Email is required.");
-    } else {
+    } */else {
       const notaryServicePersonObj = new NotaryServicePerson();
 
       notaryServicePersonObj.personCategory = this.personCategory;
@@ -129,13 +171,29 @@ export class NotaryServiceStep03Component implements OnInit {
       notaryServicePersonObj.adultIdNumber = adultNic;
       notaryServicePersonObj.bcNumber = bcNumber;
       notaryServicePersonObj.mcNumber = mcNumber;
-      notaryServicePersonObj.natureOfSignature = natureOfSig;
+
+      this.naturesignatureDoc.forEach((eachDoc: File) => {
+        this.convertImageToBase64(eachDoc).then((base64String) => {
+          notaryServicePersonObj.natureOfSignature.push(base64String);
+        })
+
+      })
+
+     // notaryServicePersonObj.natureOfSignature = natureOfSig;
       notaryServicePersonObj.phoneNumber = phoneNumber;
       notaryServicePersonObj.email = email;
 
       this.addedPersonList.notaryPerson.push(notaryServicePersonObj);
+      this.addPersonForm.reset();
+      this.initAddPersonForm();
+      this.modalService.dismissAll(); 
+      this.isVisible = false;
+      this.model = false;
+     
     }
   }
+
+ 
 
   initAddPersonForm() {
     this.addPersonForm = this.formBuilder.group({

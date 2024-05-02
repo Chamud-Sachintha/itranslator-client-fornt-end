@@ -5,6 +5,8 @@ import { NotaryService } from 'src/app/services/notary/notary.service';
 import { NotaryDocument } from 'src/app/shared/models/NotaryDocument/notary-document';
 import { Request } from 'src/app/shared/models/Request/request';
 import { environment } from 'src/environments/environment.development';
+import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
+import { Subscription, switchMap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-check-ns-order',
@@ -14,6 +16,8 @@ import { environment } from 'src/environments/environment.development';
 export class CheckNsOrderComponent implements OnInit {
 
   requestParamModel = new Request();
+  subscription!: Subscription;
+  adminLessageList: AdminMessage[] = [];
   firstDocList: any[] = [];
   secondDocList: any[] = [];
   thirdDocList: any[] = [];
@@ -37,6 +41,25 @@ export class CheckNsOrderComponent implements OnInit {
 
     this.loadNotaryOrderInfo();
     this.getTranslatedOrderDocs();
+
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+
+    this.subscription = timer(0, 1500).pipe(
+
+      switchMap(() => this.notaryService.getOrderAdminMessageList(this.requestParamModel))
+
+    ).subscribe((result: any) => {
+      this.adminLessageList = [];
+      const data = JSON.parse(JSON.stringify(result))
+
+      data.data[0].forEach((eachData: AdminMessage) => {
+        const formatedDate = parseInt(eachData.time) * 1000;
+        eachData.time = formatedDate.toString();
+
+        this.adminLessageList.push(eachData);
+      })
+    });
   }
 
   uploadBankSlip() {
@@ -160,5 +183,18 @@ export class CheckNsOrderComponent implements OnInit {
       reader.readAsDataURL(file);
     });
   }
+  
+  sendOrderMessageToAdmin(message: string) {
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.message = message;
+    this.requestParamModel.invoiceNo = this.invoiceNo;
 
+    this.notaryService.sendOrderMessageToAdmin(this.requestParamModel).subscribe((resp: any) => {
+
+      if (resp.code === 1) {
+        
+      }
+    })
+  }
 }
