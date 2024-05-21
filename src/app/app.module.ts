@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { CheckLegalAdviceComponent } from './modules/dashboard-module/check-legal-advice/check-legal-advice.component';
+import { CompleteLegalAdviceComponent } from './modules/dashboard-module/complete-legal-advice/complete-legal-advice.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AuthLayoutComponent,
     DashboardLayoutComponent,
     DashboardHeaderComponent,
+   
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,7 @@ import { NotaryServicePerson } from 'src/app/shared/models/NotaryServicePerson/n
 import { NotaryServicePersonList } from 'src/app/shared/models/NotaryServicePersonList/notary-service-person-list';
 import { NotaryServiceSecondStep } from 'src/app/shared/models/NotaryServiceSecondStep/notary-service-second-step';
 import { Request } from 'src/app/shared/models/Request/request';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -20,6 +20,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class NotaryServiceStep03Component implements OnInit {
 
   @ViewChild('exampleModal') modal!: ElementRef ;
+  @Output() closeModalEvent = new EventEmitter<boolean>();
   
   addPersonForm!: FormGroup;
   addedPersonList = new NotaryServicePersonList();
@@ -31,9 +32,10 @@ export class NotaryServiceStep03Component implements OnInit {
   model:boolean = false;
   isVisible: boolean = false;
   //private modalService = inject(NgbModal);
+  isModalOpen: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
-            , private notaryService: NotaryService, private tostr: ToastrService, private modalService: NgbModal) {}
+            , private notaryService: NotaryService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
     this.initAddPersonForm();
@@ -186,7 +188,7 @@ export class NotaryServiceStep03Component implements OnInit {
       this.addedPersonList.notaryPerson.push(notaryServicePersonObj);
       this.addPersonForm.reset();
       this.initAddPersonForm();
-      this.modalService.dismissAll(); 
+     // this.modalService.dismissAll(); 
       this.isVisible = false;
       this.model = false;
      
@@ -211,4 +213,6 @@ export class NotaryServiceStep03Component implements OnInit {
     })
   }
 
+ 
+  
 }

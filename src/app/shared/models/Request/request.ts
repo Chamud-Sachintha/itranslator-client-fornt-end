@@ -28,4 +28,6 @@ export class Request {
     orderStatus!: string;
     type!: string;
     bankSlip!: string;
+    LegalDoc: File[] = [];
+    OrderNo!:string;
 }

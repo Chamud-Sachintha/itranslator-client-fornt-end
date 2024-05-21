@@ -1,0 +1,28 @@
+<h5 class="card-header" style="font-weight: bolder;">  අවශ්‍ය සේවාව පිළිබද විස්තරය ඉදිරිපත් කරන්න / Description of required service Submit    </h5>
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+<div class="card-body">
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12" >
+      <div class="card">
+        <h5 class="card-header">Enter Details</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <form [formGroup]="lgForm">
+                       
+                        <textarea formControlName="DescriptionData" cols="80" rows="10" class="form-control"></textarea>
+                      
+                        <div class="col-12 mt-4">
+                          <label for="">Additional File</label>
+                          <input type="file" class="form-control" formControlName="Doc" multiple (change)="onChangeSecondDoc($event)">
+                        </div>
+                        <button type="button" class="btn btn-primary col-md-6 btn-sm mt-4" (click)="onClickSendLGDetails()">Submit in comments</button>
+                      </form>
+                   
+                </div>
+            </div>
+            
+
+      </div>
+    </div>
+  </div>
+</div>

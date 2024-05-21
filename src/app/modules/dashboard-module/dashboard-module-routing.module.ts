@@ -20,6 +20,9 @@ import { CsServiceSubmitDetailsComponent } from './cs-service-submit-details/cs-
 import { CsOrderRequestsComponent } from './cs-order-requests/cs-order-requests.component';
 import { CompleteNsOrdersComponent } from './complete-ns-orders/complete-ns-orders.component';
 import { CompleteCsOrdersComponent } from './complete-cs-orders/complete-cs-orders.component';
+import { LgServicesComponent } from './lg-services/lg-services.component';
+import { CheckLegalAdviceComponent } from './check-legal-advice/check-legal-advice.component';
+import { CompleteLegalAdviceComponent } from './complete-legal-advice/complete-legal-advice.component';
 
 const routes: Routes = [
   {
@@ -99,7 +102,23 @@ const routes: Routes = [
             component: CsServiceSubmitDetailsComponent
           }
         ]
-      }
+      },
+      {
+        path: 'lg-service',
+        component: LgServicesComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'lg-submit-details',
+            pathMatch: 'full'
+          },
+          {
+            path: 'lg-submit-details',
+            component: LgServicesComponent
+          }
+        ]
+      },
+
     ]
   },
   {
@@ -133,6 +152,14 @@ const routes: Routes = [
   {
     path: 'complete-cs-order-requests',
     component: CompleteCsOrdersComponent
+  },
+  {
+    path: 'legal-advice-requests',
+    component: CheckLegalAdviceComponent
+  },
+  {
+    path: 'complete-legal-advice-requests',
+    component: CompleteLegalAdviceComponent
   }
 ];
 
