@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription, switchMap, timer } from 'rxjs';
 import { LegalService } from 'src/app/services/legal/legal.service';
 import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
 import { OrderRequest } from 'src/app/shared/models/OrderRequest/order-request';
 import { Request } from 'src/app/shared/models/Request/request';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-check-legal-advice',
@@ -17,6 +19,13 @@ export class CheckLegalAdviceComponent implements OnInit{
   isVisible: boolean = false;
   adminLessageList: any[] = [];
   lgForm!: FormGroup;
+  subscription !: Subscription;
+  legalAdvice: any[] = [];
+  legalAdvice2: any[] = [];
+  combinedFiles: string[] = [];
+  combinedData: any[] = [];
+  intervalId: any;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,6 +41,8 @@ export class CheckLegalAdviceComponent implements OnInit{
     });
     
     this.getlegalAdvice();
+
+   
     
   }
 
@@ -123,4 +134,91 @@ export class CheckLegalAdviceComponent implements OnInit{
       this.lgForm.get('Doc')?.setValue(Array.from(files)); 
     }
   }
+
+
+  getdocModal(order: string){
+    this.isVisible = true;
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.OrderNo = order;
+
+
+    this.subscription = timer(0, 6000).pipe(
+      switchMap(() => this.legalService.getOrderDocList(this.requestParamModel))
+    ).subscribe((result: any) => {
+      this.legalAdvice = result.data[0]; 
+        console.log('fileservices',this.legalAdvice);
+      this.legalService.getLegalAdviceDoc(this.requestParamModel).subscribe((resp: any) => {
+        this.legalAdvice2 = resp.data[0];
+        console.log('filesorder',this.legalAdvice2);
+        
+        this.combineData();
+      });
+    });
+
+   
+  }
+
+  combineData() {
+    try {
+     
+      const combinedArray = [...this.legalAdvice, ...this.legalAdvice2];
+      const parsedData = combinedArray.flatMap((item: string) => {
+        try {
+         
+          return item && JSON.parse(item);
+        } catch (error) {
+         
+          console.error('Error parsing item:', item, error);
+          return [];
+        }
+      });
+  
+      
+      this.combinedData = parsedData;
+      console.log('combinedData', this.combinedData);
+    } catch (error) {
+      console.error('Error combining data:', error);
+    }
+  }
+
+    openFile(document: string) {
+
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.DocName =document;
+   
+    this.legalService.ViewDoc(this.requestParamModel).subscribe((resp: any) => {
+      console.log('data>>>', resp.code);
+      if(resp.code){
+        const imageUrl2 = environment.fileDocServerURL + document;
+        window.open(imageUrl2);
+      }
+      else{
+        const imageUrl1 = environment.fileDoc2ServerURL + document;
+        window.open(imageUrl1);
+      }
+
+      });
+    
+    }
+  
+    onClickComplteOrder(order: string){
+
+    this.requestParamModel.token = sessionStorage.getItem("authToken");
+    this.requestParamModel.flag = sessionStorage.getItem("role");
+    this.requestParamModel.OrderNo = order;
+      this.legalService.CompleteOrder(this.requestParamModel).subscribe((resp: any) => {
+        if (resp.code === 1) {
+          this.toastr.success("Legal Service", "Order Complete Successfully.");
+          this.getlegalAdvice();
+          window.location.reload();
+         
+        } else {
+          this.toastr.error("Legal Service", resp.message);
+        }
+      });
+    }
+
+
 }

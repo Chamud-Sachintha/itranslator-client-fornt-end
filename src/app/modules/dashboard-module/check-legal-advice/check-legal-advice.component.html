@@ -29,7 +29,9 @@
                                     <th>Message</th>
                                     <th>Submited Date</th>
                                     <th>Status</th>
+                                    <th>Document</th>
                                     <th>View</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                            <tbody>
@@ -40,10 +42,15 @@
                                 <td>{{ eachRow.createTime | date }}</td>
                                 <td *ngIf="eachRow.Status == 0">Pending</td>
                                 <td *ngIf="eachRow.Status == 1">Approved</td>
-                                <td *ngIf="eachRow.Status == 1 && eachRow.A_Admin_ID !== ''">Replayed</td>
-                               
+                              <!--  <td *ngIf="eachRow.Status == 1 && eachRow.A_Admin_ID !== ''">Replayed</td> -->
+                                <td> 
+                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#DocumentModal" (click)="getdocModal(eachRow.OrderNo)">Check</button>
+                                </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm" (click)="onClickCheckOrder(eachRow.OrderNo)" data-toggle="modal" data-target="#exampleModal">Check</button>
+                                    <button class="btn btn-success btn-sm" (click)="onClickCheckOrder(eachRow.OrderNo)" data-toggle="modal" data-target="#exampleModal">View</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" (click)="onClickComplteOrder(eachRow.OrderNo)" >Complete</button>
                                 </td>
                             </tr>
                            </tbody>
@@ -53,7 +60,9 @@
                                     <th>Message</th>
                                     <th>Submited Date</th>
                                     <th>Status</th>
+                                    <th>Document</th>
                                     <th>View</th>
+                                    <th>Action</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -137,3 +146,41 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade"  id="DocumentModal"  tabindex="-1"  role="dialog"  aria-labelledby="DocumentModal"  aria-hidden="true"  data-backdrop="static"  data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="DocumentModal">Client Documents View</h5>
+          <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+              
+              <div class="card-body">
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Document Name</th>
+                      <th scope="col">View</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let document of combinedData; let i = index">
+                          <th scope="row">{{ i + 1 }}</th>
+                          <td>{{ document }}</td>
+                         <td> <button class="btn btn-success btn-sm" (click)="openFile(document)">View</button></td>
+                        </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+          </div>
+      </div>
+    </div>
+  </div>
+  

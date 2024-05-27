@@ -30,4 +30,5 @@ export class Request {
     bankSlip!: string;
     LegalDoc: File[] = [];
     OrderNo!:string;
+    DocName!:string;
 }
