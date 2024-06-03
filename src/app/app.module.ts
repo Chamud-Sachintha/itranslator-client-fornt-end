@@ -14,12 +14,14 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { CheckLegalAdviceComponent } from './modules/dashboard-module/check-legal-advice/check-legal-advice.component';
 import { CompleteLegalAdviceComponent } from './modules/dashboard-module/complete-legal-advice/complete-legal-advice.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AuthLayoutComponent,
     DashboardLayoutComponent,
     DashboardHeaderComponent,
+   
    
   ],
   imports: [

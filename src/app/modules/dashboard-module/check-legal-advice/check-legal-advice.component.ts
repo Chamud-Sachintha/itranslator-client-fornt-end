@@ -50,7 +50,7 @@ export class CheckLegalAdviceComponent implements OnInit{
     this.requestParamModel.token = sessionStorage.getItem("authToken") || '';
     this.requestParamModel.flag = sessionStorage.getItem("role") || '';
     this.requestParamModel.OrderNo = OrderNo;
-
+    this.adminLessageList = [];
     this.legalService.getLMessageToAdmin(this.requestParamModel).subscribe((resp: any) => {
       if (resp.code === 1) {
         const dataList = JSON.parse(JSON.stringify(resp));
@@ -143,7 +143,7 @@ export class CheckLegalAdviceComponent implements OnInit{
     this.requestParamModel.OrderNo = order;
 
 
-    this.subscription = timer(0, 6000).pipe(
+    this.subscription = timer(0, 20000).pipe(
       switchMap(() => this.legalService.getOrderDocList(this.requestParamModel))
     ).subscribe((result: any) => {
       this.legalAdvice = result.data[0]; 

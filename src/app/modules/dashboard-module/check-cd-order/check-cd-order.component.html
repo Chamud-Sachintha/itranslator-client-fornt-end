@@ -1,0 +1,492 @@
+<div class="row">
+    <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-6">
+                    <h2 class="pageheader-title">Check Comapany Sectratial Service Order. </h2>
+                </div>
+                <div class="col-6">
+                    <h2 class="pageheader-title" style="float: right;">Invoice No - {{ this.invoiceNo }}</h2>
+                </div>
+            </div>
+            <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis
+                faucibus at enim quis massa lobortis rutrum.</p>
+            <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard Template</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+           <!--  <div class="row">
+                <div class="col-6">
+                    <h5 class="card-header">List of All Documents to Be Translate</h5>
+                </div>
+                <div class="col-6 mt-3">
+                    <div style="float: right; margin-right: 10px;">
+                        <label for="">Payment Status</label>
+                         <span class="badge badge-info" style="margin-left: 20px;">
+                            <p *ngIf="this.paymentStatus == 0">Pending</p>
+                            <p *ngIf="this.paymentStatus == 1">Paid</p>
+                        </span>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered first">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Document Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let eachType of this.allDocumentTypes; index as i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ eachType }}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" (click)="onClickOpenDocTypeModel(i + 1)">Check</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Document Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+            <h5 class="card-header">Payment Informations</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="">Total Bill Amount</label>
+                        <h5>LKR. {{ totalOrderAmount }} .00</h5>
+                    </div>
+                    <div class="col-6">
+                        <label for="">Pending Amount</label>
+                        <h5>LKR. {{ pendingpayment }} .00</h5>
+                    </div>
+                    <div class="col-6" *ngIf=" InNo == 0">
+                       <!-- <a  style="float: right;">Check Payment Details</a>-->
+                        <button class="btn btn-primary btn-sm mt-3" style="float: left;" data-toggle="modal" data-target="#exampleModal"  (click)="CheckPayments()">Edit Details</button> 
+                    </div>
+                </div>
+               
+            </div>
+
+            <h5 class="card-header">Documents Proccess Informations</h5>
+            <div class="card-body border-top">
+                
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <label for=""><h5>රැසගන යන දිනය / Pick up date :- {{ Pickupdate }}</h5></label> 
+                            
+                        </div>
+                        <div class="col-6">
+                            <label for=""><h5>ඉදිරිපත් කරන දිනය / Date of submission :- {{ submissionDate }}</h5></label> 
+                            
+                        </div>
+                    
+                        <div class="col-6">
+                            <label for=""><h5>තැපැේ කරන දිනය / Date of mailing :- {{ mailingDate }}</h5></label> 
+                            
+                        </div>
+                        <div class="col-6">
+                            <label for=""><h5>ලියාපදිංචි කරන දිනය / Date of registration :- {{ registrationDate }}</h5></label> 
+                            
+                        </div>
+                    </div>
+               
+               
+            </div>
+
+           <h5 class="card-header">Description of work to be done</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-12" style="height: 200px; background-color: beige;"
+                    *ngIf="this.driscriptionofservices.length == 0">
+                        <h5 style="margin-top: 95px;" class="text-center">There is No Details Yet.</h5>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>{{driscriptionofservices}}</h5>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+         <!--   <h5 class="card-header">Admin Messages</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-12">
+                        <textarea name="" id="" cols="30" rows="10" class="form-control" #message></textarea>
+                        <button class="btn btn-primary btn-sm mt-3" (click)="sendOrderMessageToAdmin(message.value)">Send Message</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="max-height: 500px; overflow-y: scroll;">
+                    <div class="card-body">
+                        <h4 class="card-title">Recent Comments</h4>
+                        <h6 class="card-subtitle">Latest Comments section by users</h6>
+                    </div>
+    
+                    <div class="comment-widgets m-b-20" *ngFor="let eachMessage of this.adminLessageList">
+    
+                        <div class="d-flex flex-row comment-row">
+                            <div class="p-2"><span class="round"><img src="{{ eachMessage.avatar }}"
+                                        alt="user" width="50"></span></div>
+                            <div class="comment-text w-100">
+                                <h5>{{ this.eachMessage.fromUser }}</h5>
+                                <div class="comment-footer">
+                                    <span class="date">{{ eachMessage.time | date }}</span>
+                                    <span class="label label-info">Pending</span> <span class="action-icons">
+                                        <a href="#" data-abc="true"><i class="fa fa-pencil"></i></a>
+                                        <a href="#" data-abc="true"><i class="fa fa-rotate-right"></i></a>
+                                        <a href="#" data-abc="true"><i class="fa fa-heart"></i></a>
+                                    </span>
+                                </div>
+                                <p class="m-b-5 m-t-10">{{ eachMessage.message }}
+                                    </p>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div> -->
+
+            <h5 class="card-header">Order Checking Informations</h5>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="">Order Status</label>
+                        <select name="" id="" class="form-control" #orderStatus>
+                            <option value="">-- Select Option --</option>
+                            <option value="1">Complete</option>
+                        </select>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary btn-sm" (click)="onClickUpdateOrderStatus(orderStatus.value)">Update Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Company Details</h5>
+        <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+           
+         
+      <form [formGroup]="firstServiceForm" *ngIf="this.service_index ==1" (ngSubmit)="submitFirstServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                <input type="text" class="form-control" formControlName="directorNames">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorAddress">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                <input type="text" class="form-control" formControlName="directorTelephones">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorEmails">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                <input type="text" class="form-control" formControlName="devisionNumber">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="devisionalSectrial">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="directorDistrict">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+            </div>
+           <div class="col-12">
+                <label for="">හැ දණුම්පත් පිටපත් උඩුගත කරන්න / Upload ID copies</label>
+                <input type="file" class="form-control" multiple (change)="onChangeNICImages($event, 1)">
+            </div>
+            <div class="col-12">
+                <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 1)"> 
+            </div> 
+            <div class="col-12 mt-2">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="secondServiceForm" *ngIf="this.service_index == 2" (ngSubmit)="submitSecondServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for=""> මාගසම් නම / Name of company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                <input type="text" class="form-control" formControlName="regNumber">
+            </div>
+            <div class="col-12">
+                <label for=""> ංසශෝධනය වියයුතු කරුණු / Change is to be made</label>
+                <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+            </div>
+            <div class="col-12">
+                <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 2)">
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="thirdServiceForm" *ngIf="this.service_index == 3" (ngSubmit)="submitThirdServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                <input type="text" class="form-control" formControlName="directorNames">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorAddress">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                <input type="text" class="form-control" formControlName="directorTelephones">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorEmails">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                <input type="text" class="form-control" formControlName="devisionNumber">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="devisionalSectrial">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="directorDistrict">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+            </div>
+            <div class="col-12">
+                <label for="">පත්වන දිනය
+                    Date of Appointment</label>
+                <input type="text" class="form-control" formControlName="dateOfAppointment">
+            </div>
+            <div class="col-12">
+                <label for="">කැමැත්ත ප්‍රකාශ ණීීමසම් ලිපිය උඩුගත කරන්න
+                    Upload the Letter of Intent
+                    </label>
+                <input type="file" class="form-control" (change)="setIntentLetterForThirdService($event)">
+            </div>
+            <div class="col-12">
+                <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 3)">
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="fourthServiceForm" *ngIf="this.service_index == 4" (ngSubmit)="submitForthServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for="">සයෝජිත මාගසම් නම / Name of the proposed company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ නම් / Names of Directors</label>
+                <input type="text" class="form-control" formControlName="directorNames">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ ලිපිනයන් / Addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorAddress">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ දරකථන අංක / Telephone numbers of Directors</label>
+                <input type="text" class="form-control" formControlName="directorTelephones">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරුන්සේ විෙුත් ලිපිනයන් / E-mail addresses of Directors</label>
+                <input type="text" class="form-control" formControlName="directorEmails">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන් පදිංචි ග්‍රාම නිළධාීම ව ම හ අංකය / Village Officer Division and Number of Resident of Directors</label>
+                <input type="text" class="form-control" formControlName="devisionNumber">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන ප්‍රාසද්ශීය සේකම් සකොට්ශාශය / The Divisional Secretariat to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="devisionalSectrial">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂකවරු අයත්වන දි ්ත්‍රිේකය / District to which the Directors belong</label>
+                <input type="text" class="form-control" formControlName="directorDistrict">
+            </div>
+            <div class="col-12">
+                <label for="">අධයේෂක වරුන්සේ ජාතික හැ දනුම්පත් හ අත් න් ඉදිරිපත් කරන්න / Submit the National Identity Cards and Signatures of the Directors</label>
+                <input type="text" class="form-control" formControlName="nicNumberOfDirectors">
+            </div>
+            <div class="col-12">
+                <label for="">ඉේලා අ ්වන දිනය
+                    Date of Resignation</label>
+                <input type="text" class="form-control" formControlName="dateOfResign">
+            </div>
+            <div class="col-12">
+                <label for="">ඉේලා අ ්වීසම් ලිපිය උඩුගත කරන්න
+                    Upload the resignation letter                            
+                    </label>
+                <input type="file" class="form-control" (change)="setResignLetter($event)">
+            </div>
+            <div class="col-12">
+                <label for="">සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" multiple (change)="onChangeRequiredFiles($event, 4)">
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="fifthServiceForm" *ngIf="this.service_index == 5" (ngSubmit)="submitFifthServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for=""> මාගසම් නම / Name of company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                <input type="text" class="form-control" formControlName="regNumber">
+            </div>
+            <div class="col-12">
+                <label for=""> ඉේලා සිි න පිටපත්වල වි ්තරය
+                    Description of transcripts requested</label>
+                <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+            </div>
+            <div class="col-12">
+                <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 5)">
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="sixthServiceForm" *ngIf="this.service_index == 6" (ngSubmit)="submitSixthServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for=""> මාගසම් නම / Name of company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                <input type="text" class="form-control" formControlName="regNumber">
+            </div>
+            <div class="col-12">
+                <label for=""> අවශය ස ේවාසේ වි ්තරය
+                    Description of service required</label>
+                <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description"></textarea>
+            </div>
+            <div class="col-12">
+                <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 6)">
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="sevenServiceForm" *ngIf="this.service_index == 6" (ngSubmit)="submitSeventhServiceForm()">
+        <div class="row">
+            <div class="col-12">
+                <label for=""> මාගසම් නම / Name of company</label>
+                <input type="text" class="form-control" formControlName="companyName">
+            </div>
+            <div class="col-12">
+                <label for="">  මාගසම් ලියාපදිංචි අංකය / Company registration number</label>
+                <input type="text" class="form-control" formControlName="regNumber">
+            </div>
+            <div class="col-12">
+                <label for=""> ගා ්තු සගවන ස ේවාසේ වි ්තරය
+                    Description of Paid Service</label>
+                <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="Description"></textarea>
+            </div>
+            <div class="col-12">
+                <label for=""> සේඛණ උඩුගත කරන්න / Upload documents</label>
+                <input type="file" class="form-control" (change)="onChangeRequiredFiles($event, 7)">
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary btn-sm" type="submit">Place Order</button>
+            </div>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+

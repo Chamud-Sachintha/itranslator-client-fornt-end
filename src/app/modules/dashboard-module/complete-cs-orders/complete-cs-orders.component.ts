@@ -20,7 +20,7 @@ export class CompleteCsOrdersComponent {
   }
 
   onClickCheckOrder(invoiceNo: string) {
-    // this.router.navigate(['app/check-ns-order', invoiceNo])
+    this.router.navigate(['app/check-cs-order', invoiceNo , '1'])
   }
 
   loadCSServiceOrderList() {

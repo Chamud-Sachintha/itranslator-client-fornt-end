@@ -15,6 +15,11 @@ export class CsService {
     return this.http.post(path, formData);
   }
 
+  placeCsOrderUpdate(formData: FormData) {
+    const path = environment.appURL + "place-cs-update";
+    return this.http.post(path, formData);
+  }
+
   getCSOrderList(requestParamModel: Request) {
     const path = environment.appURL + "get-cs-order-requests";
     return this.http.post(path, requestParamModel);
@@ -22,6 +27,21 @@ export class CsService {
 
   getCompeteCSOrderList(requestParamModel: Request) {
     const path = environment.appURL + "get-complete-cs-order-requests";
+    return this.http.post(path, requestParamModel);
+  }
+
+  getcsOrderByInvoice(requestParamModel: Request){
+    const path = environment.appURL + "get-cs-order-check";
+    return this.http.post(path, requestParamModel);
+  }
+
+  getcsOrderByDetails(requestParamModel: Request){
+    const path = environment.appURL + "get-cs-order-Details";
+    return this.http.post(path, requestParamModel);
+  }
+
+  updateNotaryOrderStatus(requestParamModel: Request) {
+    const path = environment.appURL + "update-cs-order-status";
     return this.http.post(path, requestParamModel);
   }
 }

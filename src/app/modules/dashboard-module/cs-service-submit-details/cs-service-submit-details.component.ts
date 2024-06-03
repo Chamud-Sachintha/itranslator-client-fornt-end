@@ -119,6 +119,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+          window.location.reload();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -158,6 +159,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+          window.location.reload();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -197,6 +199,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+          window.location.reload();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -264,6 +267,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -331,6 +335,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+          window.location.reload();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -437,6 +442,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
         if (resp.code === 1) {
           this.tostr.success("Place New Order", "Order Placed Successfully");
+          window.location.reload(); 
         } else {
           this.tostr.error("Place New Order", resp.message);
         }

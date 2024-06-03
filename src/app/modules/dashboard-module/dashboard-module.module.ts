@@ -28,6 +28,7 @@ import { CompleteCsOrdersComponent } from './complete-cs-orders/complete-cs-orde
 import { LgServicesComponent } from './lg-services/lg-services.component';
 import { CheckLegalAdviceComponent } from './check-legal-advice/check-legal-advice.component';
 import { CompleteLegalAdviceComponent } from './complete-legal-advice/complete-legal-advice.component';
+import { CheckCdOrderComponent } from './check-cd-order/check-cd-order.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { CompleteLegalAdviceComponent } from './complete-legal-advice/complete-l
     LgServicesComponent,
     CheckLegalAdviceComponent,
     CompleteLegalAdviceComponent,
+    CheckCdOrderComponent,
   ],
   imports: [
     CommonModule,
