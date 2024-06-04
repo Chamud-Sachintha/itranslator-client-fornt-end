@@ -105,23 +105,11 @@ export class LgServicesComponent implements OnInit {
     }
 }
 
-
-
-
-
-
-
-
 onChangeSecondDoc($event: any) {
   const files = $event.target.files;
   if (this.lgForm && files) { // Perform null check on this.lgForm
       this.lgForm.get('Doc')?.setValue(Array.from(files)); // Use safe navigation operator
   }
 }
-
-
-
-
-
 
 }
