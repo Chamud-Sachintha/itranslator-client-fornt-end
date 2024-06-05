@@ -19,4 +19,14 @@ export class SmsService {
     const path = environment.appURL + "verify-register-code";
     return this.http.post(path, smsModel);
   }
+
+  sendForgotSmsVerifyCode(smsModel: SMSModel) {
+    const path = environment.appURL + "send-forgot-sms-code";
+    return this.http.post(path, smsModel);
+  }
+
+  verifyForgotPwCode(smsModel: SMSModel) {
+    const path = environment.appURL + "verify-forgot-code";
+    return this.http.post(path, smsModel);
+  }
 }
