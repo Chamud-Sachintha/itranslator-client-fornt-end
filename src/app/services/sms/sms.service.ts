@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { OrderNotification } from 'src/app/shared/models/OrderNotification/order-notification';
 import { SMSModel } from 'src/app/shared/models/SMSModel/smsmodel';
 import { environment } from 'src/environments/environment.development';
 
@@ -28,5 +29,10 @@ export class SmsService {
   verifyForgotPwCode(smsModel: SMSModel) {
     const path = environment.appURL + "verify-forgot-code";
     return this.http.post(path, smsModel);
+  }
+
+  sendOrderPlaceNotification(orderNotificationModel: OrderNotification) {
+    const path = environment.appURL + "order-place-notification";
+    return this.http.post(path, orderNotificationModel);
   }
 }

@@ -4,9 +4,11 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { SmsService } from 'src/app/services/sms/sms.service';
 import { Invoice } from 'src/app/shared/models/Invoice/invoice';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
+import { OrderNotification } from 'src/app/shared/models/OrderNotification/order-notification';
 import { Request } from 'src/app/shared/models/Request/request';
 declare var $: any; 
 
@@ -27,9 +29,10 @@ export class InvoiceComponent implements OnInit {
   uploadedSlip: any[] = [];
   uploadeDocumentList: any[] = [];
   invoiceIssuedDate = new Date();
+  orderNotificationModel = new OrderNotification();
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService) {}
+            , private authService: AuthService, private smsService: SmsService) {}
 
   ngOnInit(): void {
 
@@ -136,6 +139,16 @@ export class InvoiceComponent implements OnInit {
     this.spinner.show();
     this.orderService.placeOrderWithBankSlip(this.orderDetails).subscribe((resp: any) => {
       if (resp.code === 1) {
+        setTimeout(() => {
+          this.orderNotificationModel.token = sessionStorage.getItem("authToken");
+          this.orderNotificationModel.flag = sessionStorage.getItem("role");
+          this.orderNotificationModel.orderNumber = this.orderDetails.invoiceNo;
+          this.orderNotificationModel.orderType = "TR";
+
+          this.smsService.sendOrderPlaceNotification(this.orderNotificationModel).subscribe((resp: any) => {
+            console.log(resp);
+          })
+        }, 1000);
         this.tostr.success("Place New Order", "Order Placed Successfully");
       } else {
         this.tostr.error("Place New Order", resp.message);
