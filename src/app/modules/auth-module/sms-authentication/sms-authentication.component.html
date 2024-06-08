@@ -9,13 +9,13 @@
                     <p class="text-muted text-center">We've sent a code to contact@curfcode.com</p>
                     <div class="row pt-4 pb-2">
                         <div class="col-3">
-                            <input class="otp-letter-input" type="text" id="firstDigit">
+                            <input class="otp-letter-input" type="text" id="firstDigit" (input)="onChangeFirstDigit($event)">
                         </div>
                         <div class="col-3">
-                            <input class="otp-letter-input" type="text" id="secondDigit">
+                            <input class="otp-letter-input" type="text" id="secondDigit" (input)="onChangeSecondDigit($event)">
                         </div>
                         <div class="col-3">
-                            <input class="otp-letter-input" type="text" id="thirdDigit">
+                            <input class="otp-letter-input" type="text" id="thirdDigit" (input)="onChangeThirdDigit($event)">
                         </div>
                         <div class="col-3">
                             <input class="otp-letter-input" type="text" id="fourthDigit">

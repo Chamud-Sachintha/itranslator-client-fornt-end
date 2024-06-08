@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SmsService } from 'src/app/services/sms/sms.service';
@@ -17,6 +18,30 @@ export class SmsAuthenticationComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  onChangeFirstDigit($event: any) {
+    const value = $event.target.value;
+
+    if (value != "") {
+      document.getElementById("secondDigit")?.focus();
+    }
+  }
+
+  onChangeSecondDigit($event: any) {
+    const value = $event.target.value;
+
+    if (value != "") {
+      document.getElementById("thirdDigit")?.focus();
+    }
+  }
+
+  onChangeThirdDigit($event: any) {
+    const value = $event.target.value;
+
+    if (value != "") {
+      document.getElementById("fourthDigit")?.focus();
+    }
   }
 
   submitVerifyCode() {
