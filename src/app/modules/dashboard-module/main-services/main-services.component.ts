@@ -19,28 +19,28 @@ export class MainServicesComponent implements OnInit {
             , private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params: any) => {
-      this.paymentStatus = params['payment_success'];
+    // this.activatedRoute.queryParams.subscribe((params: any) => {
+    //   this.paymentStatus = params['payment_success'];
 
-      if (this.paymentStatus) {
-        this.addPaymentGateWaySuccessLog();
-      }
-    })
+    //   if (this.paymentStatus) {
+    //     this.addPaymentGateWaySuccessLog();
+    //   }
+    // })
   }
 
-  addPaymentGateWaySuccessLog() {
+  // addPaymentGateWaySuccessLog() {
 
-    this.requestParamModel.token = sessionStorage.getItem("authToken");
-    this.requestParamModel.flag = sessionStorage.getItem("role");
-    this.requestParamModel.reference = sessionStorage.getItem("reference");
+  //   this.requestParamModel.token = sessionStorage.getItem("authToken");
+  //   this.requestParamModel.flag = sessionStorage.getItem("role");
+  //   this.requestParamModel.reference = sessionStorage.getItem("reference");
 
-    this.orderService.addPaymentGatewaySuccessLog(this.requestParamModel).subscribe((resp: any) => {
+  //   this.orderService.addPaymentGatewaySuccessLog(this.requestParamModel).subscribe((resp: any) => {
 
-      if (resp.code === 1) {
-        $('#exampleModal').modal('show');
-      }
-    })
-  }
+  //     if (resp.code === 1) {
+  //       $('#exampleModal').modal('show');
+  //     }
+  //   })
+  // }
 
   onSelectMainService(mainServiceId: number) {
 
