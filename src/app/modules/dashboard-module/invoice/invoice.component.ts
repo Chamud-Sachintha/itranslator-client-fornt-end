@@ -30,6 +30,8 @@ export class InvoiceComponent implements OnInit {
   uploadeDocumentList: any[] = [];
   invoiceIssuedDate = new Date();
   orderNotificationModel = new OrderNotification();
+  invoiceNo!: string;
+  deliveryMethod!: string;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
             , private authService: AuthService, private smsService: SmsService) {}
@@ -37,6 +39,8 @@ export class InvoiceComponent implements OnInit {
   ngOnInit(): void {
 
     this.getClientInfo();
+
+    this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
 
     this.dataShareService.getComponentValueObj().subscribe((data: any) => {
 
@@ -58,8 +62,6 @@ export class InvoiceComponent implements OnInit {
 
         invoiceObj.documentTitle = eachDoc.translationTitle;
         invoiceObj.pages = eachDoc.pages;
-
-        console.log(eachDoc)
         
         if (eachDoc.nicTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
@@ -81,11 +83,29 @@ export class InvoiceComponent implements OnInit {
 
         totalAmount += Number(invoiceObj.unitPrice);
 
+        // need to change total amount according to delivery method
+
+        this.deliveryMethod = dataList.deliveryMethod;
+
+        if (this.deliveryMethod === "3") {
+          totalAmount += 500;
+        } else if (this.deliveryMethod === "4") {
+          totalAmount += 1000;
+        }
+
         this.invoiceItemList.push(invoiceObj);
       })
 
       this.inviceTableObj.amount = totalAmount;
     })
+  }
+
+  printInvoice() {
+    return false;
+  }
+
+  exportPDF() {
+    return false;
   }
 
   placeOnlinePayment() {
@@ -98,7 +118,7 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
-    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    this.orderDetails.invoiceNo = this.invoiceNo
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
@@ -130,7 +150,7 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
-    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    this.orderDetails.invoiceNo = this.invoiceNo;
 
     const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({type, value}));
 

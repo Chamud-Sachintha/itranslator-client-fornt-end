@@ -20,6 +20,9 @@ export class SigninComponent implements OnInit {
               , private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
+    if (sessionStorage.getItem("authToken") != null) {
+      this.router.navigate(['/home']);
+    }
     this.initCreateSigninForm();
   }
 

@@ -7,17 +7,17 @@
                 Invoice
                 <small class="page-info">
                     <i class="fa fa-angle-double-right text-80"></i>
-                    ID: #111-222
+                    {{ this.invoiceNo }}
                 </small>
             </h1>
 
             <div class="page-tools">
                 <div class="action-buttons">
-                    <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
+                    <a class="btn bg-white btn-light mx-1px text-95" href="#" (click)="printInvoice()">
                         <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
                         Print
                     </a>
-                    <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
+                    <a class="btn bg-white btn-light mx-1px text-95" href="#" (click)="exportPDF()">
                         <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
                         Export
                     </a>
@@ -68,7 +68,11 @@
                                 </div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                        class="text-600 text-90">ID:</span> #111-222</div>
+                                        class="text-600 text-90">Delivery Method:</span>
+                                    <p *ngIf="this.deliveryMethod === '2'">By Hand</p>    
+                                    <p *ngIf="this.deliveryMethod === '3'">By Courier</p>  
+                                    <p *ngIf="this.deliveryMethod === '4'">By Speed Post</p>      
+                                </div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                         class="text-600 text-90">Issue Date:</span> {{ this.invoiceIssuedDate | date }}</div>
