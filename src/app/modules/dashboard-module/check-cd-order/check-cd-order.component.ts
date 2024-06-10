@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NotaryService } from 'src/app/services/notary/notary.service';
@@ -9,6 +9,7 @@ import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { CsService } from 'src/app/services/cs/cs.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-check-cd-order',
@@ -71,7 +72,7 @@ export class CheckCdOrderComponent {
   sixthServiceDocList: any[] = [];
   seventhServiceDocList: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private notaryService: NotaryService, private tostr: ToastrService, private csService: CsService) 
+  constructor(private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private notaryService: NotaryService, private tostr: ToastrService, private csService: CsService, private renderer: Renderer2,  private el: ElementRef, private spinner: NgxSpinnerService) 
   {
     this.firstServiceForm = this.formBuilder.group({
       companyName: ['', Validators.required],

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LegalService } from 'src/app/services/legal/legal.service';
 import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
@@ -31,7 +32,7 @@ export class LgServicesComponent implements OnInit {
 
   lgForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private legalService: LegalService, private toastr: ToastrService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private legalService: LegalService, private toastr: ToastrService, private router: Router,  private renderer: Renderer2,  private el: ElementRef, private spinner: NgxSpinnerService) {
     this.lgForm = this.formBuilder.group({
       DescriptionData: ['', Validators.required],
       Doc: ['',] 
@@ -72,7 +73,7 @@ export class LgServicesComponent implements OnInit {
         const formDatass = new FormData();
         const token: any = sessionStorage.getItem("authToken");
         const flag: any = sessionStorage.getItem("role");
-
+        this.spinner.show();
         if (token && flag) { // Check if token and flag are not null
           formDatass.append("token", token);
           formDatass.append("flag", flag);
@@ -90,9 +91,10 @@ export class LgServicesComponent implements OnInit {
 
             this.legalService.sendLegalMessageToAdmin(formDatass).subscribe((resp: any) => {
                 if (resp.code === 1) {
-                    this.toastr.success("Place Legal Advice", " Placed Successfully");
-                    this.router.navigate(['app/select-services/step-01']);
-                    this.lgForm.reset();
+                   // this.toastr.success("Place Legal Advice", " Placed Successfully");
+                   this.spinner.hide();
+                   this.showSuccessModal();
+                  //  
                 } else {
                     this.toastr.error("Place Legal Advice", resp.message);
                 }
@@ -103,6 +105,26 @@ export class LgServicesComponent implements OnInit {
     } else {
         this.toastr.error('Please fill in all required fields.');
     }
+}
+
+showSuccessModal() {
+  const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+  if (modalElement) {
+    this.renderer.addClass(modalElement, 'show');
+    this.renderer.setStyle(modalElement, 'display', 'block');
+    this.renderer.setStyle(modalElement, 'backgroundColor', 'rgba(0, 0, 0, 0.5)');
+  }
+}
+
+redirectToAnotherForm() {
+  const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+  if (modalElement) {
+    this.renderer.removeClass(modalElement, 'show');
+    this.renderer.setStyle(modalElement, 'display', 'none');
+    this.renderer.removeStyle(modalElement, 'backgroundColor');
+    this.router.navigate(['app/legal-advice-requests']);
+    this.lgForm.reset();
+  }
 }
 
 onChangeSecondDoc($event: any) {

@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { DataShareService } from 'src/app/services/data/data-share.service';
 import { NotaryService } from 'src/app/services/notary/notary.service';
@@ -35,7 +36,7 @@ export class NotaryServiceStep03Component implements OnInit {
   isModalOpen: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
-            , private notaryService: NotaryService, private tostr: ToastrService) {}
+            , private notaryService: NotaryService, private tostr: ToastrService, private spinner: NgxSpinnerService, private renderer: Renderer2,  private el: ElementRef) {}
 
   ngOnInit(): void {
     this.initAddPersonForm();
@@ -47,7 +48,7 @@ export class NotaryServiceStep03Component implements OnInit {
   }
 
   onClickSaveProcess() {
-   
+    this.spinner.show();
     this.addedPersonList.secondStepData = this.secondStepData;
  //console.log('Save Data',this.addedPersonList);
     this.requestParamModel.token = sessionStorage.getItem("authToken");
@@ -74,12 +75,33 @@ export class NotaryServiceStep03Component implements OnInit {
     this.notaryService.placeNotaryServiceOrder(this.requestParamModel).subscribe((resp: any) => {
 
       if (resp.code === 1) {
-        this.tostr.success("Place Notary Servuice Order", "Order Placed Successfully");
-        this.router.navigate(['app/select-services/step-01'])
+        this.spinner.hide();
+       // this.tostr.success("Place Notary Servuice Order", "Order Placed Successfully");
+       this.showSuccessModal();
       } else {
         this.tostr.error("Place Notary Servuice Order", resp.message);
       }
     })
+  }
+
+  showSuccessModal() {
+    const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+    if (modalElement) {
+      this.renderer.addClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'block');
+      this.renderer.setStyle(modalElement, 'backgroundColor', 'rgba(0, 0, 0, 0.5)');
+    }
+  }
+  
+  redirectToAnotherForm() {
+    const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+    if (modalElement) {
+      this.renderer.removeClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'none');
+      this.renderer.removeStyle(modalElement, 'backgroundColor');
+      this.router.navigate(['app/select-services/step-01'])
+     // this.lgForm.reset();
+    }
   }
 
   onChangeSecondDoc($event: any) {
@@ -119,7 +141,22 @@ export class NotaryServiceStep03Component implements OnInit {
       this.personCategory = "ණය හිමියා / Lender";
     } else if (category == "4") {
       this.personCategory = "ණය ගැතියා / the borrower";
-    } else {
+    }else if (category == "5") {
+      this.personCategory = "විකුණුම්කරු / the Vendor";
+    } 
+    else if (category == "6") {
+      this.personCategory = "ගැණුම්කරු / the Vendee";
+    } 
+    else if (category == "7") {
+      this.personCategory = "බද දීමනාකරු / Lessor";
+    } 
+    else if (category == "8") {
+      this.personCategory = "බද ගැනුම්කරු / Lessee";
+    } 
+    else if (category == "9") {
+      this.personCategory = "ප්‍රකාශක / Declaran";
+    }  
+    else {
 
     }
   }
