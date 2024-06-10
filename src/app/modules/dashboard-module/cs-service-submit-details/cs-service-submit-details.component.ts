@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CsService } from 'src/app/services/cs/cs.service';
 
@@ -75,7 +77,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
   seventhServiceDocList: any[] = [];
   serviceIndex!: string;
 
-  constructor(private formBuilder: FormBuilder, private csService: CsService, private tostr: ToastrService) {}
+  constructor(private formBuilder: FormBuilder, private csService: CsService, private tostr: ToastrService, private renderer: Renderer2,  private el: ElementRef, private spinner: NgxSpinnerService, private router: Router) {}
 
   ngOnInit(): void {
     this.initFirstServiceForm();
@@ -114,12 +116,14 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.seventhServiceDocList.forEach((eachDoc: File, index) => {
         seventhServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(seventhServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-          window.location.reload();
+          this.spinner.hide();
+          this.showSuccessModal();
+          //this.tostr.success("Place New Order", "Order Placed Successfully");
+          //window.location.reload();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -154,12 +158,14 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.sixthServiceDocList.forEach((eachDoc: File, index) => {
         sixthServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(sixthServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-          window.location.reload();
+          // this.tostr.success("Place New Order", "Order Placed Successfully");
+          // window.location.reload();
+          this.spinner.hide();
+          this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -194,12 +200,14 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.fifthServiceDocList.forEach((eachDoc: File, index) => {
         fifthServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(fifthServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-          window.location.reload();
+          // this.tostr.success("Place New Order", "Order Placed Successfully");
+          // window.location.reload();
+          this.spinner.hide();
+          this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -262,12 +270,13 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.forthServiceDocList.forEach((eachDoc: File, index) => {
         forthServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(forthServiceFormData).subscribe((resp: any) => {
-
+      
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-
+         // this.tostr.success("Place New Order", "Order Placed Successfully");
+         this.spinner.hide();
+         this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -326,16 +335,18 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       thirdServiceFormData.append("dateOfAppointment", dateOfAppointment);
 
       thirdServiceFormData.append("intent", this.thirdServiceIntentLetter);
-
+      
       this.thirdServiceDocList.forEach((eachDoc: File, index) => {
         thirdServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(thirdServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-          window.location.reload();
+          // this.tostr.success("Place New Order", "Order Placed Successfully");
+          // window.location.reload();
+          this.spinner.hide();
+         this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -370,11 +381,13 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.secondServiceDocs.forEach((eachDoc: File, index) => {
         secondServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(secondServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
+         // this.tostr.success("Place New Order", "Order Placed Successfully");
+         this.spinner.hide();
+         this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
@@ -437,16 +450,38 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
       this.firstServiceRequiredDocList.forEach((eachDoc: File, index) => {
         firstServiceFormData.append('doc-Info' + index, eachDoc);
       })
-
+      this.spinner.show();
       this.csService.placeCsOrder(firstServiceFormData).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("Place New Order", "Order Placed Successfully");
-          window.location.reload(); 
+          // this.tostr.success("Place New Order", "Order Placed Successfully");
+          // window.location.reload(); 
+          this.spinner.hide();
+          this.showSuccessModal();
         } else {
           this.tostr.error("Place New Order", resp.message);
         }
       })
+    }
+  }
+
+  showSuccessModal() {
+    const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+    if (modalElement) {
+      this.renderer.addClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'block');
+      this.renderer.setStyle(modalElement, 'backgroundColor', 'rgba(0, 0, 0, 0.5)');
+    }
+  }
+  
+  redirectToAnotherForm() {
+    const modalElement = this.el.nativeElement.querySelector('#statusSuccessModal');
+    if (modalElement) {
+      this.renderer.removeClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'none');
+      this.renderer.removeStyle(modalElement, 'backgroundColor');
+      this.router.navigate(['app/cs-order-requests']);
+     // this.lgForm.reset();
     }
   }
 

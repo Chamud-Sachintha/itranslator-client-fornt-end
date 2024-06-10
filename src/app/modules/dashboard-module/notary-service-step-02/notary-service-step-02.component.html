@@ -1,4 +1,4 @@
-<h5 class="card-header">Step 2</h5>
+<h3 class="card-header" style="font-weight: bolder;"> ලේඛණ ඉදිරිපත් කිරීම /Submission of documents</h3>
 <div class="card-body">
     <form [formGroup]="documentAndOtherInfoForm" (ngSubmit)="onSubmitDocumentAndAditionalInfoForm()" enctype="multipart/form-data">
         <div class="row">
@@ -8,9 +8,9 @@
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Extracts</label>
-                <div class="mt-4">
+               
                 <input type="file" class="form-control" formControlName="secondDoc" multiple (change)="onChangeSecondDoc($event)">
-            </div>
+           
             </div>
         </div>
         <div class="row mt-3">

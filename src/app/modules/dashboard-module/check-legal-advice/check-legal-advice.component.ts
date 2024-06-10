@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { LegalService } from 'src/app/services/legal/legal.service';
@@ -32,6 +33,7 @@ export class CheckLegalAdviceComponent implements OnInit{
     private legalService: LegalService,
     private toastr: ToastrService,
     private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -107,9 +109,10 @@ export class CheckLegalAdviceComponent implements OnInit{
     files.forEach((file, index) => {
       formData.append(`Doc[${index}]`, file);
     });
-
+    this.spinner.show();
     this.legalService.sendAdminLegalMessage(formData).subscribe((resp: any) => {
       if (resp.code === 1) {
+        this.spinner.hide();
         this.toastr.success("Send Admin Message", "Message Sent Successfully.");
        // this.tostr.success("Order Assign", "Order Assign Successfully.");
         this.isVisible = false;
