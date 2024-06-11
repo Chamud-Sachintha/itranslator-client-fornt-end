@@ -99,7 +99,7 @@ export class NotaryServiceStep03Component implements OnInit {
       this.renderer.removeClass(modalElement, 'show');
       this.renderer.setStyle(modalElement, 'display', 'none');
       this.renderer.removeStyle(modalElement, 'backgroundColor');
-      this.router.navigate(['app/select-services/step-01'])
+      this.router.navigate(['app/notary-order-requests'])
      // this.lgForm.reset();
     }
   }
