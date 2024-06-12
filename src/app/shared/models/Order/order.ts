@@ -10,4 +10,10 @@ export class Order {
     totalAmount!: Number;
     valueObjModel!: any;
     invoiceNo!: string;
+
+    // client info
+
+    fullName!: string;
+    address!: string;
+    mobileNumber!: string;
 }

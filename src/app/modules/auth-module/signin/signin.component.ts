@@ -20,6 +20,9 @@ export class SigninComponent implements OnInit {
               , private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
+    if (sessionStorage.getItem("authToken") != null) {
+      this.router.navigate(['/home']);
+    }
     this.initCreateSigninForm();
   }
 
@@ -50,6 +53,8 @@ export class SigninComponent implements OnInit {
           this.tostr.success("Client Login", "Client Authentication Successfully.");
 
           this.router.navigate(['app'])
+        } else {
+          this.tostr.error("Authenticate User", resp.message);
         }
 
         this.spinner.hide();

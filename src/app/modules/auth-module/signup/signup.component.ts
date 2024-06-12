@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { SmsService } from 'src/app/services/sms/sms.service';
 import { Client } from 'src/app/shared/models/Client/client';
+import { SMSModel } from 'src/app/shared/models/SMSModel/smsmodel';
 
 @Component({
   selector: 'app-signup',
@@ -14,10 +16,11 @@ import { Client } from 'src/app/shared/models/Client/client';
 export class SignupComponent implements OnInit {
 
   clientModel = new Client();
+  smsModel = new SMSModel();
   cretateSignUpForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private tostr: ToastrService
-              , private spinner: NgxSpinnerService) {}
+              , private spinner: NgxSpinnerService, private smsService: SmsService) {}
 
   ngOnInit(): void {
     this.initCreateSignUpForm();
@@ -63,8 +66,13 @@ export class SignupComponent implements OnInit {
       this.authService.registerUser(this.clientModel).subscribe((resp: any) => {
 
         if (resp.code === 1) {
-          this.tostr.success("New Client Registration", "Client Registration Succcessfully.");
-          this.router.navigate(['/auth/login']);
+          // this.tostr.success("New Client Registration", "Client Registration Succcessfully.");
+          // this.router.navigate(['/auth/login']);
+
+          // need to redirect sms authentication page
+          setTimeout(() => {
+            this.sendSmsVerificationCode(mobileNumber);
+          }, 1000);
         } else {
           this.tostr.error("New Client Registration", resp.message);
         }
@@ -72,6 +80,19 @@ export class SignupComponent implements OnInit {
         this.spinner.hide();
       }, (err) => {})
     }
+  }
+
+  sendSmsVerificationCode(mobileNumber: string) {
+    this.smsModel.mobileNumber = mobileNumber;
+
+    this.smsService.sendRegisterVerifySmsCode(this.smsModel).subscribe((resp: any) => {
+      if (resp.code === 1) {
+        this.router.navigate(['/auth/sms'])
+        this.tostr.success("Register Code Sent.", "Code Sending Succcessfully.");
+      } else {
+        this.tostr.error("Error Sending Cerify Code.", resp.message);
+      }
+    })
   }
 
   initCreateSignUpForm() {

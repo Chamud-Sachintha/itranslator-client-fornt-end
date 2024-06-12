@@ -3,10 +3,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataShareService } from 'src/app/services/data/data-share.service';
+import { ExportService } from 'src/app/services/export/export.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { SmsService } from 'src/app/services/sms/sms.service';
 import { Invoice } from 'src/app/shared/models/Invoice/invoice';
 import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
+import { OrderNotification } from 'src/app/shared/models/OrderNotification/order-notification';
 import { Request } from 'src/app/shared/models/Request/request';
 declare var $: any; 
 
@@ -27,13 +30,18 @@ export class InvoiceComponent implements OnInit {
   uploadedSlip: any[] = [];
   uploadeDocumentList: any[] = [];
   invoiceIssuedDate = new Date();
+  orderNotificationModel = new OrderNotification();
+  invoiceNo!: string;
+  deliveryMethod!: string;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService) {}
+            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService) {}
 
   ngOnInit(): void {
 
     this.getClientInfo();
+
+    this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
 
     this.dataShareService.getComponentValueObj().subscribe((data: any) => {
 
@@ -55,8 +63,6 @@ export class InvoiceComponent implements OnInit {
 
         invoiceObj.documentTitle = eachDoc.translationTitle;
         invoiceObj.pages = eachDoc.pages;
-
-        console.log(eachDoc)
         
         if (eachDoc.nicTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
@@ -78,10 +84,46 @@ export class InvoiceComponent implements OnInit {
 
         totalAmount += Number(invoiceObj.unitPrice);
 
+        // need to change total amount according to delivery method
+
+        this.deliveryMethod = dataList.deliveryMethod;
+
+        if (this.deliveryMethod === "3") {
+          totalAmount += 500;
+        } else if (this.deliveryMethod === "4") {
+          totalAmount += 1000;
+        }
+
         this.invoiceItemList.push(invoiceObj);
       })
 
       this.inviceTableObj.amount = totalAmount;
+    })
+  }
+
+  printInvoice() {
+    return false;
+  }
+
+  exportPDF() {
+    this.orderDetails.token = sessionStorage.getItem("authToken");
+    this.orderDetails.flag = sessionStorage.getItem("role");
+    this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
+
+    this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
+    this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
+    this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
+    this.orderDetails.totalAmount = this.inviceTableObj.amount;
+    this.orderDetails.invoiceNo = this.invoiceNo
+
+    this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
+
+    this.orderDetails.fullName = this.invoiceModel.invoiceTo;
+    this.orderDetails.address = this.invoiceModel.invoiceAddress;
+    this.orderDetails.mobileNumber = this.invoiceModel.mobileNumber;
+
+    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((resp: any) => {
+      console.log(resp);
     })
   }
 
@@ -95,7 +137,7 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
-    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    this.orderDetails.invoiceNo = this.invoiceNo
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
@@ -127,7 +169,7 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
-    this.orderDetails.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    this.orderDetails.invoiceNo = this.invoiceNo;
 
     const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({type, value}));
 
@@ -136,6 +178,16 @@ export class InvoiceComponent implements OnInit {
     this.spinner.show();
     this.orderService.placeOrderWithBankSlip(this.orderDetails).subscribe((resp: any) => {
       if (resp.code === 1) {
+        setTimeout(() => {
+          this.orderNotificationModel.token = sessionStorage.getItem("authToken");
+          this.orderNotificationModel.flag = sessionStorage.getItem("role");
+          this.orderNotificationModel.orderNumber = this.orderDetails.invoiceNo;
+          this.orderNotificationModel.orderType = "TR";
+
+          this.smsService.sendOrderPlaceNotification(this.orderNotificationModel).subscribe((resp: any) => {
+            console.log(resp);
+          })
+        }, 1000);
         this.tostr.success("Place New Order", "Order Placed Successfully");
       } else {
         this.tostr.error("Place New Order", resp.message);
