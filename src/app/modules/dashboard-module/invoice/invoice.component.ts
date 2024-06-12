@@ -3,6 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { DataShareService } from 'src/app/services/data/data-share.service';
+import { ExportService } from 'src/app/services/export/export.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { SmsService } from 'src/app/services/sms/sms.service';
 import { Invoice } from 'src/app/shared/models/Invoice/invoice';
@@ -34,7 +35,7 @@ export class InvoiceComponent implements OnInit {
   deliveryMethod!: string;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService, private smsService: SmsService) {}
+            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService) {}
 
   ngOnInit(): void {
 
@@ -105,7 +106,25 @@ export class InvoiceComponent implements OnInit {
   }
 
   exportPDF() {
-    return false;
+    this.orderDetails.token = sessionStorage.getItem("authToken");
+    this.orderDetails.flag = sessionStorage.getItem("role");
+    this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
+
+    this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
+    this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
+    this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
+    this.orderDetails.totalAmount = this.inviceTableObj.amount;
+    this.orderDetails.invoiceNo = this.invoiceNo
+
+    this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
+
+    this.orderDetails.fullName = this.invoiceModel.invoiceTo;
+    this.orderDetails.address = this.invoiceModel.invoiceAddress;
+    this.orderDetails.mobileNumber = this.invoiceModel.mobileNumber;
+
+    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((resp: any) => {
+      console.log(resp);
+    })
   }
 
   placeOnlinePayment() {
