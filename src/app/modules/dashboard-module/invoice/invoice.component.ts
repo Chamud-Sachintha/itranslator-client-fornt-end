@@ -122,8 +122,13 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.address = this.invoiceModel.invoiceAddress;
     this.orderDetails.mobileNumber = this.invoiceModel.mobileNumber;
 
-    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((resp: any) => {
-      console.log(resp);
+    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((blob: any) => {
+      const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = 'invoice.pdf';  // You can use a dynamic name here based on your invoice object
+        a.click();
+        URL.revokeObjectURL(objectUrl);
     })
   }
 

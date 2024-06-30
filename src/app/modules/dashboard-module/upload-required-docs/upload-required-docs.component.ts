@@ -499,6 +499,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(deedAppend);
 
+      this.deedForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -620,6 +621,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(affidavitModelAppend);
 
+      this.affidavitForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -709,6 +711,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(schoolLeavingCertificateAppend);
 
+      this.schoolLeavingTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -871,6 +874,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(otherDocumentAppend);
 
+      this.otherDocumentTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -974,6 +978,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(dcDocumentAppendModel);
 
+      this.deathTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1061,6 +1066,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(mcTranslateAppendModel);
 
+      this.marriageTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1134,6 +1140,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(this.documentAppendModel);
 
+      this.passportTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1176,6 +1183,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(bcTranslateAppend);
 
+      this.bcTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1353,6 +1361,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.appendDocList.push(nicModelAppend);
 
       // $('#exampleModal').modal().close();
+      this.nicTranslateForm.reset();
       $("#exampleModal .close").click()
     }
 
