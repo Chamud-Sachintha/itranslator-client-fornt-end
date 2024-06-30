@@ -185,6 +185,9 @@
                             <span class="text-secondary-d1 text-105">Thank you for your Order</span>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay Now</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip" (click)="placeOrderWithBankSlip()">Place Order</button>
+                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">
+                                Previous
+                            </button>
                         </div>
                     </div>
                 </div>

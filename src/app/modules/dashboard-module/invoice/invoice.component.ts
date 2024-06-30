@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -35,7 +36,8 @@ export class InvoiceComponent implements OnInit {
   deliveryMethod!: string;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService) {}
+            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService
+            , private router: Router) {}
 
   ngOnInit(): void {
 
@@ -101,7 +103,12 @@ export class InvoiceComponent implements OnInit {
     })
   }
 
+  onClickPreviousBtn() {
+    this.router.navigate(['/app/select-services/step-03'])
+  }
+
   printInvoice() {
+    window.print();
     return false;
   }
 

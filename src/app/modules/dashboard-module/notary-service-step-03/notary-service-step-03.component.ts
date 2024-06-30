@@ -47,6 +47,10 @@ export class NotaryServiceStep03Component implements OnInit {
     })
   }
 
+  onClickPrevButton() {
+    this.router.navigate(['/app/select-services/notary-service/step-02']);
+  }
+
   onClickSaveProcess() {
     this.spinner.show();
     this.addedPersonList.secondStepData = this.secondStepData;

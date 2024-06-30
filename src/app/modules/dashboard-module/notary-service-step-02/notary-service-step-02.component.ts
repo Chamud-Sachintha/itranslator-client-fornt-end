@@ -19,16 +19,24 @@ export class NotaryServiceStep02Component implements OnInit {
   firstDocList: File[] = [];
   secondDocList: File[] = [];
   thirdDocList: File[] = [];
+  firstPageSessionData!: any;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService, private tostr: ToastrService) {}
 
   ngOnInit(): void {
+
+    const existingData = localStorage.getItem("notaryServiceDataObject");
+    this.firstPageSessionData = existingData ? JSON.parse(existingData) : [];
 
     this.dataShareService.getComponentValueObj().subscribe((data: NotaryServiceFirstStep) => {
       this.firstStepModel = data;
     })
 
     this.initdocumentAndOtherInfoForm();
+
+    if (this.firstPageSessionData != null) {
+      this.documentAndOtherInfoForm.controls['firstDoc'].setValue(this.firstPageSessionData[1].firstDocList)
+    }
   }
 
   onChangeFirstDoc($event: any) {
@@ -124,6 +132,12 @@ export class NotaryServiceStep02Component implements OnInit {
       this.secondStepModel.firstStepData = this.firstStepModel;
 
       this.dataShareService.setComponentValueObj(this.secondStepModel);
+      
+      if (this.firstPageSessionData != null) {
+        this.firstPageSessionData.push(this.secondStepModel);
+        localStorage.setItem("notaryServiceDataObject", JSON.stringify(this.firstPageSessionData));
+      }
+
       this.router.navigate(['app/select-services/notary-service/step-03'])
     }
   }
@@ -165,6 +179,10 @@ export class NotaryServiceStep02Component implements OnInit {
       district: ['', Validators.required],
       landRegOffice: ['', Validators.required]
     })
+  }
+
+  goToPrevPage() {
+    this.router.navigate(['/app/select-services/notary-service/step-01']);
   }
 
 }
