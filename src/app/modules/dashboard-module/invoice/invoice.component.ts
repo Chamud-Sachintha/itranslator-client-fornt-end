@@ -34,6 +34,7 @@ export class InvoiceComponent implements OnInit {
   orderNotificationModel = new OrderNotification();
   invoiceNo!: string;
   deliveryMethod!: string;
+  bankSlipCacheObj!: any;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
             , private authService: AuthService, private smsService: SmsService, private exportService: ExportService
@@ -41,6 +42,7 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.bankSlipCacheObj = localStorage.getItem("bankSlip");
     this.getClientInfo();
 
     this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
@@ -52,10 +54,12 @@ export class InvoiceComponent implements OnInit {
       const dataList = JSON.parse(JSON.stringify(data));
       this.sendDataObj = data;
 
-      if (data.bankSlip != null) {
+      if (data.bankSlip.__zone_symbol__state == true && data.bankSlip != null) {
         if (data.bankSlip.__zone_symbol__value) {
           this.bankSlip = true;
         }
+      } else if (this.bankSlipCacheObj != null){
+        this.bankSlip = true;
       }
 
       let totalAmount = 0;
@@ -167,6 +171,7 @@ export class InvoiceComponent implements OnInit {
       }
 
       this.spinner.hide();
+      this.resetCache();
     })
   }
 
@@ -177,6 +182,11 @@ export class InvoiceComponent implements OnInit {
     this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
 
     this.orderDetails.bankSlip = this.sendDataObj.bankSlip.__zone_symbol__value;
+
+    if (this.bankSlipCacheObj != null || this.bankSlipCacheObj != undefined) {
+      this.orderDetails.bankSlip = this.bankSlipCacheObj;
+    }
+    
     this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
@@ -206,7 +216,12 @@ export class InvoiceComponent implements OnInit {
       }
 
       this.spinner.hide();
+      this.resetCache()
     })
+  }
+
+  resetCache() {
+    localStorage.clear();
   }
 
   getClientInfo() {

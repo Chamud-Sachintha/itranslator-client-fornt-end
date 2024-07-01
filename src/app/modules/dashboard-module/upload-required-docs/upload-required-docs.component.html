@@ -74,6 +74,29 @@
               <input type="file" class="form-control" (change)="onChangeBankSlip($event)">
             </div>
           </div>
+
+          <div class="row mt-3" *ngIf="paymentMethod == '1'">
+            <div class="col-12">
+              <div class="alert alert-primary" role="alert">
+                Bank Details
+                ==================================================
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <p>Name - I Translate Private Limited</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Account No - 097200270028151</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Branch - Gangodawila</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Bank - People's bank</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

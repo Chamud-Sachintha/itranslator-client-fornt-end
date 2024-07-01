@@ -88,6 +88,8 @@ export class UploadRequiredDocsComponent implements OnInit {
   firstPageCacheObj: any[] = [];
   appendDocListCacheObj: any[] = [];
 
+  completeDocObj: any;
+
   @ViewChild('fileInput1') fileInput1!:ElementRef;
   @ViewChild('fileInput2') fileInput2!:ElementRef;
   @ViewChild('fileInput3') fileInput3!:ElementRef;
@@ -1030,29 +1032,40 @@ export class UploadRequiredDocsComponent implements OnInit {
       //   bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
       // }
 
-      if (this.paymentMethod == "1" && (this.bankSlip == null || this.bankSlip == undefined)) {
-        this.tostr.error("Upload Bank Slip", "Bank Slip is Required");
-      } else {
-
-        const completeDocObj = {
+      if (localStorage.getItem("bankSlip") == null) {
+        this.completeDocObj = {
           uploadedDocList: this.appendDocList,
           deliveryTime: this.deliveryTime,
           deliveryMethod: this.deliveryMethod,
           paymentMethod: this.paymentMethod,
           bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
         }
-    
-        this.dataShareService.setComponentValueObj(completeDocObj);
-  
-        localStorage.removeItem("appendDocListCacheObj");
-        localStorage.setItem("appendDocListCacheObj", JSON.stringify(this.appendDocList));
-  
-        localStorage.setItem("deliveryMethod", this.deliveryMethod);
-        localStorage.setItem("deliveryTime", this.deliveryTime);
-        localStorage.setItem("paymentMethod", this.paymentMethod);
-  
-        this.router.navigate(['app/select-services/step-04']);
+      } else {
+        this.completeDocObj = {
+          uploadedDocList: this.appendDocList,
+          deliveryTime: this.deliveryTime,
+          deliveryMethod: this.deliveryMethod,
+          paymentMethod: this.paymentMethod,
+          bankSlip: (this.paymentMethod == "1" ? localStorage.getItem("bankSlip") : null)
+        }
       }
+  
+      this.dataShareService.setComponentValueObj(this.completeDocObj);
+
+      localStorage.removeItem("appendDocListCacheObj");
+      localStorage.setItem("appendDocListCacheObj", JSON.stringify(this.appendDocList));
+
+      localStorage.setItem("deliveryMethod", this.deliveryMethod);
+      localStorage.setItem("deliveryTime", this.deliveryTime);
+      localStorage.setItem("paymentMethod", this.paymentMethod);
+
+      if (this.paymentMethod == "1" && localStorage.getItem("bankSlip") == null) {
+        this.convertImageToBase64(this.bankSlip).then((resp: any) => {
+          localStorage.setItem("bankSlip", resp);
+        })
+      }
+
+      this.router.navigate(['app/select-services/step-04']);
     }
   }
 
