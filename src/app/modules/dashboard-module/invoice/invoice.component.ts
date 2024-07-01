@@ -90,18 +90,18 @@ export class InvoiceComponent implements OnInit {
 
         totalAmount += Number(invoiceObj.unitPrice);
 
-        // need to change total amount according to delivery method
-
-        this.deliveryMethod = dataList.deliveryMethod;
-
-        if (this.deliveryMethod === "3") {
-          totalAmount += 500;
-        } else if (this.deliveryMethod === "4") {
-          totalAmount += 1000;
-        }
-
         this.invoiceItemList.push(invoiceObj);
       })
+
+      // need to change total amount according to delivery method
+
+      this.deliveryMethod = dataList.deliveryMethod;
+
+      if (this.deliveryMethod === "3") {
+        totalAmount += 500;
+      } else if (this.deliveryMethod === "4") {
+        totalAmount += 1000;
+      }
 
       this.inviceTableObj.amount = totalAmount;
     })
