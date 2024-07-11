@@ -85,6 +85,10 @@ export class UploadRequiredDocsComponent implements OnInit {
   viewDeedForm!: FormGroup;
 
   viewFormImageList: string[] = [];
+  firstPageCacheObj: any[] = [];
+  appendDocListCacheObj: any[] = [];
+
+  completeDocObj: any;
 
   @ViewChild('fileInput1') fileInput1!:ElementRef;
   @ViewChild('fileInput2') fileInput2!:ElementRef;
@@ -102,19 +106,39 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   ngOnInit() {
 
-    // if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-    //   const confirmd = confirm("Are you sure want to leave this page ?");
+    const existingServices = localStorage.getItem("enableService");
+    this.firstPageCacheObj = existingServices ? JSON.parse(existingServices) : [];
 
-    //   if (confirmd) {
-    //     this.location.back();
-    //   }
-    // } else {
-    //   console.info( "This page is not reloaded");
-    // }
+    const existingDocumentCache = localStorage.getItem("appendDocListCacheObj");
+    this.appendDocListCacheObj = existingDocumentCache ? JSON.parse(existingDocumentCache) : [];
 
     this.dataShareService.getComponentValueObj().subscribe((data) => {
       this.selectedServiceList.push(data);
     })
+
+    if (this.firstPageCacheObj != null) {
+      this.selectedServiceList = [];
+      this.selectedServiceList.push(this.firstPageCacheObj)
+    }
+
+    if (this.appendDocListCacheObj != null) {
+      this.appendDocList = this.appendDocListCacheObj;
+    }
+
+    if (localStorage.getItem("deliveryTime")) {
+      const deliveryTimeCache: any = localStorage.getItem("deliveryTime");
+      this.deliveryTime = deliveryTimeCache;
+    }
+
+    if (localStorage.getItem("deliveryMethod")) {
+      const deliveryMethodCache: any = localStorage.getItem("deliveryMethod");
+      this.deliveryMethod = deliveryMethodCache;
+    }
+
+    if (localStorage.getItem("paymentMethod")) {
+      const paymentMethodCache: any = localStorage.getItem("paymentMethod");
+      this.paymentMethod = paymentMethodCache;
+    }
  
     this.initNicTranslateForm();
     this.bcTranslateFormInit();
@@ -499,6 +523,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(deedAppend);
 
+      this.deedForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -620,6 +645,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(affidavitModelAppend);
 
+      this.affidavitForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -709,6 +735,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(schoolLeavingCertificateAppend);
 
+      this.schoolLeavingTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -871,6 +898,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(otherDocumentAppend);
 
+      this.otherDocumentTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -974,6 +1002,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(dcDocumentAppendModel);
 
+      this.deathTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -995,15 +1024,47 @@ export class UploadRequiredDocsComponent implements OnInit {
     } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
       this.tostr.error("Empty Properties.", "Please Select Order Properties.");
     } else {
-      const completeDocObj = {
-        uploadedDocList: this.appendDocList,
-        deliveryTime: this.deliveryTime,
-        deliveryMethod: this.deliveryMethod,
-        paymentMethod: this.paymentMethod,
-        bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+      // const completeDocObj = {
+      //   uploadedDocList: this.appendDocList,
+      //   deliveryTime: this.deliveryTime,
+      //   deliveryMethod: this.deliveryMethod,
+      //   paymentMethod: this.paymentMethod,
+      //   bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+      // }
+
+      if (localStorage.getItem("bankSlip") == null) {
+        this.completeDocObj = {
+          uploadedDocList: this.appendDocList,
+          deliveryTime: this.deliveryTime,
+          deliveryMethod: this.deliveryMethod,
+          paymentMethod: this.paymentMethod,
+          bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+        }
+      } else {
+        this.completeDocObj = {
+          uploadedDocList: this.appendDocList,
+          deliveryTime: this.deliveryTime,
+          deliveryMethod: this.deliveryMethod,
+          paymentMethod: this.paymentMethod,
+          bankSlip: (this.paymentMethod == "1" ? localStorage.getItem("bankSlip") : null)
+        }
       }
   
-      this.dataShareService.setComponentValueObj(completeDocObj);
+      this.dataShareService.setComponentValueObj(this.completeDocObj);
+
+      localStorage.removeItem("appendDocListCacheObj");
+      localStorage.setItem("appendDocListCacheObj", JSON.stringify(this.appendDocList));
+
+      localStorage.setItem("deliveryMethod", this.deliveryMethod);
+      localStorage.setItem("deliveryTime", this.deliveryTime);
+      localStorage.setItem("paymentMethod", this.paymentMethod);
+
+      if (this.paymentMethod == "1" && localStorage.getItem("bankSlip") == null) {
+        this.convertImageToBase64(this.bankSlip).then((resp: any) => {
+          localStorage.setItem("bankSlip", resp);
+        })
+      }
+
       this.router.navigate(['app/select-services/step-04']);
     }
   }
@@ -1061,6 +1122,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(mcTranslateAppendModel);
 
+      this.marriageTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1134,6 +1196,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(this.documentAppendModel);
 
+      this.passportTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1176,6 +1239,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
       this.appendDocList.push(bcTranslateAppend);
 
+      this.bcTranslateForm.reset();
       $("#exampleModal .close").click();
     }
   }
@@ -1289,6 +1353,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     }
   }
 
+  setPaymentMethod() {
+    localStorage.removeItem("paymentMethod");
+    localStorage.setItem("paymentMethod", this.paymentMethod)
+  }
+
   onChangeFrontImage(event: any) {
     const file = (event.target as any).files[0];
     this.nicTranslateForm.patchValue({"frontImg": file});
@@ -1353,6 +1422,7 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.appendDocList.push(nicModelAppend);
 
       // $('#exampleModal').modal().close();
+      this.nicTranslateForm.reset();
       $("#exampleModal .close").click()
     }
 
@@ -1383,7 +1453,8 @@ export class UploadRequiredDocsComponent implements OnInit {
   }
 
   onClickPreviousBtn() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/app/select-services/step-02'])
   }
 
   convertImageToBase64(fileInput: any): Promise<string> {

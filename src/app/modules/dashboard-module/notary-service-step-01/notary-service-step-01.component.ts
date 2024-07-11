@@ -21,6 +21,7 @@ export class NotaryServiceStep01Component implements OnInit {
   searchParamModel= new SearchParam();
   mainNotaryCategoryList: MainNotaryCategory[] = [];
   subCategoryList: SubNotaryCategory[] = [];
+  firstPageSessionData!: any;
 
   constructor(private dataShareService: DataShareService, private router: Router, private formBuilder: FormBuilder
             , private notaryService: NotaryService, private tostr: ToastrService) {}
@@ -28,6 +29,16 @@ export class NotaryServiceStep01Component implements OnInit {
   ngOnInit(): void {
     this.initBasicInfoForm();
     this.loadMainNotaryCategoryList();
+
+    var getSessionDataObj: any = localStorage.getItem("notaryServiceDataObject");
+    if (getSessionDataObj != null) {
+      var sessionObjToJson = JSON.parse(getSessionDataObj);
+      this.onChangeMainCategory(sessionObjToJson[0].mainCategory);
+
+      this.basicInfoForm.controls['mainCategory'].setValue(sessionObjToJson[0].mainCategory)
+      this.basicInfoForm.controls['subCategory'].setValue(sessionObjToJson[0].subCategory);
+      this.basicInfoForm.controls['description'].setValue(sessionObjToJson[0].descriptionOfService)
+    }
   }
 
   onChangeMainCategory(mainCategoryId: string) {
@@ -89,6 +100,15 @@ export class NotaryServiceStep01Component implements OnInit {
       this.firstStepModel.descriptionOfService = description;
 
       this.dataShareService.setComponentValueObj(this.firstStepModel);
+
+      const existingData = localStorage.getItem("notaryServiceDataObject");
+      this.firstPageSessionData = existingData ? JSON.parse(existingData) : [];
+
+      if (existingData == null) {
+        this.firstPageSessionData.push(this.firstStepModel);
+        localStorage.setItem("notaryServiceDataObject", JSON.stringify(this.firstPageSessionData));
+      }
+
       this.router.navigate(['app/select-services/notary-service/step-02'])
     }
   }

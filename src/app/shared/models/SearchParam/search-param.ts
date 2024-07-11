@@ -4,4 +4,5 @@ export class SearchParam {
     serviceId!: string;
     deliveryTimeType!: string;
     mainCategoryCode!: string;
+    categoryId!: string;
 }
