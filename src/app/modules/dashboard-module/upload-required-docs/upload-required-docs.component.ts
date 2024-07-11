@@ -1353,6 +1353,11 @@ export class UploadRequiredDocsComponent implements OnInit {
     }
   }
 
+  setPaymentMethod() {
+    localStorage.removeItem("paymentMethod");
+    localStorage.setItem("paymentMethod", this.paymentMethod)
+  }
+
   onChangeFrontImage(event: any) {
     const file = (event.target as any).files[0];
     this.nicTranslateForm.patchValue({"frontImg": file});
