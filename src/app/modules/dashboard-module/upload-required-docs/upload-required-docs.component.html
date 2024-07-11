@@ -62,7 +62,7 @@
           <div class="row mt-3">
             <div class="col-md-6 col-lg-6 col-sm-12">
               <label for="">Select Payment Method</label>
-              <select name="" id="" class="form-control" [(ngModel)]="this.paymentMethod">
+              <select name="" id="" class="form-control" [(ngModel)]="this.paymentMethod" (change)="setPaymentMethod()">
                 <option value="">--- Select Option ---</option>
                 <option value="1">Bank Deposit</option>
                 <option value="2">Online Payment</option>
@@ -72,6 +72,29 @@
             <div class="col-md-6 col-lg-6 col-sm-12" *ngIf="this.paymentMethod == '1'">
               <label for="">Upload Bank Deposit Slip</label>
               <input type="file" class="form-control" (change)="onChangeBankSlip($event)">
+            </div>
+          </div>
+
+          <div class="row mt-3" *ngIf="paymentMethod == '1'">
+            <div class="col-12">
+              <div class="alert alert-primary" role="alert">
+                Bank Details
+                ==================================================
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <p>Name - I Translate Private Limited</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Account No - 097200270028151</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Branch - Gangodawila</p>
+                  </div>
+                  <div class="col-12">
+                    <p>Bank - People's bank</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

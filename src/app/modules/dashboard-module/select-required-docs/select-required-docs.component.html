@@ -13,7 +13,7 @@
                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Selected</label>
                         <div class="col-12 col-sm-8 col-lg-6 pt-1">
                             <div class="switch-button switch-button-success">
-                                <input type="checkbox" name="{{ i + 1 }}" id="{{ i + 1 }}" (change)="onChangeToggle(eachService.serviceId,eachService.serviceName, eachService.description, $event)"><span>
+                                <input type="checkbox" name="{{ i + 1 }}" id="{{ eachService.serviceId }}"  (change)="onChangeToggle(eachService.serviceId,eachService.serviceName, eachService.description, $event)"><span>
                             <label for="{{ i + 1 }}"></label></span>
                             </div>
                         </div>

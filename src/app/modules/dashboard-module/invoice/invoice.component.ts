@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -33,12 +34,15 @@ export class InvoiceComponent implements OnInit {
   orderNotificationModel = new OrderNotification();
   invoiceNo!: string;
   deliveryMethod!: string;
+  bankSlipCacheObj!: any;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService) {}
+            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService
+            , private router: Router) {}
 
   ngOnInit(): void {
 
+    this.bankSlipCacheObj = localStorage.getItem("bankSlip");
     this.getClientInfo();
 
     this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
@@ -50,11 +54,21 @@ export class InvoiceComponent implements OnInit {
       const dataList = JSON.parse(JSON.stringify(data));
       this.sendDataObj = data;
 
-      if (data.bankSlip != null) {
-        if (data.bankSlip.__zone_symbol__value) {
+      console.log(data.paymentMethod)
+
+      if (data.paymentMethod != 2) {
+        if (this.bankSlipCacheObj != null){
           this.bankSlip = true;
+        } else if (data.bankSlip != null) {
+          if (data.bankSlip.__zone_symbol__value) {
+            this.bankSlip = true;
+          }
         }
+      } else {
+        this.bankSlip = false;
       }
+
+      console.log(this.bankSlip + "sadasdsa")
 
       let totalAmount = 0;
       dataList.uploadedDocList.forEach((eachDoc: any) => {
@@ -84,24 +98,29 @@ export class InvoiceComponent implements OnInit {
 
         totalAmount += Number(invoiceObj.unitPrice);
 
-        // need to change total amount according to delivery method
-
-        this.deliveryMethod = dataList.deliveryMethod;
-
-        if (this.deliveryMethod === "3") {
-          totalAmount += 500;
-        } else if (this.deliveryMethod === "4") {
-          totalAmount += 1000;
-        }
-
         this.invoiceItemList.push(invoiceObj);
       })
+
+      // need to change total amount according to delivery method
+
+      this.deliveryMethod = dataList.deliveryMethod;
+
+      if (this.deliveryMethod === "3") {
+        totalAmount += 500;
+      } else if (this.deliveryMethod === "4") {
+        totalAmount += 1000;
+      }
 
       this.inviceTableObj.amount = totalAmount;
     })
   }
 
+  onClickPreviousBtn() {
+    this.router.navigate(['/app/select-services/step-03'])
+  }
+
   printInvoice() {
+    window.print();
     return false;
   }
 
@@ -122,8 +141,13 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.address = this.invoiceModel.invoiceAddress;
     this.orderDetails.mobileNumber = this.invoiceModel.mobileNumber;
 
-    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((resp: any) => {
-      console.log(resp);
+    this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((blob: any) => {
+      const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = 'invoice.pdf';  // You can use a dynamic name here based on your invoice object
+        a.click();
+        URL.revokeObjectURL(objectUrl);
     })
   }
 
@@ -155,6 +179,7 @@ export class InvoiceComponent implements OnInit {
       }
 
       this.spinner.hide();
+      this.resetCache();
     })
   }
 
@@ -165,6 +190,11 @@ export class InvoiceComponent implements OnInit {
     this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
 
     this.orderDetails.bankSlip = this.sendDataObj.bankSlip.__zone_symbol__value;
+
+    if (this.bankSlipCacheObj != null || this.bankSlipCacheObj != undefined) {
+      this.orderDetails.bankSlip = this.bankSlipCacheObj;
+    }
+    
     this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
@@ -194,7 +224,12 @@ export class InvoiceComponent implements OnInit {
       }
 
       this.spinner.hide();
+      this.resetCache()
     })
+  }
+
+  resetCache() {
+    localStorage.clear();
   }
 
   getClientInfo() {

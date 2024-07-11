@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <label for="">Select Sub Category:</label>
-                        <select name="" id="" class="form-control" formControlName="subCategory">
+                        <select id="" class="form-control" formControlName="subCategory">
                             <option value="">-- Select Option --</option>
                             <option value="{{ eachCategory.id }}" *ngFor="let eachCategory of this.subCategoryList">{{ eachCategory.subCategoryName }}</option>
                         </select>

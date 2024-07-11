@@ -12,6 +12,6 @@ export class ExportService {
 
   exportInvoiceAsPDF(invoiceObjModel: Order) {
     const path = environment.appURL + "export-as-pdf";
-    return this.http.post(path, invoiceObjModel);
+    return this.http.post(path, invoiceObjModel, { responseType: 'blob' });
   }
 }
