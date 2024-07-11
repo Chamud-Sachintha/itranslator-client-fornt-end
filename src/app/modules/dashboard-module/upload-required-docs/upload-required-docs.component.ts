@@ -1448,7 +1448,8 @@ export class UploadRequiredDocsComponent implements OnInit {
   }
 
   onClickPreviousBtn() {
-    this.location.back();
+    // this.location.back();
+    this.router.navigate(['/app/select-services/step-02'])
   }
 
   convertImageToBase64(fileInput: any): Promise<string> {

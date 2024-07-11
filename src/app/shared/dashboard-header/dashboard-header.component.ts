@@ -20,6 +20,10 @@ export class DashboardHeaderComponent {
     
   }
 
+  clickChooseService() {
+    localStorage.clear();
+  }
+
   onClickSignOut() {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("role");

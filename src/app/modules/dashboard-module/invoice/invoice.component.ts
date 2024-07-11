@@ -54,12 +54,14 @@ export class InvoiceComponent implements OnInit {
       const dataList = JSON.parse(JSON.stringify(data));
       this.sendDataObj = data;
 
-      if (data.bankSlip.__zone_symbol__state == true && data.bankSlip != null) {
-        if (data.bankSlip.__zone_symbol__value) {
+      if (data.paymentMethod != 2) {
+        if (data.bankSlip.__zone_symbol__state == true && data.bankSlip != null) {
+          if (data.bankSlip.__zone_symbol__value) {
+            this.bankSlip = true;
+          }
+        } else if (this.bankSlipCacheObj != null){
           this.bankSlip = true;
         }
-      } else if (this.bankSlipCacheObj != null){
-        this.bankSlip = true;
       }
 
       let totalAmount = 0;
