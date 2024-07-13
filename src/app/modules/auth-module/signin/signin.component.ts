@@ -49,7 +49,7 @@ export class SigninComponent implements OnInit {
           sessionStorage.setItem("authToken", dataList.token);
           sessionStorage.setItem("email", dataList.data[0].email);
           sessionStorage.setItem("role", dataList.data[0].userRole);
-          sessionStorage.setItem("username", username);
+          sessionStorage.setItem("username", dataList.data[0].fullName);
 
           this.tostr.success("Client Login", "Client Authentication Successfully.");
 

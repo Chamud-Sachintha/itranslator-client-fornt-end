@@ -31,4 +31,5 @@ export class Request {
     LegalDoc: File[] = [];
     OrderNo!:string;
     DocName!:string;
+    newpass!: string;
 }

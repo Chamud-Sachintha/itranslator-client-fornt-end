@@ -1,4 +1,4 @@
-<h5 class="card-header">තෝරාගත් සේවාවන් පිලිබදව විස්තර.</h5>
+<h3 class="card-header" style="font-weight: bolder;">තෝරාගත් සේවාවන් පිලිබදව විස්තර.</h3>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <div class="card-body">
     <div class="page-content container">
@@ -43,29 +43,32 @@
 
                     <div class="row">
                         <div class="col-sm-6">
-                            <div>
-                                <span class="text-sm text-grey-m2 align-middle">To:</span>
-                                <span class="text-600 text-110 text-blue align-middle">&nbsp;{{ this.invoiceModel.invoiceTo }}</span>
+                            <span style="-webkit-text-fill-color: black;"><b>Customer Details</b></span>
+                            <br>
+                          
+                            <div class="mt-2">
+                                <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Name:</span>
+                                <span class="text-600 text-110  align-middle">&nbsp;{{ this.invoiceModel.invoiceTo }}</span>
                             </div>
                             <div class="text-grey-m2">
                                 <div class="my-1">
-                                    {{ this.invoiceModel.invoiceAddress }}
+                                    <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Address:</span>
+                                    <b class="text-600">&nbsp;{{ this.invoiceModel.invoiceAddress }}</b> 
                                 </div>
                                 <!-- <div class="my-1">
                                     State, Country
                                 </div> -->
-                                <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b
-                                        class="text-600">{{ this.invoiceModel.mobileNumber }}</b></div>
+                                <div class="my-1">
+                                    <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Contact No:</span>&nbsp;
+                                    <b class="text-600">{{ this.invoiceModel.mobileNumber }}</b></div>
                             </div>
                         </div>
                         <!-- /.col -->
 
                         <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
                             <hr class="d-sm-none" />
-                            <div class="text-grey-m2">
-                                <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
-                                    Invoice
-                                </div>
+                            <div class="text-grey-m2 mt-3">
+                                
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                         class="text-600 text-90">Delivery Method:</span>
@@ -78,8 +81,9 @@
                                         class="text-600 text-90">Issue Date:</span> {{ this.invoiceIssuedDate | date }}</div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                        class="text-600 text-90">Status:</span> <span
-                                        class="badge badge-warning badge-pill px-25">Unpaid</span></div>
+                                        class="text-600 text-90">Payment Methord:</span>&nbsp;
+                                        <span   *ngIf="!this.bankSlip">Bank Tranfser</span>
+                                        <span    *ngIf="this.bankSlip">Online Payment</span></div>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -182,7 +186,7 @@
                         <hr />
 
                         <div>
-                            <span class="text-secondary-d1 text-105">Thank you for your Order</span>
+                            <span class="text-secondary-d1 text-105">Thank you for your Order!</span>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay Now</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip" (click)="placeOrderWithBankSlip()">Place Order</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">

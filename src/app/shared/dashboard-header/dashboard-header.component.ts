@@ -13,11 +13,12 @@ export class DashboardHeaderComponent {
   requestModel = new Request();
   superAdminPerm = false;
   clientPerm = false;
+  UserName: string | null = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    
+    this.UserName = sessionStorage.getItem("username");
   }
 
   clickChooseService() {
@@ -28,6 +29,7 @@ export class DashboardHeaderComponent {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("role");
     sessionStorage.removeItem("emailAddress");
+    sessionStorage.removeItem("username");
 
     this.router.navigate(['auth']);
   }
