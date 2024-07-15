@@ -937,6 +937,8 @@ export class UploadRequiredDocsComponent implements OnInit {
 
         const priceInfo = JSON.parse(JSON.stringify(resp));
 
+        console.log(eachDoc.serviceId)
+
         if (resp.code === 1) {
           if (eachDoc.serviceId == 1) {
             this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
@@ -1019,54 +1021,82 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   onClickNextStep() {
 
-    if (this.appendDocList.length == 0) {
-      this.tostr.error("Upload Documents", "Please Upload Required Documents.");
-    } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
-      this.tostr.error("Empty Properties.", "Please Select Order Properties.");
-    } else {
-      // const completeDocObj = {
-      //   uploadedDocList: this.appendDocList,
-      //   deliveryTime: this.deliveryTime,
-      //   deliveryMethod: this.deliveryMethod,
-      //   paymentMethod: this.paymentMethod,
-      //   bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
-      // }
+    this.onChangeDeliveryTime();
 
-      if (localStorage.getItem("bankSlip") == null) {
-        this.completeDocObj = {
-          uploadedDocList: this.appendDocList,
-          deliveryTime: this.deliveryTime,
-          deliveryMethod: this.deliveryMethod,
-          paymentMethod: this.paymentMethod,
-          bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
-        }
+    setTimeout(() => {
+      if (this.appendDocList.length == 0) {
+        this.tostr.error("Upload Documents", "Please Upload Required Documents.");
+      } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
+        this.tostr.error("Empty Properties.", "Please Select Order Properties.");
       } else {
-        this.completeDocObj = {
-          uploadedDocList: this.appendDocList,
-          deliveryTime: this.deliveryTime,
-          deliveryMethod: this.deliveryMethod,
-          paymentMethod: this.paymentMethod,
-          bankSlip: (this.paymentMethod == "1" ? localStorage.getItem("bankSlip") : null)
-        }
-      }
+        // const completeDocObj = {
+        //   uploadedDocList: this.appendDocList,
+        //   deliveryTime: this.deliveryTime,
+        //   deliveryMethod: this.deliveryMethod,
+        //   paymentMethod: this.paymentMethod,
+        //   bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+        // }
   
-      this.dataShareService.setComponentValueObj(this.completeDocObj);
-
-      localStorage.removeItem("appendDocListCacheObj");
-      localStorage.setItem("appendDocListCacheObj", JSON.stringify(this.appendDocList));
-
-      localStorage.setItem("deliveryMethod", this.deliveryMethod);
-      localStorage.setItem("deliveryTime", this.deliveryTime);
-      localStorage.setItem("paymentMethod", this.paymentMethod);
-
-      if (this.paymentMethod == "1" && localStorage.getItem("bankSlip") == null) {
-        this.convertImageToBase64(this.bankSlip).then((resp: any) => {
-          localStorage.setItem("bankSlip", resp);
+        if (localStorage.getItem("bankSlip") == null) {
+          this.completeDocObj = {
+            uploadedDocList: this.appendDocList,
+            deliveryTime: this.deliveryTime,
+            deliveryMethod: this.deliveryMethod,
+            paymentMethod: this.paymentMethod,
+            bankSlip: (this.paymentMethod == "1" ? this.convertImageToBase64(this.bankSlip) : null)
+          }
+        } else {
+          this.completeDocObj = {
+            uploadedDocList: this.appendDocList,
+            deliveryTime: this.deliveryTime,
+            deliveryMethod: this.deliveryMethod,
+            paymentMethod: this.paymentMethod,
+            bankSlip: (this.paymentMethod == "1" ? localStorage.getItem("bankSlip") : null)
+          }
+        }
+        
+        this.appendDocList.forEach((el: DocumentAppend) => {
+          if (el.serviceId == 1) {
+            el.nicTranslateModel.price = this.nicTranslatorModel.price
+          } else if (el.serviceId == 2) {
+            el.bcTranslateModel.price =this.bcTranslateModel.price;
+          } else if (el.serviceId == 3) {
+            el.mcTranslateModel.price = this.mcTranslateModel.price;
+          } else if (el.serviceId == 4) {
+            el.dcTranslateModel.price = this.dcTranslateModel.price;
+          } else if (el.serviceId == 5 || el.serviceId == 6 || el.serviceId == 8 || el.serviceId == 10 || el.serviceId == 11 || el.serviceId == 12 || el.serviceId == 14) {
+            el.otherDocumentModel.price = this.otherDocumentTranslateModel.price;
+          } else if (el.serviceId == 7) {
+            el.affidavitModel.price = this.affidavitModel.price;
+          } else if (el.serviceId == 9) {
+            el.schoolLeavingCertificateModel.price = this.schoolLeavingCertificateNModel.price;
+          } else if (el.serviceId == 13 || el.serviceId == 15) {
+            el.deedModel.price = this.deedModel.price;
+          }
         })
+  
+        console.log(this.completeDocObj);
+  
+        this.completeDocObj.uploadedDocList = this.appendDocList;
+  
+        this.dataShareService.setComponentValueObj(this.completeDocObj);
+  
+        localStorage.removeItem("appendDocListCacheObj");
+        localStorage.setItem("appendDocListCacheObj", JSON.stringify(this.appendDocList));
+  
+        localStorage.setItem("deliveryMethod", this.deliveryMethod);
+        localStorage.setItem("deliveryTime", this.deliveryTime);
+        localStorage.setItem("paymentMethod", this.paymentMethod);
+  
+        if (this.paymentMethod == "1" && localStorage.getItem("bankSlip") == null) {
+          this.convertImageToBase64(this.bankSlip).then((resp: any) => {
+            localStorage.setItem("bankSlip", resp);
+          })
+        }
+  
+        this.router.navigate(['app/select-services/step-04']);
       }
-
-      this.router.navigate(['app/select-services/step-04']);
-    }
+    }, 1000);
   }
 
   onSubmitMariageTranslateForm() {

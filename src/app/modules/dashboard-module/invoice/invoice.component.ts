@@ -54,8 +54,6 @@ export class InvoiceComponent implements OnInit {
       const dataList = JSON.parse(JSON.stringify(data));
       this.sendDataObj = data;
 
-      console.log(data.paymentMethod)
-
       if (data.paymentMethod != 2) {
         if (this.bankSlipCacheObj != null){
           this.bankSlip = true;
@@ -68,8 +66,6 @@ export class InvoiceComponent implements OnInit {
         this.bankSlip = false;
       }
 
-      console.log(this.bankSlip + "sadasdsa")
-
       let totalAmount = 0;
       dataList.uploadedDocList.forEach((eachDoc: any) => {
         
@@ -78,6 +74,8 @@ export class InvoiceComponent implements OnInit {
         invoiceObj.documentTitle = eachDoc.translationTitle;
         invoiceObj.pages = eachDoc.pages;
         
+        console.log(eachDoc.nicTranslateModel)
+
         if (eachDoc.nicTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.nicTranslateModel.price;
         } else if (eachDoc.bcTranslateModel !== undefined) {
