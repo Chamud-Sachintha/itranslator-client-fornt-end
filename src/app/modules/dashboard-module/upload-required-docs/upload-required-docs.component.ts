@@ -18,6 +18,7 @@ import { SchoolLeavingCertificateModel } from 'src/app/shared/models/SchoolLeavi
 import { SearchParam } from 'src/app/shared/models/SearchParam/search-param';
 import { NICTranslator } from 'src/app/shared/models/TranslatorModel/nictranslator';
 import { environment } from 'src/environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 declare var $: any; 
 
 @Component({
@@ -928,7 +929,6 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.searchParamModel.flag = sessionStorage.getItem("role");
 
     this.selectedServiceList[0].forEach((eachDoc: any) => {
-      console.log(eachDoc.serviceId);
       this.searchParamModel.serviceId = eachDoc.serviceId;
       this.searchParamModel.deliveryTimeType = this.deliveryTime;
 
@@ -936,8 +936,6 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.serviceService.getServicePriceByDeliveryTime(this.searchParamModel).subscribe((resp: any) => {
 
         const priceInfo = JSON.parse(JSON.stringify(resp));
-
-        console.log(eachDoc.serviceId)
 
         if (resp.code === 1) {
           if (eachDoc.serviceId == 1) {
@@ -962,6 +960,47 @@ export class UploadRequiredDocsComponent implements OnInit {
         this.spinner.hide();
       })
     })
+  }
+
+  async changeDeliveryTimeForNewPageLoad() {
+    this.searchParamModel.token = sessionStorage.getItem("authToken");
+    this.searchParamModel.flag = sessionStorage.getItem("role");
+  
+    this.spinner.show();
+  
+    for (const eachDoc of this.selectedServiceList[0]) {
+      this.searchParamModel.serviceId = eachDoc.serviceId;
+      this.searchParamModel.deliveryTimeType = this.deliveryTime;
+  
+      try {
+        const resp: any = await firstValueFrom(this.serviceService.getServicePriceByDeliveryTime(this.searchParamModel));
+        const priceInfo = JSON.parse(JSON.stringify(resp));
+  
+        if (resp.code === 1) {
+          if (eachDoc.serviceId === 1) {
+            this.nicTranslatorModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId === 2) {
+            this.bcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId === 3) {
+            this.mcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId === 4) {
+            this.dcTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if ([5, 6, 8, 10, 11, 12, 14].includes(eachDoc.serviceId)) {
+            this.otherDocumentTranslateModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId === 7) {
+            this.affidavitModel.price = priceInfo.data[0].servicePrice;
+          } else if (eachDoc.serviceId === 9) {
+            this.schoolLeavingCertificateNModel.price = priceInfo.data[0].servicePrice;
+          } else if ([13, 15].includes(eachDoc.serviceId)) {
+            this.deedModel.price = priceInfo.data[0].servicePrice;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching service price', error);
+      }
+    }
+  
+    this.spinner.hide();
   }
 
   onSubmitDeathCertificateTranslateForm() {
@@ -1021,9 +1060,7 @@ export class UploadRequiredDocsComponent implements OnInit {
 
   onClickNextStep() {
 
-    this.onChangeDeliveryTime();
-
-    setTimeout(() => {
+    this.changeDeliveryTimeForNewPageLoad().then((resp) => {
       if (this.appendDocList.length == 0) {
         this.tostr.error("Upload Documents", "Please Upload Required Documents.");
       } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
@@ -1096,7 +1133,7 @@ export class UploadRequiredDocsComponent implements OnInit {
   
         this.router.navigate(['app/select-services/step-04']);
       }
-    }, 1000);
+    })
   }
 
   onSubmitMariageTranslateForm() {
