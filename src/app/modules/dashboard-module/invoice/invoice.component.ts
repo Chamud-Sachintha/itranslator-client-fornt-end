@@ -217,6 +217,7 @@ export class InvoiceComponent implements OnInit {
           })
         }, 1000);
         this.tostr.success("Place New Order", "Order Placed Successfully");
+        this.router.navigate(['/']);
       } else {
         this.tostr.error("Place New Order", resp.message);
       }
