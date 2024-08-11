@@ -1,4 +1,7 @@
 <h3 class="card-header" style="font-weight: bolder;"> පුද්ගලයින්ගේ තොරතුරු ඇතුලත් කරන්න / Enter people's information</h3>
+<h6 class="card-header" style="color: red;">( සියළු පාර්ශ්‍ව කරුවන් ඩේ සහ සාක්ෂි කරුවන්ඩේ
+    ඩතොරතුරු පහතින් ඩතෝරා එකිඩනකා ඩවන් ඩවන්
+    වශ්‍ඩයන් ඇතුලත් කරන්න )</h6>
 <div class="card-body">
     <div class="row">
         <div class="col-6">
@@ -97,6 +100,20 @@
         <a href="#" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
+      </div>
+      <div class="modal-body">
+        <div class="row ms-3">
+            <div class="col-12">
+                <p style="color: red">
+                    (නම සහ ලිපිනය ඇතුලත් කිරීම අනිවාර්ය
+            වන අතර අනනයතාවය තහුමරු කිරීම
+            සදහා ජාතික හැදුනුේපත ඉදිරිපත් කල
+            යුතුය . ජාතික හැදුනුේ පත ඩනොමැති නේ
+            පමනක් පහත ඩේඛණයන්ඩගන් එකක්
+            ඉදිරිපත් කරන්න )
+                </p>
+            </div>
+          </div>
       </div>
       <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
         <form [formGroup]="this.addPersonForm" (ngSubmit)="onSubmitAddPersonForm()">

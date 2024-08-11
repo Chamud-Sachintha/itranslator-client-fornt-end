@@ -5,14 +5,16 @@
         <div class="col-12">
             <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmitBasicInfoForm()">
                 <div class="row">
-                    <div class="col-md-6 col-lg-6 col-sm-12">
+                    <div class="col-12">
                         <label for="">Select First Category:</label>
                         <select name="" id="" class="form-control" #mainCategory (change)="onChangeMainCategory(mainCategory.value)" formControlName="mainCategory">
                             <option value="">-- Select Option --</option>
                             <option value="{{ eachCategory.id }}" *ngFor="let eachCategory of this.mainNotaryCategoryList">{{ eachCategory.categoryName }}</option>
                         </select>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm-12">
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
                         <label for="">Select Sub Category:</label>
                         <select id="" class="form-control" formControlName="subCategory">
                             <option value="">-- Select Option --</option>
