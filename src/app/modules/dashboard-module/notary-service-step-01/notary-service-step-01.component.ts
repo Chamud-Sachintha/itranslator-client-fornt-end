@@ -42,6 +42,8 @@ export class NotaryServiceStep01Component implements OnInit {
   }
 
   onChangeMainCategory(mainCategoryId: string) {
+    this.basicInfoForm.controls['subCategory'].setValue('');
+    this.subCategoryList = [];
     this.searchParamModel.token = sessionStorage.getItem("authToken");
     this.searchParamModel.flag = sessionStorage.getItem("role");
     this.searchParamModel.mainCategoryCode = mainCategoryId;

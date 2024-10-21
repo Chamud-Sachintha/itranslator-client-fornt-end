@@ -186,7 +186,16 @@
                         <hr />
 
                         <div>
-                            <span class="text-secondary-d1 text-105">Thank you for your Order!</span>
+                            <span class="text-secondary-d1 text-105" style="margin-left: 380px;">Thank you for your Order!</span>
+                            <div class="company-details">
+                                <p>No.71/D, 1st Floor, High Level Plaza , Delkanda, Nugegoda, Sri Lanka.</p>
+                                <p></p>
+                                <p>Phone: +94 11 282 6212, Mobile: +94 71 362 3018, Mobile: +94 71 717 7099</p>
+                                <p></p>
+                                <p></p>
+                                <p>Email: itranslate.lk@gmail.com, Email: info@itranslate.lk</p>
+                                <p></p>
+                            </div>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay Now</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip" (click)="placeOrderWithBankSlip()">Place Order</button>
                             <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">
