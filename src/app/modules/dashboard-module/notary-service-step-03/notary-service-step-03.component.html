@@ -4,6 +4,7 @@
     වශ්‍ඩයන් ඇතුලත් කරන්න )</h6>
 <div class="card-body">
     <div class="row">
+        <h4 _ngcontent-ng-c2787404625="" class="card-header" style="color: red;">( සියළු පාර්ශව කරුවන් ගේ සහ සාක්ෂි කරුවන්ගේ තොරතුරු පහතින් තෝරා එකිනෙකා වෙන් වෙන් වශයෙන් ඇතුලත් කරන්න. )</h4>
         <div class="col-6">
             <label for="">Select Person:</label>
         </div>
@@ -101,21 +102,9 @@
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
-      <div class="modal-body">
-        <div class="row ms-3">
-            <div class="col-12">
-                <p style="color: red">
-                    (නම සහ ලිපිනය ඇතුලත් කිරීම අනිවාර්ය
-            වන අතර අනනයතාවය තහුමරු කිරීම
-            සදහා ජාතික හැදුනුේපත ඉදිරිපත් කල
-            යුතුය . ජාතික හැදුනුේ පත ඩනොමැති නේ
-            පමනක් පහත ඩේඛණයන්ඩගන් එකක්
-            ඉදිරිපත් කරන්න )
-                </p>
-            </div>
-          </div>
-      </div>
+      
       <div class="modal-body" style="max-height: 500px; overflow-y: scroll;">
+        <p _ngcontent-ng-c2787404625="" style="color: red;"> (නම සහ ලිපිනය ඇතුළත් කිරීම අනිවාර්ය වන අතර අනන්‍යතාවය තහවුරු කිරීම සඳහා ජාතික හැඳුනුම්පත ඉදිරිපත් කළ යුතුය. ජාතික හැදුනුම්පත නොමැති නම් පමණක් පහත ලේඛනයන්ගෙන් එකක් ඉදිරිපත් කරන්න ) </p>
         <form [formGroup]="this.addPersonForm" (ngSubmit)="onSubmitAddPersonForm()">
             <div class="row">
                 <div class="col-12">
@@ -127,40 +116,43 @@
                     <input type="text" class="form-control" formControlName="address">
                 </div>
                 <div class="col-12">
-                    <label for="">ජාතික හැ දණුම්පත් අංකය / National Identity Card Number</label>
+                    <label for="">ජාතික හැඳුනුම්පත / National Identity Card Number</label>
                     <input type="text" class="form-control" formControlName="nicNumber">
                 </div>
                 <div class="col-12">
-                    <label for="">විසද්ශ ගමන් බලපර අංකය / Passport No</label>
+                    <label for="">විදේශ ගමන් බලපත්‍ර අංකය / Passport No</label>
                     <input type="text" class="form-control" formControlName="passport">
                 </div>
                 <div class="col-12">
-                    <label for="">රිය දරු බලපත් අංකය / Driving license No</label>
+                    <label for="">රියැදුරු බලපත් අංකය / Driving license No</label>
                     <input type="text" class="form-control" formControlName="drivingLic">
                 </div>
                 <div class="col-12">
-                    <label for="">වැයාහිි හැ දනුම්පත් අංකය / Adult ID Number</label>
+                    <label for="">ජාතික හැඳුනුම්පත් අංකය / Adult ID Number</label>
                     <input type="text" class="form-control" formControlName="adultNic">
                 </div>
                 <div class="col-12">
-                    <label for="">උප්පැන්න හතික අංකය / Birth Certificate Number</label>
+                    <label for="">උප්පැන්න සහතික අංකය / Birth Certificate Number</label>
                     <input type="text" class="form-control" formControlName="bcNumber">
                 </div>
                 <div class="col-12">
-                    <label for="">විවාහ හතික අංකය / Marriage certificate No</label>
+                    <label for="">විවාහ සහතික අංකය / Marriage certificate No</label>
                     <input type="text" class="form-control" formControlName="mcNumber">
                 </div>
                 <div class="col-12">
-                    <label for="">අත් සනහි ්වභාවය / Nature of signature</label>
+                    <label for="">අත්සනෙහි ස්වභාවය / Nature of signature</label>
+                    
                     <input type="file" class="form-control" formControlName="natureOfSig" multiple (change)="onChangeSecondDoc($event)">
-                   <!--<input type="text" class="form-control" formControlName="">  -->
+                   
+                    <p style="color: red;">(සුදු කඩදාසි මතුපිටක ඔබගේ අත්සන යොදා එහි ඡායාරූපයක් මෙහි ඇතුළත් කරන්න)</p>
+                    <!--<input type="text" class="form-control" formControlName="">  -->
                 </div>
                 <div class="col-12">
-                    <label for="">දරකථන අංකය / Phone number</label>
+                    <label for="">දුරකථන අංකය / Phone number</label>
                     <input type="text" class="form-control" formControlName="phoneNumber">
                 </div>
                 <div class="col-12">
-                    <label for="">විෙුත් තැපැල / Email</label>
+                    <label for="">විද්‍යුත් තැපෑල / Email</label>
                     <input type="text" class="form-control" formControlName="email">
                 </div>
                 <div class="col-12 mt-3">

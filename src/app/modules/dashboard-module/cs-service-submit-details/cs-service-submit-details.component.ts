@@ -14,37 +14,37 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
 
   serviceList: any[] = [
     {
-      name: 'නව මාගමේ ං ්ථාපනය / ලියාපදිංචි කරවා ගැනීම / Incorporation / Registration of a new company',
+      name: 'නව සමාගමක් සංස්ථාපනය / ලියාපදිංචි කරවා ගැනීම / Incorporation / Registration of a new company',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'පවතින මාගමක සතොරතුරු ංසශෝධනය කරවා ගැනීම / Amend existing company details ',
+      name: 'පවතින සමාගමක තොරතුරු සංශෝධනය කරවා ගැනීම / Amend existing company details ',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'පවතින මාගමකට නව අධයේෂකවරු ඇතුලත් ණීීමම / Admission of new directors to an existing company',
+      name: 'පවතින සමාගමකට නව අධ්‍යක්ෂකවරු ඇතුලත් කිරීම / Admission of new directors to an existing company',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'පවතින මාගමක අධයේෂකවරු ඉවත් ණීීමම / Removal of directors of an existing company ',
+      name: 'පවතින සමාගමක අධ්‍යක්ෂකවරු ඉවත් කිරීම / ඉල්ලා අස්වීම / විශ්‍රාම යෑම / තනතුර අත්හැරීම / Removal of directors of an existing company ',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'පිටපත් අය දම් කරවා ගැනීම / Application for copies',
+      name: 'සහතික පිටපත් අයදුම් කරවා ගැනීම / Application for copies',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'සවනත් ස ේවා ලබාගැනීම ෙහා / To get other services',
+      name: 'වෙනත් සේවා ලබාගැනීම සදහා  / To get other services',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     },
 
     {
-      name: 'ගා ්තු සගවීම / Payment of fees',
+      name: 'ගාස්තු ගෙවීම / Payment of fees',
       descriptiom: 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.'
     }
   ];

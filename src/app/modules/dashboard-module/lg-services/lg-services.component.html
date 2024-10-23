@@ -12,8 +12,9 @@
                         <textarea formControlName="DescriptionData" cols="80" rows="10" class="form-control"></textarea>
                       
                         <div class="col-12 mt-4">
-                          <label for="">Additional File</label>
+                          <label for="">Additional File <p style="color: red;">(මෙහි ඔබගේ ගැටලුවට අදාළ ඕනෑම ලිපිගොනුවක ඡායාරූප ඇතුලත් කරන්න.)</p> </label>
                           <input type="file" class="form-control" formControlName="Doc" multiple (change)="onChangeSecondDoc($event)">
+                          
                         </div>
                         <button type="button" class="btn btn-primary col-md-6 btn-sm mt-4" (click)="onClickSendLGDetails()">Submit in comments</button>
                       </form>

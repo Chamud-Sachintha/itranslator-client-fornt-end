@@ -184,17 +184,17 @@ export class NotaryServiceStep03Component implements OnInit {
       this.tostr.error("Empty Feilds Found", "Name is required.");
     } else if (address == "") {
       this.tostr.error("Empty Feilds Found", "Address is required.");
-    } else if (nicNumber == "") {
+    }/* else if (nicNumber == "") {
       this.tostr.error("Empty Feilds Found", "NIC Number is required.");
-    }/* else if (passport == "") {
+    } else if (passport == "") {
       this.tostr.error("Empty Feilds Found", "Passport is required.");
     } else if (drivingLic == "") {
       this.tostr.error("Empty Feilds Found", "Driving Licence is required.");
     } else if (adultNic == "") {
       this.tostr.error("Empty Feilds Found", "Adult NIC is required.");
-    } */else if (bcNumber == "") {
+    } else if (bcNumber == "") {
       this.tostr.error("Empty Feilds Found", "Birth Certificate Number is required.");
-    } /*else if (mcNumber == "") {
+    } else if (mcNumber == "") {
       this.tostr.error("Empty Feilds Found", "MC Number is required.");
     } */else if (natureOfSig == "") {
       this.tostr.error("Empty Feilds Found", "Nature Of Signing is required.");
