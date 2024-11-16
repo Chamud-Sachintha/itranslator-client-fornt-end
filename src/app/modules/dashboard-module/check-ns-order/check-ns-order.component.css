@@ -1,0 +1,30 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .modal.fade.show {
+    display: block;
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+  
+  .modal-body {
+    max-height: 50vh;  /* Sets the max height to 70% of the viewport height */
+    overflow-y: auto;  /* Adds a vertical scrollbar if content exceeds the max height */
+  }

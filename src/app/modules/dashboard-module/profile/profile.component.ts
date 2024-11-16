@@ -98,7 +98,8 @@ export class ProfileComponent {
           this.NIC = resp.data[0].nic_number;
           this.Address = resp.data[0].address;
           this.Phone = resp.data[0].mobile_number;
-          this.birthday = new Date(resp.data[0].bdate);
+          this.birthday = new Date(resp.data[0].bdate * 1000);
+          //const sbirthday = new Date(this.birthday );
           this.formattedDate = `${this.birthday.getDate()}/${this.birthday.getMonth() + 1}/${this.birthday.getFullYear()}`;
 
 

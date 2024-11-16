@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NotaryService } from 'src/app/services/notary/notary.service';
 import { OrderRequest } from 'src/app/shared/models/OrderRequest/order-request';
 import { Request } from 'src/app/shared/models/Request/request';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-notary-order-requests',
@@ -14,7 +15,7 @@ export class NotaryOrderRequestsComponent implements OnInit {
   orderRequestsList: OrderRequest[] = [];
   requestParamModel = new Request();
 
-  constructor(private notaryService: NotaryService, private router: Router) {}
+  constructor(private notaryService: NotaryService, private router: Router, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loadNotaryServiceOrderList();
@@ -25,6 +26,7 @@ export class NotaryOrderRequestsComponent implements OnInit {
   }
 
   loadNotaryServiceOrderList() {
+    this.spinner.show();
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
@@ -36,7 +38,7 @@ export class NotaryOrderRequestsComponent implements OnInit {
         dataList.data[0].forEach((eachRow: OrderRequest) => {
           const formatedDate = eachRow.createTime * 1000;
           eachRow.createTime = formatedDate;
-
+          this.spinner.hide();
           this.orderRequestsList.push(eachRow);
         })
       }

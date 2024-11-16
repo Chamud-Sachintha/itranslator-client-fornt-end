@@ -33,6 +33,11 @@ export class CheckNsOrderComponent implements OnInit {
   uploadedBankSlip = null;
   invoiceNo!: string;
   paymentStatus!: number;
+  theselectperson:any[] = [];
+  selectedPerson! : any;
+  showpersondetails = false;
+  selectedImages: string[] = [];
+
 
   constructor(private activatedRoute: ActivatedRoute, private notaryService: NotaryService, private tostr: ToastrService) {}
 
@@ -126,7 +131,20 @@ export class CheckNsOrderComponent implements OnInit {
   }
 
   onClickViewImage(imageName: string) {
-
+    console.log('Downloading:', imageName);
+  
+    // Construct the file URL
+    const filePath = environment.fileDocImageServerURL + "images/" + imageName;
+  
+    // Create a temporary <a> element to trigger the download
+    const link = document.createElement('a');
+    link.href = filePath;  // URL of the file to be downloaded
+    link.download = imageName;  // Suggest downloading the file with this name
+  
+    // Simulate a click to trigger the download
+    document.body.appendChild(link);  // Append the link to the DOM (necessary for some browsers)
+    link.click();  // Simulate click event
+    document.body.removeChild(link);  // Remove the link from the DOM after the download starts
   }
 
   onClickOpenDocTypeModel(index: number) {
@@ -154,9 +172,12 @@ export class CheckNsOrderComponent implements OnInit {
 
       if (resp.code === 1) {
         this.firstDocList.push(dataList.data[0].firstDocType)
-        this.secondDocList.push(dataList.data[0].secondDocType)
-        this.thirdDocList.push(dataList.data[0].thirdDocType)
-
+        console.log('sf>>>>>>>>>>>',this.firstDocList);
+        this.secondDocList.push(dataList.data[0].secondDocType);
+        this.thirdDocList.push(dataList.data[0].thirdDocType);
+        this.theselectperson.push(dataList.data[0].notorypersonDocType);
+        console.log(this.theselectperson);
+        this.selectedPerson = this.theselectperson[0];
         this.totalOrderAmount = dataList.data[0].totalAmount;
         this.bankSlip = dataList.data[0].bankSlip;
         this.paymentStatus = dataList.data[0].paymentStatus;
@@ -197,4 +218,35 @@ export class CheckNsOrderComponent implements OnInit {
       }
     })
   }
+
+  showDetails(person: any) {
+    this.selectedPerson = person;
+    this.showpersondetails = true;
+
+    // Collect all images into an array
+    this.selectedImages = [
+      ...this.parseJson(person.drivingLicNo),
+      ...this.parseJson(person.adultIdNumber),
+      ...this.parseJson(person.bcNumber),
+      ...this.parseJson(person.mcNumber),
+      ...this.parseJson(person.nicNumber),
+      ...this.parseJson(person.natureOfSignature),
+    ].map(imageName => `${environment.fileDocImageServerURL}images/${imageName}`);
+
+    console.log('Selected Images:', this.selectedImages);
+  }
+
+  closeModal() {
+    this.showpersondetails = false;
+  }
+
+  parseJson(jsonString: string): string[] {
+    try {
+      return jsonString ? JSON.parse(jsonString) : [];
+    } catch (error) {
+      console.error('Error parsing JSON:', jsonString, error);
+      return [];
+    }
+  }
+
 }

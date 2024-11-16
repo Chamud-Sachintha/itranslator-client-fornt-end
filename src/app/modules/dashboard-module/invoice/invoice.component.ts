@@ -126,9 +126,9 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.token = sessionStorage.getItem("authToken");
     this.orderDetails.flag = sessionStorage.getItem("role");
     this.uploadeDocumentList.push(this.sendDataObj.uploadedDocList);
-
+    console.log(localStorage.getItem("deliveryMethod"));
     this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
-    this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
+    this.orderDetails.deliveryMethod = Number(localStorage.getItem("deliveryMethod"));
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
     this.orderDetails.invoiceNo = this.invoiceNo
@@ -173,7 +173,8 @@ export class InvoiceComponent implements OnInit {
         $('#exampleModal').modal('show');
         sessionStorage.setItem("reference", dataList.data[0].reference);
 
-        window.open(redirectUrl);
+        this.router.navigateByUrl('/app/order-requests');
+
       }
 
       this.spinner.hide();
@@ -217,7 +218,7 @@ export class InvoiceComponent implements OnInit {
           })
         }, 1000);
         this.tostr.success("Place New Order", "Order Placed Successfully");
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/app/order-requests');
       } else {
         this.tostr.error("Place New Order", resp.message);
       }

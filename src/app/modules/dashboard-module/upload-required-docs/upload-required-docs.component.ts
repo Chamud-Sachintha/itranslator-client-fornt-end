@@ -1124,7 +1124,7 @@ export class UploadRequiredDocsComponent implements OnInit {
         localStorage.setItem("deliveryMethod", this.deliveryMethod);
         localStorage.setItem("deliveryTime", this.deliveryTime);
         localStorage.setItem("paymentMethod", this.paymentMethod);
-  
+  console.log('delevery type>>>>>>>>>>>',this.deliveryMethod)
         if (this.paymentMethod == "1" && localStorage.getItem("bankSlip") == null) {
           this.convertImageToBase64(this.bankSlip).then((resp: any) => {
             localStorage.setItem("bankSlip", resp);

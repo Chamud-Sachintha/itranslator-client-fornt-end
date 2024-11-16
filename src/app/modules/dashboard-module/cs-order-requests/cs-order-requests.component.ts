@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CsService } from 'src/app/services/cs/cs.service';
 import { OrderRequest } from 'src/app/shared/models/OrderRequest/order-request';
 import { Request } from 'src/app/shared/models/Request/request';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cs-order-requests',
@@ -14,7 +15,7 @@ export class CsOrderRequestsComponent implements OnInit {
   orderRequestsList: OrderRequest[] = [];
   requestParamModel = new Request();
 
-  constructor(private csService: CsService, private router: Router) {}
+  constructor(private csService: CsService, private router: Router, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loadCSServiceOrderList();
@@ -25,6 +26,7 @@ export class CsOrderRequestsComponent implements OnInit {
   }
 
   loadCSServiceOrderList() {
+    this.spinner.show();
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
@@ -36,7 +38,7 @@ export class CsOrderRequestsComponent implements OnInit {
         dataList.data[0].forEach((eachRow: OrderRequest) => {
           const formatedDate = eachRow.createTime * 1000;
           eachRow.createTime = formatedDate;
-
+          this.spinner.hide();
           this.orderRequestsList.push(eachRow);
         })
       }

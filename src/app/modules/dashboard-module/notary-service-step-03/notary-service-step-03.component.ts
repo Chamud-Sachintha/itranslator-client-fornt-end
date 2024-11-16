@@ -34,6 +34,14 @@ export class NotaryServiceStep03Component implements OnInit {
   isVisible: boolean = false;
   //private modalService = inject(NgbModal);
   isModalOpen: boolean = false;
+  nicImagePreviews: string[] = [];
+  passportImagePreviews: string[] = [];
+  drivingLicenseImagePreviews: string[] = [];
+  adultIdImagePreviews: string[] = [];
+  birthCertificateImagePreviews: string[] = [];
+  marriageCertificateImagePreviews: string[] = [];
+  currentPerson: NotaryServicePerson | null = null;
+  notaryServicePeople: NotaryServicePerson[] = [];
 
   constructor(private formBuilder: FormBuilder, private router: Router, private dataShareService: DataShareService
             , private notaryService: NotaryService, private tostr: ToastrService, private spinner: NgxSpinnerService, private renderer: Renderer2,  private el: ElementRef) {}
@@ -137,7 +145,7 @@ export class NotaryServiceStep03Component implements OnInit {
     this.isVisible = true;
     console.log('visible',this.isVisible);
 
-    if (category == "1") {
+    /*if (category == "1") {
       this.personCategory = "තෑගි දීමනාකරු / Donor";
     } else if (category == "2") {
       this.personCategory = "තෑගි ලැබුම්කරු / Donee";
@@ -162,7 +170,78 @@ export class NotaryServiceStep03Component implements OnInit {
     }  
     else {
 
-    }
+    }*/
+
+    if (category === "1") {
+      this.personCategory = "තෑගි දීමනාකරු / Donor";
+  } else if (category === "2") {
+      this.personCategory = "තෑගි ලැබුම්කරු / Donee";
+  } else if (category === "3") {
+      this.personCategory = "ණය හිමියා / Lender";
+  } else if (category === "4") {
+      this.personCategory = "ණය ගැතියා / the borrower";
+  } else if (category === "5") {
+      this.personCategory = "විකුණුම්කරු / the Vendor";
+  } else if (category === "6") {
+      this.personCategory = "ගැණුම්කරු / the Vendee";
+  } else if (category === "7") {
+      this.personCategory = "බද දීමනාකරු / Lessor";
+  } else if (category === "8") {
+      this.personCategory = "බද ගැනුම්කරු / Lessee";
+  } else if (category === "9") {
+      this.personCategory = "ප්‍රකාශක / Declaran";
+  } else if (category === "10") {
+      this.personCategory = "අයිතිකරු / the owner";
+  } else if (category === "11") {
+      this.personCategory = "ජීවිත බුක්තිකරු / Life Interest Holder";
+  } else if (category === "12") {
+      this.personCategory = "අයදුම්කරු / The applicant";
+  } else if (category === "13") {
+      this.personCategory = "බල පැවරුම් කරු / Assignee";
+  } else if (category === "14") {
+      this.personCategory = "ඇටෝර්නි දීමනාකරු / Grantor of Attorney / Principal";
+  } else if (category === "15") {
+      this.personCategory = "ඇටෝර්නි ලැබුම්කරු / Attorney Holder";
+  } else if (category === "16") {
+      this.personCategory = "පසු අයිතිකරුගේ / of subsequent owner";
+  } else if (category === "17") {
+      this.personCategory = "අන්තිම කැමතිපත්‍ර දීමනාකරු / The Testator";
+  } else if (category === "18") {
+      this.personCategory = "අන්තිම කැමතිපත්‍ර ලැබුම්කරු / The beneficiary";
+  } else if (category === "19") {
+      this.personCategory = "සාක්ෂිකරු / the witness";
+  } else if (category === "20") {
+      this.personCategory = "බාලවයස්කරු / the minor";
+  } else if (category === "21") {
+      this.personCategory = "මරණකරු / the Deceased";
+  } else if (category === "22") {
+      this.personCategory = "ස්වාමිපුරුශයා / the husband";
+  } else if (category === "23") {
+      this.personCategory = "කාලත්‍රයා / spouse";
+  } else if (category === "24") {
+      this.personCategory = "ස්වාමිපුරුශයා / the husband";
+  } else if (category === "25") {
+      this.personCategory = "බිරිද / wife";
+  } else if (category === "26") {
+      this.personCategory = "මව / Mother";
+  } else if (category === "27") {
+      this.personCategory = "පියා / the father";
+  } else if (category === "28") {
+      this.personCategory = "දරුවා / child";
+  } else if (category === "29") {
+      this.personCategory = "සහෝදරයා / brother";
+  } else if (category === "30") {
+      this.personCategory = "සහෝදරිය / sister";
+  } else if (category === "31") {
+      this.personCategory = "ඥාතියා / the relative";
+  } else if (category === "32") {
+      this.personCategory = "හිතවතා / Dear";
+  } else if (category === "33") {
+      this.personCategory = "පූජ්‍ය පක්ෂය / The clergy";
+  } else {
+      
+  }
+  
   }
 
   
@@ -200,9 +279,9 @@ export class NotaryServiceStep03Component implements OnInit {
       this.tostr.error("Empty Feilds Found", "Nature Of Signing is required.");
     } else if (phoneNumber == "") {
       this.tostr.error("Empty Feilds Found", "Phone Number is required.");
-    } /*else if (email == "") {
+    } else if (email == "") {
       this.tostr.error("Empty Feilds Found", "Email is required.");
-    } */else {
+    } else {
       const notaryServicePersonObj = new NotaryServicePerson();
 
       notaryServicePersonObj.personCategory = this.personCategory;
@@ -222,13 +301,53 @@ export class NotaryServiceStep03Component implements OnInit {
 
       })
 
+      
+      this.nicImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.nicImage.push(base64String);
+      });
+
+      this.passportImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.passportImage.push(base64String);
+      });
+
+      this.drivingLicenseImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.drivingLicImage.push(base64String);
+      });
+
+      this.adultIdImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.adultNicImage.push(base64String);
+      });
+
+      this.birthCertificateImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.bcNumberImage.push(base64String);
+      });
+
+      this.marriageCertificateImagePreviews.forEach((base64String: string) => {
+        
+        notaryServicePersonObj.mcNumberImage.push(base64String);
+      });
+
+
+    
      // notaryServicePersonObj.natureOfSignature = natureOfSig;
       notaryServicePersonObj.phoneNumber = phoneNumber;
       notaryServicePersonObj.email = email;
-
+      console.log('file anme',notaryServicePersonObj);
       this.addedPersonList.notaryPerson.push(notaryServicePersonObj);
       this.addPersonForm.reset();
       this.initAddPersonForm();
+      this.nicImagePreviews = [];
+      this.passportImagePreviews = [];
+      this.drivingLicenseImagePreviews = [];
+      this.adultIdImagePreviews = [];
+      this.birthCertificateImagePreviews = [];
+      this.marriageCertificateImagePreviews = [];
+      this.naturesignatureDoc = [];
      // this.modalService.dismissAll(); 
       this.isVisible = false;
       this.model = false;
@@ -254,6 +373,82 @@ export class NotaryServiceStep03Component implements OnInit {
     })
   }
 
- 
   
+  onFilesSelected(event: any, field: string) {
+    const files = event.target.files;
+    const previewArray = this.getPreviewArray(field);
+
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          previewArray.push(e.target.result);  
+        };
+        reader.readAsDataURL(files[i]);
+      }
+    }
+  }
+
+  // Function to get the correct preview array based on the field
+  getPreviewArray(field: string): string[] {
+    switch (field) {
+      case 'nic': return this.nicImagePreviews;
+      case 'passport': return this.passportImagePreviews;
+      case 'drivingLicense': return this.drivingLicenseImagePreviews;
+      case 'adultId': return this.adultIdImagePreviews;
+      case 'birthCertificate': return this.birthCertificateImagePreviews;
+      case 'marriageCertificate': return this.marriageCertificateImagePreviews;
+      default: return [];
+    }
+  }
+
+  
+  removeImage(field: string, index: number) {
+    const previewArray = this.getPreviewArray(field);
+    previewArray.splice(index, 1); 
+  }
+  
+  onCheckClick(person: NotaryServicePerson) {
+    this.currentPerson = person; 
+    this.showModal();
+  }
+  
+  showModal() {
+    const modalElement = this.el.nativeElement.querySelector('#viewUploadedDataModal');
+    if (modalElement) {
+      this.renderer.addClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'block');
+      this.renderer.setStyle(modalElement, 'backgroundColor', 'rgba(0, 0, 0, 0.5)');
+    }
+  }
+
+  closeModal() {
+    const modalElement = this.el.nativeElement.querySelector('#viewUploadedDataModal');
+    if (modalElement) {
+      this.renderer.removeClass(modalElement, 'show');
+      this.renderer.setStyle(modalElement, 'display', 'none');
+      this.renderer.removeStyle(modalElement, 'backgroundColor');
+    }
+  }
+
+  removePerson() {
+    if (this.currentPerson) {
+      
+     
+        this.removePersonFromList(this.currentPerson); 
+        this.closeModal(); 
+    
+    }
+  }
+  removePersonFromList(person: NotaryServicePerson) {
+    
+    const index = this.addedPersonList.notaryPerson.indexOf(person);
+    
+   
+    if (index !== -1) {
+      this.addedPersonList.notaryPerson.splice(index, 1);
+      this.initAddPersonForm();
+     
+    }
+  }
 }

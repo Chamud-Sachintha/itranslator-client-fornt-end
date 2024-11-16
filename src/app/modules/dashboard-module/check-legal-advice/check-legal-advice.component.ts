@@ -9,6 +9,7 @@ import { OrderRequest } from 'src/app/shared/models/OrderRequest/order-request';
 import { Request } from 'src/app/shared/models/Request/request';
 import { environment } from 'src/environments/environment';
 
+
 @Component({
   selector: 'app-check-legal-advice',
   templateUrl: './check-legal-advice.component.html',
@@ -71,12 +72,14 @@ export class CheckLegalAdviceComponent implements OnInit{
   }
 
   getlegalAdvice() {
+    this.spinner.show();
     this.requestParamModel.token = sessionStorage.getItem("authToken") || '';
     this.requestParamModel.flag = sessionStorage.getItem("role") || '';
     this.legalService.getLegalMessage(this.requestParamModel).subscribe((resp: any) => {
       if (resp.code === 1) {
         const dataList = JSON.parse(JSON.stringify(resp));
         if (resp.code === 1) {
+          this.spinner.hide();
           dataList.data[0].forEach((eachRow: OrderRequest) => {
             const formatedDate = eachRow.createTime * 1000;
             eachRow.createTime = formatedDate;

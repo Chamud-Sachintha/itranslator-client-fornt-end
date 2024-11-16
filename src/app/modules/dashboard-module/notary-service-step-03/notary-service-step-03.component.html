@@ -1,11 +1,10 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <h3 class="card-header" style="font-weight: bolder;"> පුද්ගලයින්ගේ තොරතුරු ඇතුලත් කරන්න / Enter people's information</h3>
-<h6 class="card-header" style="color: red;">( සියළු පාර්ශ්‍ව කරුවන් ඩේ සහ සාක්ෂි කරුවන්ඩේ
-    ඩතොරතුරු පහතින් ඩතෝරා එකිඩනකා ඩවන් ඩවන්
-    වශ්‍ඩයන් ඇතුලත් කරන්න )</h6>
+
+<h6 class="card-header" style="color: red;">( සියළු පාර්ශව කරුවන් ගේ සහ සාක්ෂි කරුවන්ගේ තොරතුරු පහතින් තෝරා එකිනෙකා වෙන් වෙන් වශයෙන් ඇතුලත් කරන්න. )</h6>
 <div class="card-body">
     <div class="row">
-        <h4 _ngcontent-ng-c2787404625="" class="card-header" style="color: red;">( සියළු පාර්ශව කරුවන් ගේ සහ සාක්ෂි කරුවන්ගේ තොරතුරු පහතින් තෝරා එකිනෙකා වෙන් වෙන් වශයෙන් ඇතුලත් කරන්න. )</h4>
-        <div class="col-6">
+         <div class="col-6">
             <label for="">Select Person:</label>
         </div>
         <div class="col-6">
@@ -24,6 +23,30 @@
                 <option value="7">බද දීමනාකරු / Lessor</option>
                 <option value="8">බද ගැනුම්කරු / Lessee </option>
                 <option value="9">ප්‍රකාශක / Declaran</option>
+                <option value="10">අයිතිකරු / the owner</option>
+                <option value="11">ජීවිත බුක්තිකරු / Life Interest Holder</option>
+                <option value="12">අයදුම්කරු / The applicant</option>
+                <option value="13">බල පැවරුම් කරු / Assignee</option>
+                <option value="14">ඇටෝර්නි දීමනාකරු /Grantor of Attorney / Principal</option>
+                <option value="15">ඇටෝර්නි ලැබුම්කරු / Attorney Holder</option>
+                <option value="16">පසු අයිතිකරුගේ / of subsequent owner</option>
+                <option value="17">අන්තිම කැමතිපත්‍ර දීමනාකරු / The Testator</option>
+                <option value="18">අන්තිම කැමතිපත්‍ර ලැබුම්කරු / The beneficiary</option>
+                <option value="19">සාක්ෂිකරු / the witness</option>
+                <option value="20">බාලවයස්කරු / the minor</option>
+                <option value="21">මරණකරු / the Deceased</option>
+                <option value="22">ස්වාමිපුරුශයා / the husband</option>
+                <option value="23">කාලත්‍රයා / spouse</option>
+                <option value="24">ස්වාමිපුරුශයා / the husband</option>
+                <option value="25">බිරිද / wife</option>
+                <option value="26">මව / Mother</option>
+                <option value="27">පියා / the father</option>
+                <option value="28">දරුවා / child</option>
+                <option value="29">සහෝදරයා / brother</option>
+                <option value="30">සහෝදරිය / sister</option>
+                <option value="31">ඥාතියා / the relative</option>
+                <option value="32">හිතවතා / Dear</option>
+                <option value="33">පූජ්‍ය පක්ෂය / The clergy</option>
             </select>
         </div>
         <div class="col-6">
@@ -61,7 +84,7 @@
                                         <td>{{ eachPerson.email }}</td>
                                         <td>{{ eachPerson.phoneNumber }}</td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm">Check</button>
+                                            <button  (click)="onCheckClick(eachPerson)" class="btn btn-primary btn-sm">Check</button>
                                         </td>
                                     </tr>
                                </tbody>
@@ -115,36 +138,161 @@
                     <label for="">ලිපිනය / Address:</label>
                     <input type="text" class="form-control" formControlName="address">
                 </div>
+                
+      
+                 <!-- National Identity Card Number Field with Image Preview -->
+    <div class="col-12">
+      <label for="nicNumber">ජාතික හැඳුනුම්පත / National Identity Card Number</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="nicUpload" type="file" (change)="onFilesSelected($event, 'nic')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="nicUpload" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="nicUpload" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- National Identity Card Image Previews -->
+      <div *ngIf="nicImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of nicImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="National ID Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('nic', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passport Number Field with Image Preview -->
+    <div class="col-12">
+      <label for="passport">විදේශ ගමන් බලපත්‍ර අංකය / Passport No</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="passport" type="file" (change)="onFilesSelected($event, 'passport')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="passport" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="passport" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- Passport Image Previews -->
+      <div *ngIf="passportImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of passportImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="Passport Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('passport', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Driving License Field with Image Preview -->
+    <div class="col-12">
+      <label for="drivingLicense">රියැදුරු බලපත්‍ර අංකය / Driving License No</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="drivingLicense" type="file" (change)="onFilesSelected($event, 'drivingLicense')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="drivingLicense" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="drivingLicense" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- Driving License Image Previews -->
+      <div *ngIf="drivingLicenseImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of drivingLicenseImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="Driving License Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('drivingLicense', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adult ID Number Field with Image Preview -->
+    <div class="col-12">
+      <label for="adultId">වැඩිහිටි හැඳුනුම්පත් අංකය / Adult ID Number</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="adultId" type="file" (change)="onFilesSelected($event, 'adultId')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="adultId" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="adultId" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- Adult ID Image Previews -->
+      <div *ngIf="adultIdImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of adultIdImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="Adult ID Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('adultId', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+
+
+       <!-- Birth Certificate Field with Image Preview -->
+    
+      <label for="birthCertificate">උප්පැන්න සහතික අංකය / Birth Certificate Number</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="birthCertificate" type="file" (change)="onFilesSelected($event, 'birthCertificate')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="birthCertificate" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="birthCertificate" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- Birth Certificate Image Previews -->
+      <div *ngIf="birthCertificateImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of birthCertificateImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="Birth Certificate Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('birthCertificate', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+    
+
+    <!-- Marriage Certificate Field with Image Preview -->
+   
+      <label for="marriageCertificate">විවාහ සහතික අංකය / Marriage Certificate No</label>
+      <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+        <input id="marriageCertificate" type="file" (change)="onFilesSelected($event, 'marriageCertificate')" class="form-control border-0" accept="image/*" multiple>
+        <label id="upload-label" for="marriageCertificate" class="font-weight-light text-muted">Choose files</label>
+        <div class="input-group-append">
+          <label for="marriageCertificate" class="btn btn-light m-0 rounded-pill px-4">
+            <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+            <small class="text-uppercase font-weight-bold text-muted">Choose files</small>
+          </label>
+        </div>
+      </div>
+      <!-- Marriage Certificate Image Previews -->
+      <div *ngIf="marriageCertificateImagePreviews.length > 0" class="image-area mt-4"  style="display: flex; flex-direction: row; gap: 10px; overflow-x: auto;">
+        <div *ngFor="let image of marriageCertificateImagePreviews; let i = index" style="position: relative;">
+          <img [src]="image" alt="Marriage Certificate Preview" class="img-fluid rounded shadow-sm" style="max-height: 100px;">
+          <button (click)="removeImage('marriageCertificate', i)" style="position: absolute; top: 0; right: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; transform: translate(50%, -50%);">
+            &times;
+          </button>
+        </div>
+      </div>
+    
+
+    </div>
+      
+                 <br/> 
                 <div class="col-12">
-                    <label for="">ජාතික හැඳුනුම්පත / National Identity Card Number</label>
-                    <input type="text" class="form-control" formControlName="nicNumber">
-                </div>
-                <div class="col-12">
-                    <label for="">විදේශ ගමන් බලපත්‍ර අංකය / Passport No</label>
-                    <input type="text" class="form-control" formControlName="passport">
-                </div>
-                <div class="col-12">
-                    <label for="">රියැදුරු බලපත් අංකය / Driving license No</label>
-                    <input type="text" class="form-control" formControlName="drivingLic">
-                </div>
-                <div class="col-12">
-                    <label for="">ජාතික හැඳුනුම්පත් අංකය / Adult ID Number</label>
-                    <input type="text" class="form-control" formControlName="adultNic">
-                </div>
-                <div class="col-12">
-                    <label for="">උප්පැන්න සහතික අංකය / Birth Certificate Number</label>
-                    <input type="text" class="form-control" formControlName="bcNumber">
-                </div>
-                <div class="col-12">
-                    <label for="">විවාහ සහතික අංකය / Marriage certificate No</label>
-                    <input type="text" class="form-control" formControlName="mcNumber">
-                </div>
-                <div class="col-12">
-                    <label for="">අත්සනෙහි ස්වභාවය / Nature of signature</label>
+                    <label for="">අත්සනෙහි ස්වභාවය / Nature of signature  <p style="color: red;">(සුදු කඩදාසි මතුපිටක ඔබගේ අත්සන යොදා එහි ඡායාරූපයක් මෙහි ඇතුළත් කරන්න)</p></label>
                     
                     <input type="file" class="form-control" formControlName="natureOfSig" multiple (change)="onChangeSecondDoc($event)">
                    
-                    <p style="color: red;">(සුදු කඩදාසි මතුපිටක ඔබගේ අත්සන යොදා එහි ඡායාරූපයක් මෙහි ඇතුළත් කරන්න)</p>
+                   
                     <!--<input type="text" class="form-control" formControlName="">  -->
                 </div>
                 <div class="col-12">
@@ -153,7 +301,7 @@
                 </div>
                 <div class="col-12">
                     <label for="">විද්‍යුත් තැපෑල / Email</label>
-                    <input type="text" class="form-control" formControlName="email">
+                    <input type="email" class="form-control" formControlName="email">
                 </div>
                 <div class="col-12 mt-3">
                     <button class="btn btn-primary btn-sm" type="submit">Save</button>
@@ -182,3 +330,50 @@
       </div> 
     </div> 
   </div>
+
+  <div id="viewUploadedDataModal" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Person Details</h5>
+          <span class="close" (click)="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <!-- Editable Fields -->
+           <div class="form-group">
+            <label>නම / Name: {{ currentPerson?.name }}</label>
+            <p></p>
+          </div>
+          <div class="form-group">
+            <label>ලිපිනය / Address: {{ currentPerson?.address }}</label>
+            <p></p>
+          </div>
+          <div class="form-group">
+            <label>දුරකථන අංකය / Phone number: {{ currentPerson?.phoneNumber }}</label>
+            <p></p>
+          </div>
+          <div class="form-group">
+            <label>විද්‍යුත් තැපෑල / Email: {{ currentPerson?.email }}</label>
+            <p></p>
+          </div>
+  
+          <h5>Uploaded Documents:</h5>
+          <ul>
+            <li *ngFor="let nicImage of currentPerson?.nicImage">ජාතික හැඳුනුම්පත / National Identity Card Number: <img [src]="nicImage" alt="NIC Image" width="200px"></li><br/>
+            <li *ngFor="let passportImage of currentPerson?.passportImage">විදේශ ගමන් බලපත්‍ර අංකය / Passport No: <img [src]="passportImage" alt="Passport Image" width="200px"></li>
+            <li *ngFor="let drivingLicImage of currentPerson?.drivingLicImage">රියැදුරු බලපත්‍ර අංකය / Driving License No: <img [src]="drivingLicImage" alt="Driving License Image" width="200px"></li>
+            <li *ngFor="let adultNicImage of currentPerson?.adultNicImage">වැඩිහිටි හැඳුනුම්පත් අංකය / Adult ID Number: <img [src]="adultNicImage" alt="Adult License Image" width="200px"></li>
+            <li *ngFor="let bcNumberImage of currentPerson?.bcNumberImage">උප්පැන්න සහතික අංකය / Birth Certificate Number: <img [src]="bcNumberImage" alt="bc Image" width="200px"></li>
+            <li *ngFor="let mcNumberImage of currentPerson?.mcNumberImage">විවාහ සහතික අංකය / Marriage Certificate No: <img [src]="mcNumberImage" alt="mc Image" width="200px"></li>
+            <li *ngFor="let natureOfSignature of currentPerson?.natureOfSignature">අත්සනෙහි ස්වභාවය / Nature of signature: <img [src]="natureOfSignature" alt="natureOfSignature Image" width="200px"></li><br/>
+            
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button class="btn btn-primary"  (click)="removePerson()">Remove Person</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

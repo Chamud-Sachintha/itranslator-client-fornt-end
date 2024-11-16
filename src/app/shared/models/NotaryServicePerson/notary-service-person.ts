@@ -9,6 +9,12 @@ export class NotaryServicePerson {
     bcNumber!: string;
     mcNumber!: string;
     natureOfSignature: any[] = [];
+    nicImage: any[] = [];
+    passportImage: any[] = [];
+    drivingLicImage: any[] = [];
+    adultNicImage: any[] = [];
+    bcNumberImage: any[] = [];
+    mcNumberImage: any[] = [];
     phoneNumber!: string;
     email!: string;
 }
