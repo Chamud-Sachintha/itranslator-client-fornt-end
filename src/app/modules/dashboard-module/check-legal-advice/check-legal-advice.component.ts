@@ -27,7 +27,7 @@ export class CheckLegalAdviceComponent implements OnInit{
   combinedFiles: string[] = [];
   combinedData: any[] = [];
   intervalId: any;
-
+  UserName: string | null = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,7 +44,7 @@ export class CheckLegalAdviceComponent implements OnInit{
     });
     
     this.getlegalAdvice();
-
+    this.UserName = sessionStorage.getItem("username");
    
     
   }

@@ -12,11 +12,12 @@ export class CompleteTrOrdersComponent implements OnInit {
 
   requestParamModel = new Request();
   completeOrderList: CompleteOrder[] = [];
-
+  UserName: string | null = '';
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.loadCompleteOrderList();
+    this.UserName = sessionStorage.getItem("username");
   }
 
   loadCompleteOrderList() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NotaryService } from 'src/app/services/notary/notary.service';
@@ -14,6 +14,8 @@ import { Subscription, switchMap, timer } from 'rxjs';
   styleUrls: ['./check-ns-order.component.css']
 })
 export class CheckNsOrderComponent implements OnInit {
+ 
+
 
   requestParamModel = new Request();
   subscription!: Subscription;
@@ -36,8 +38,9 @@ export class CheckNsOrderComponent implements OnInit {
   theselectperson:any[] = [];
   selectedPerson! : any;
   showpersondetails = false;
+  showDocdetails = false;
   selectedImages: string[] = [];
-
+  UserName: string | null = '';
 
   constructor(private activatedRoute: ActivatedRoute, private notaryService: NotaryService, private tostr: ToastrService) {}
 
@@ -46,11 +49,11 @@ export class CheckNsOrderComponent implements OnInit {
 
     this.loadNotaryOrderInfo();
     this.getTranslatedOrderDocs();
-
+    this.UserName = sessionStorage.getItem("username");
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
-    this.subscription = timer(0, 1500).pipe(
+    this.subscription = timer(0, 6000).pipe(
 
       switchMap(() => this.notaryService.getOrderAdminMessageList(this.requestParamModel))
 
@@ -133,23 +136,20 @@ export class CheckNsOrderComponent implements OnInit {
   onClickViewImage(imageName: string) {
     console.log('Downloading:', imageName);
   
-    // Construct the file URL
+   
     const filePath = environment.fileDocImageServerURL + "images/" + imageName;
-  
-    // Create a temporary <a> element to trigger the download
-    const link = document.createElement('a');
-    link.href = filePath;  // URL of the file to be downloaded
-    link.download = imageName;  // Suggest downloading the file with this name
-  
-    // Simulate a click to trigger the download
-    document.body.appendChild(link);  // Append the link to the DOM (necessary for some browsers)
-    link.click();  // Simulate click event
-    document.body.removeChild(link);  // Remove the link from the DOM after the download starts
+    window.open(filePath, '_blank');
+    /*const link = document.createElement('a');
+    link.href = filePath;  
+    link.download = imageName; 
+    document.body.appendChild(link);  
+    link.click();
+    document.body.removeChild(link); */
   }
 
   onClickOpenDocTypeModel(index: number) {
     this.showDocuments = [];
-
+    this.showDocdetails = true;
     if (index == 1) {
       this.showDocuments.push(this.firstDocList[0]);
     } else if (index == 2) {
@@ -236,7 +236,7 @@ export class CheckNsOrderComponent implements OnInit {
     console.log('Selected Images:', this.selectedImages);
   }
 
-  closeModal() {
+  closeModalp() {
     this.showpersondetails = false;
   }
 
@@ -248,5 +248,10 @@ export class CheckNsOrderComponent implements OnInit {
       return [];
     }
   }
+
+  closeModal() {
+    this.showDocdetails = false;
+  }
+  
 
 }

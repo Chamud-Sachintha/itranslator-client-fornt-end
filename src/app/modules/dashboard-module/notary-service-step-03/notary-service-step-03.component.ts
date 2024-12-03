@@ -40,6 +40,14 @@ export class NotaryServiceStep03Component implements OnInit {
   adultIdImagePreviews: string[] = [];
   birthCertificateImagePreviews: string[] = [];
   marriageCertificateImagePreviews: string[] = [];
+
+  nicImageFile: string[] = [];
+  passportImageFile: string[] = [];
+  drivingLicenseImageFile: string[] = [];
+  adultIdImageFile: string[] = [];
+  birthCertificateImageFile: string[] = [];
+  marriageCertificateImageFile: string[] = [];
+
   currentPerson: NotaryServicePerson | null = null;
   notaryServicePeople: NotaryServicePerson[] = [];
 
@@ -279,9 +287,9 @@ export class NotaryServiceStep03Component implements OnInit {
       this.tostr.error("Empty Feilds Found", "Nature Of Signing is required.");
     } else if (phoneNumber == "") {
       this.tostr.error("Empty Feilds Found", "Phone Number is required.");
-    } else if (email == "") {
+    }/* else if (email == "") {
       this.tostr.error("Empty Feilds Found", "Email is required.");
-    } else {
+    } */else {
       const notaryServicePersonObj = new NotaryServicePerson();
 
       notaryServicePersonObj.personCategory = this.personCategory;
@@ -301,33 +309,33 @@ export class NotaryServiceStep03Component implements OnInit {
 
       })
 
-      
-      this.nicImagePreviews.forEach((base64String: string) => {
+      console.log('nic',this.nicImageFile);
+      this.nicImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.nicImage.push(base64String);
       });
 
-      this.passportImagePreviews.forEach((base64String: string) => {
+      this.passportImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.passportImage.push(base64String);
       });
 
-      this.drivingLicenseImagePreviews.forEach((base64String: string) => {
+      this.drivingLicenseImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.drivingLicImage.push(base64String);
       });
 
-      this.adultIdImagePreviews.forEach((base64String: string) => {
+      this.adultIdImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.adultNicImage.push(base64String);
       });
 
-      this.birthCertificateImagePreviews.forEach((base64String: string) => {
+      this.birthCertificateImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.bcNumberImage.push(base64String);
       });
 
-      this.marriageCertificateImagePreviews.forEach((base64String: string) => {
+      this.marriageCertificateImageFile.forEach((base64String: string) => {
         
         notaryServicePersonObj.mcNumberImage.push(base64String);
       });
@@ -377,20 +385,47 @@ export class NotaryServiceStep03Component implements OnInit {
   onFilesSelected(event: any, field: string) {
     const files = event.target.files;
     const previewArray = this.getPreviewArray(field);
-
+   
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
           previewArray.push(e.target.result);  
+          this.setPreviewArray(field, previewArray);
         };
         reader.readAsDataURL(files[i]);
       }
     }
   }
 
+  setPreviewArray(field: string, previewArray: string[]) {
+    switch (field) {
+      case 'nic':
+        this.nicImageFile = previewArray;
+        break;
+      case 'passport':
+        this.passportImageFile = previewArray;
+        break;
+      case 'drivingLicense':
+        this.drivingLicenseImageFile = previewArray;
+        break;
+      case 'adultId':
+        this.adultIdImageFile = previewArray;
+        break;
+      case 'birthCertificate':
+        this.birthCertificateImageFile = previewArray;
+        break;
+      case 'marriageCertificate':
+        this.marriageCertificateImageFile = previewArray;
+        break;
+      default:
+        break;
+    }
+  }
+
   // Function to get the correct preview array based on the field
   getPreviewArray(field: string): string[] {
+    console.log('array',field ,'array')
     switch (field) {
       case 'nic': return this.nicImagePreviews;
       case 'passport': return this.passportImagePreviews;
@@ -398,8 +433,10 @@ export class NotaryServiceStep03Component implements OnInit {
       case 'adultId': return this.adultIdImagePreviews;
       case 'birthCertificate': return this.birthCertificateImagePreviews;
       case 'marriageCertificate': return this.marriageCertificateImagePreviews;
+      
       default: return [];
     }
+    
   }
 
   

@@ -11,6 +11,10 @@
   padding: 1.25rem;
 }
 
+input {
+  text-transform: uppercase;
+}
+
 @keyframes pulse-border {
   0% {
       border-color: #ff0000;

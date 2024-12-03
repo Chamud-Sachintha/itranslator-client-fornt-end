@@ -53,7 +53,7 @@ export class CheckTrOrderComponent implements OnInit {
   otherFormImagesList: string[] = [];
   affidavitImageList: string[] = [];
   deedImageList: string[] = [];
-
+  UserName: string | null = '';
   constructor(private activatedRouter: ActivatedRoute, private orderService: OrderService, private tostr: ToastrService
             , private formBuilder: FormBuilder) {}
 
@@ -62,7 +62,7 @@ export class CheckTrOrderComponent implements OnInit {
 
     this.loadOrderDetailsByInvoiceNo()
     this.getTranslatedOrderDocs();
-    
+    this.UserName = sessionStorage.getItem("username");
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
@@ -93,57 +93,57 @@ export class CheckTrOrderComponent implements OnInit {
   }
 
   onClickViewBcFrontImage() {
-    const imageUrl = environment.devServer + this.bcTranslateModelObj.frontImage;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.bcTranslateModelObj.frontImage;
     window.open(imageUrl);
   }
 
   onClickViewBcBackImage() {
-    const imageUrl = environment.devServer + this.bcTranslateModelObj.backImage;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.bcTranslateModelObj.backImage;
     window.open(imageUrl);
   }
 
   onClickViewFrontImg() {
-    const imageUrl = environment.devServer + this.nicTranslateModelObj.frontImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.nicTranslateModelObj.frontImg;
     window.open(imageUrl);
   }
 
   onClickViewBackImg() {
-    const imageUrl = environment.devServer + this.nicTranslateModelObj.backImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.nicTranslateModelObj.backImg;
     window.open(imageUrl);
   }
 
   onClickViewDCFrontImage() {
-    const imageUrl = environment.devServer + this.dcTranslateModel.frontImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.dcTranslateModel.frontImg;
     window.open(imageUrl);
   }
 
   onClickViewDCBackImage() {
-    const imageUrl = environment.devServer + this.dcTranslateModel.backImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.dcTranslateModel.backImg;
     window.open(imageUrl);
   }
 
   onClickViewMCFrontImg() {
-    const imageUrl = environment.devServer + this.mcTranslateModelObj.frontImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.mcTranslateModelObj.frontImg;
     window.open(imageUrl);
   }
 
   onClickViewMCBackImg() {
-    const imageUrl = environment.devServer + this.mcTranslateModelObj.backImg;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.mcTranslateModelObj.backImg;
     window.open(imageUrl);
   }
 
   onClickViewOtherImage(imageName: string) {
-    const imageUrl = environment.devServer + imageName;
+    const imageUrl = environment.fileDocImageTranslateServerURL + imageName;
     window.open(imageUrl);
   }
 
   onClickViewSchoolLeavingFrontImage() {
-    const imageUrl = environment.devServer + this.schoolLeavingTranslateModel.frontImage;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.schoolLeavingTranslateModel.frontImage;
     window.open(imageUrl);
   }
 
   onClickViewSchoolLeavingBackImage() {
-    const imageUrl = environment.devServer + this.schoolLeavingTranslateModel.backImage;
+    const imageUrl = environment.fileDocImageTranslateServerURL + this.schoolLeavingTranslateModel.backImage;
     window.open(imageUrl);
   }
 

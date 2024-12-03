@@ -4,12 +4,14 @@ export const environment = {
     fileDocServerURL: "http://localhost:8001/Legal/",
     fileDoc2ServerURL: "http://localhost:8000/Legal/",
     fileDocImageServerURL: "http://localhost:8001/",
+    fileDocImageTranslateServerURL: "http://localhost:8001/images/",
     devServer: "http://localhost:8000/",
   //   fileServerURL: "https://adminapi.itranslate.lk/translated_docs/",
   //   appURL: 'https://clientapi.itranslate.lk/api/',
   //    fileDocServerURL: "https://clientapi.itranslate.lk/Legal/",
   //  fileDoc2ServerURL: "https://adminapi.itranslate.lk/Legal/",
   //   fileDocImageServerURL: "https://clientapi.itranslate.lk/",
+ // fileDocImageTranslateServerURL: "https://clientapi.itranslate.lk/images/",
   //   devServer: "https://clientapi.itranslate.lk/images"
 
 };

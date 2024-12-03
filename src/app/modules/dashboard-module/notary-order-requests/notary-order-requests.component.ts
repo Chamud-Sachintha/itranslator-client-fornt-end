@@ -14,11 +14,12 @@ export class NotaryOrderRequestsComponent implements OnInit {
 
   orderRequestsList: OrderRequest[] = [];
   requestParamModel = new Request();
-
+  UserName: string | null = '';
   constructor(private notaryService: NotaryService, private router: Router, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loadNotaryServiceOrderList();
+    this.UserName = sessionStorage.getItem("username");
   }
 
   onClickCheckOrder(invoiceNo: string) {

@@ -34,7 +34,7 @@ export class CheckCdOrderComponent {
   requestParamModel = new Request();
   subscription!: Subscription;
   adminLessageList: AdminMessage[] = [];
- 
+  UserName: string | null = '';
   showDocuments: any[] = [];
   notaryDocList: NotaryDocument[] = [];
   totalOrderAmount!: number;
@@ -46,7 +46,7 @@ export class CheckCdOrderComponent {
   submissionDate!: String;
   mailingDate!: String
   registrationDate!: String;
-  driscriptionofservices!: String;
+  driscriptionofservices!: number;
   pendingpayment!: String;
   paymentStatus!: number;
   service_index!: number;
@@ -94,11 +94,11 @@ export class CheckCdOrderComponent {
     this.loadcsOrderInfo();
     this.loadcsOrderDetails();
     /*this.getTranslatedOrderDocs();*/
-
+    this.UserName = sessionStorage.getItem("username");
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
-    this.subscription = timer(0, 30000).pipe(
+    /*this.subscription = timer(0, 30000).pipe(
 
       switchMap(() => this.notaryService.getOrderAdminMessageList(this.requestParamModel))
 
@@ -112,7 +112,7 @@ export class CheckCdOrderComponent {
 
         this.adminLessageList.push(eachData);
       })
-    });
+    });*/
   }
 
   uploadBankSlip() {
@@ -199,7 +199,12 @@ export class CheckCdOrderComponent {
         this.mailingDate= dataList.data[0].dateOfMailing;
         this.registrationDate= dataList.data[0].dateOfRegistration;
         this.totalOrderAmount = dataList.data[0].totalAmount;
-        this.driscriptionofservices = dataList.data[0].descriptionOfService;
+        if (dataList.data[0]?.descriptionOfService == null) {
+          this.driscriptionofservices = 0;
+      } else {
+          this.driscriptionofservices = dataList.data[0]?.descriptionOfService;
+      }
+       // this.driscriptionofservices = dataList.data[0]?.descriptionOfService;
         this.pendingpayment = dataList.data[0].amountInArreas;
       }
     })
@@ -306,6 +311,106 @@ export class CheckCdOrderComponent {
       }
     })
   }
+
+    /*loadcsOrderDetails() {
+      this.requestParamModel.token = sessionStorage.getItem("authToken");
+      this.requestParamModel.flag = sessionStorage.getItem("role");
+      this.requestParamModel.invoiceNo = this.invoiceNo;
+  
+      this.csService.getcsOrderByDetails(this.requestParamModel).subscribe((resp: any) => {
+          const dataList = JSON.parse(JSON.stringify(resp));
+  
+          if (resp.code === 1) {
+              this.service_index = dataList.data[0].service_index;
+              const dataList2 = JSON.parse(JSON.stringify(resp.token));
+  
+              // Call a helper function to populate the form
+              this.populateFormBasedOnServiceIndex(this.service_index, dataList2);
+          }
+      });
+  }*/
+
+  populateFormBasedOnServiceIndex(serviceIndex: number, dataList2: any) {
+    console.log('Service Index:', serviceIndex); // Log serviceIndex to verify
+    console.log('DataList2:', dataList2); // Log dataList2 structure
+
+    // Ensure we are processing the data correctly based on serviceIndex
+    switch (serviceIndex) {
+        case 1:
+            // Map the dataList2 keys to the form values dynamically
+            this.firstServiceForm.patchValue({
+                companyName: dataList2[0]?.companyName,
+                directorNames: dataList2[1]?.directorName,
+                directorAddress: dataList2[2]?.directorAddress,
+                directorTelephones: dataList2[3]?.directorTelephone,
+                directorEmails: dataList2[4]?.directorEmail,
+                devisionNumber: dataList2[5]?.devisionNumber,
+                devisionalSectrial: dataList2[6]?.devisionalSectrial,
+                directorDistrict: dataList2[7]?.directorDistrict,
+                nicNumberOfDirectors: dataList2[8]?.nicNumberOfDirectors,
+            });
+            break;
+        case 2:
+            this.secondServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                regNumber: dataList2[1]?.regNumber,
+                description: dataList2[2]?.description,
+            });
+            break;
+        case 3:
+            this.thirdServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                directorNames: dataList2[1]?.directorNames,
+                directorAddress: dataList2[2]?.directorAddress,
+                directorTelephones: dataList2[3]?.directorTelephones,
+                directorEmails: dataList2[4]?.directorEmails,
+                devisionNumber: dataList2[5]?.devisionNumber,
+                devisionalSectrial: dataList2[6]?.devisionalSectrial,
+                directorDistrict: dataList2[7]?.directorDistrict,
+                nicNumberOfDirectors: dataList2[8]?.nicNumberOfDirectors,
+                dateOfAppointment: dataList2[9]?.dateOfAppointment,
+            });
+            break;
+        case 4:
+            this.fourthServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                directorNames: dataList2[1]?.directorNames,
+                directorAddress: dataList2[2]?.directorAddress,
+                directorTelephones: dataList2[3]?.directorTelephones,
+                directorEmails: dataList2[4]?.directorEmails,
+                devisionNumber: dataList2[5]?.devisionNumber,
+                devisionalSectrial: dataList2[6]?.devisionalSectrial,
+                directorDistrict: dataList2[7]?.directorDistrict,
+                nicNumberOfDirectors: dataList2[8]?.nicNumberOfDirectors,
+                dateOfResign: dataList2[9]?.dateOfResign,
+            });
+            break;
+        case 5:
+            this.fifthServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                regNumber: dataList2[1]?.regNumber,
+                description: dataList2[2]?.description,
+            });
+            break;
+        case 6:
+            this.sixthServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                regNumber: dataList2[2]?.regNumber,
+                description: dataList2[3]?.description,
+            });
+            break;
+        case 7:
+            this.sevenServiceForm = this.formBuilder.group({
+                companyName: dataList2[0]?.companyName,
+                regNumber: dataList2[1]?.regNumber,
+                description: dataList2[2]?.description,
+            });
+            break;
+        default:
+            console.log("Service Index not found for:", serviceIndex);
+            break;
+    }
+}
 
   convertImageToBase64(fileInput: any): Promise<string> {
     return new Promise<string>((resolve, reject) => {

@@ -14,11 +14,12 @@ export class CsOrderRequestsComponent implements OnInit {
 
   orderRequestsList: OrderRequest[] = [];
   requestParamModel = new Request();
-
+  UserName: string | null = '';
   constructor(private csService: CsService, private router: Router, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loadCSServiceOrderList();
+    this.UserName = sessionStorage.getItem("username");
   }
 
   onClickCheckOrder(invoiceNo: string) {

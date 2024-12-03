@@ -76,6 +76,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
   sixthServiceDocList: any[] = [];
   seventhServiceDocList: any[] = [];
   serviceIndex!: string;
+  UserName: string | null = '';
 
   constructor(private formBuilder: FormBuilder, private csService: CsService, private tostr: ToastrService, private renderer: Renderer2,  private el: ElementRef, private spinner: NgxSpinnerService, private router: Router) {}
 
@@ -87,6 +88,7 @@ export class CsServiceSubmitDetailsComponent implements OnInit {
     this.initFifthServiceForm();
     this.initSixthServiceForm();
     this.initSevenServiceForm();
+    this.UserName = sessionStorage.getItem("username");
   }
 
   submitSeventhServiceForm() {

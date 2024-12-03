@@ -13,11 +13,12 @@ import { Request } from 'src/app/shared/models/Request/request';
 export class CompleteNsOrdersComponent {
   orderRequestsList: OrderRequest[] = [];
   requestParamModel = new Request();
-
+  UserName: string | null = '';
   constructor(private notaryService: NotaryService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadNotaryServiceOrderList();
+    this.UserName = sessionStorage.getItem("username");
   }
 
   onClickCheckOrder(invoiceNo: string) {
