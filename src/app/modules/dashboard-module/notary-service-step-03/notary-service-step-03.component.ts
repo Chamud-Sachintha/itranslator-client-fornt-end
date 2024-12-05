@@ -82,6 +82,7 @@ export class NotaryServiceStep03Component implements OnInit {
     this.requestParamModel.lg = this.addedPersonList.secondStepData.localGov;
     this.requestParamModel.district = this.addedPersonList.secondStepData.district;
     this.requestParamModel.lro = this.addedPersonList.secondStepData.lro;
+    this.requestParamModel.secDeposit = this.addedPersonList.secondStepData.secdeposit;
     this.requestParamModel.notaryServicePersonList = this.addedPersonList.notaryPerson;
 
     this.notaryService.placeNotaryServiceOrder(this.requestParamModel).subscribe((resp: any) => {

@@ -36,6 +36,7 @@ export class CheckNsOrderComponent implements OnInit {
   theselectperson:any[] = [];
   selectedPerson! : any;
   showpersondetails = false;
+  showOpenDocModal = false;
   selectedImages: string[] = [];
 
 
@@ -148,6 +149,7 @@ export class CheckNsOrderComponent implements OnInit {
   }
 
   onClickOpenDocTypeModel(index: number) {
+    this.showOpenDocModal = true;
     this.showDocuments = [];
 
     if (index == 1) {
@@ -238,6 +240,7 @@ export class CheckNsOrderComponent implements OnInit {
 
   closeModal() {
     this.showpersondetails = false;
+    this.showOpenDocModal = false;
   }
 
   parseJson(jsonString: string): string[] {

@@ -15,5 +15,6 @@ export class NotaryServiceSecondStep {
     localGov!: string;
     district!: string;
     lro!: string;
+    secdeposit!: string;
     firstStepData!: NotaryServiceFirstStep;
 }

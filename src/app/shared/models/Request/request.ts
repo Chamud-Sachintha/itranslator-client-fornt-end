@@ -32,4 +32,5 @@ export class Request {
     OrderNo!:string;
     DocName!:string;
     newpass!: string;
+    secDeposit!: string;
 }

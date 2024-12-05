@@ -240,6 +240,7 @@
   aria-labelledby="persondetailsModalLabel"
   aria-hidden="true"
 >
+
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -280,14 +281,13 @@
 
 
 <div
-  class="modal fade"
+  class="modal fade show"
   id="exampleModal"
+  [ngStyle]="{ 'display': showOpenDocModal ? 'block' : 'none', 'z-index': 1050 }"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
-  data-backdrop="static"
-  data-keyboard="false"
 >
  
     
