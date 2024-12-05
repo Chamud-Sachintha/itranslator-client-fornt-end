@@ -3,7 +3,7 @@
     <form [formGroup]="documentAndOtherInfoForm" (ngSubmit)="onSubmitDocumentAndAditionalInfoForm()" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-6 col-lg-6 col-sm-12">
-                <label for="">National Identity Card / Passport / Driving License / Adult Identity Card</label>
+                <label for="">Plans</label>
                 <input type="file" class="form-control" formControlName="firstDoc" multiple (change)="onChangeFirstDoc($event)">
             </div>
             <div class="col-md-6 col-lg-6 col-sm-12">
@@ -74,6 +74,10 @@
             <div class="col-md-6 col-lg-6 col-sm-12">
                 <label for="">Land Registration Office</label>
                 <input type="text" class="form-control" formControlName="landRegOffice">
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <label for="">Security Deposit</label>
+                <input type="text" class="form-control" formControlName="secDeposit">
             </div>
         </div>
         <div class="row mt-3">

@@ -67,6 +67,7 @@ export class NotaryServiceStep02Component implements OnInit {
     const localGov = this.documentAndOtherInfoForm.controls['localGov'].value;
     const district = this.documentAndOtherInfoForm.controls['district'].value;
     const landRegOffice = this.documentAndOtherInfoForm.controls['landRegOffice'].value;
+    const secDeposit = this.documentAndOtherInfoForm.controls['secDeposit'].value;
 
     console.log(firstDoc);
 
@@ -129,6 +130,7 @@ export class NotaryServiceStep02Component implements OnInit {
       this.secondStepModel.localGov = localGov;
       this.secondStepModel.district = district;
       this.secondStepModel.lro = landRegOffice;
+      this.secondStepModel.secdeposit = secDeposit;
       this.secondStepModel.firstStepData = this.firstStepModel;
 
       this.dataShareService.setComponentValueObj(this.secondStepModel);
@@ -177,7 +179,8 @@ export class NotaryServiceStep02Component implements OnInit {
       devitionalSec: ['', Validators.required],
       localGov: ['', Validators.required],
       district: ['', Validators.required],
-      landRegOffice: ['', Validators.required]
+      landRegOffice: ['', Validators.required],
+      secDeposit: ['', Validators.required]
     })
   }
 
