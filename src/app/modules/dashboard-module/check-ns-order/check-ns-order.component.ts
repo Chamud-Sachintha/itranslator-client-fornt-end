@@ -24,7 +24,7 @@ export class CheckNsOrderComponent implements OnInit {
   secondDocList: any[] = [];
   thirdDocList: any[] = [];
   allDocumentTypes: string[] = [
-    'NIC / Passport / Driving License / Adult Identity Card',
+    'Plans',
     'Extracts',
     'Deeds / Certificates of Title'
   ]
