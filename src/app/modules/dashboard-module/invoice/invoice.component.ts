@@ -172,7 +172,8 @@ export class InvoiceComponent implements OnInit {
         const redirectUrl = dataList.data[0].redirect_url;
         $('#exampleModal').modal('show');
         sessionStorage.setItem("reference", dataList.data[0].reference);
-
+        //usrl open
+        window.open(redirectUrl);
         this.router.navigateByUrl('/app/order-requests');
 
       }
