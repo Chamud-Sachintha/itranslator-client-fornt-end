@@ -173,7 +173,8 @@ export class InvoiceComponent implements OnInit {
         $('#exampleModal').modal('show');
         sessionStorage.setItem("reference", dataList.data[0].reference);
         //usrl open
-        window.open(redirectUrl);
+        //window.open(redirectUrl);
+        window.open(redirectUrl, '_blank');
         this.router.navigateByUrl('/app/order-requests');
 
       }

@@ -13,4 +13,4 @@ export const environment = {
 //   fileDocImageServerURL: "https://clientapi.itranslate.lk/",
 // fileDocImageTranslateServerURL: "https://clientapi.itranslate.lk/images/",
 //     devServer: "https://clientapi.itranslate.lk/images"
-};
+ };
