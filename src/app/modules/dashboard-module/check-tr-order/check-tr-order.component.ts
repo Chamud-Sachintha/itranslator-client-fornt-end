@@ -429,7 +429,7 @@ export class CheckTrOrderComponent implements OnInit {
   }
 
   onClickViewDocument(documentName: string) {
-    const filePath = environment.fileServerURL + "translated_docs/" + documentName;
+    const filePath = environment.fileServerURL + "/" + documentName;
     window.open(filePath);
   }
 
