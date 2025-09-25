@@ -442,7 +442,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     }
   }
 
-  onSubmitDeedForm() {
+  /*onSubmitDeedForm() {
 
     const fullName = this.deedForm.controls['fullName'].value;
     const address = this.deedForm.controls['address'].value;
@@ -527,7 +527,109 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.deedForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitDeedForm() {
+      const fullName = this.deedForm.controls['fullName'].value;
+      const address = this.deedForm.controls['address'].value;
+      const page1 = this.deedForm.controls['page1'].value;
+      const page2 = this.deedForm.controls['page2'].value;
+      const page3 = this.deedForm.controls['page3'].value;
+      const page4 = this.deedForm.controls['page4'].value;
+      const page5 = this.deedForm.controls['page5'].value;
+      const page6 = this.deedForm.controls['page6'].value;
+    
+      if (fullName == "") {
+        this.tostr.error("Empty Fields Found", "Full Name is required.");
+      } else if (address == "") {
+        this.tostr.error("Empty Fields Found", "Address is required.");
+      } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
+        this.tostr.error("Empty Fields Found", "Upload Minimum 1 Page");
+      } else {
+        let pageCount = 0;
+    
+        this.deedModel.fullName = fullName;
+        this.deedModel.address = address;
+        const promises = [];
+    
+        if (page1) {
+          promises.push(
+            this.convertImageToBase64(page1).then((base64String) => {
+              this.deedModel.page1 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        if (page2) {
+          promises.push(
+            this.convertImageToBase64(page2).then((base64String) => {
+              this.deedModel.page2 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        if (page3) {
+          promises.push(
+            this.convertImageToBase64(page3).then((base64String) => {
+              this.deedModel.page3 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        if (page4) {
+          promises.push(
+            this.convertImageToBase64(page4).then((base64String) => {
+              this.deedModel.page4 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        if (page5) {
+          promises.push(
+            this.convertImageToBase64(page5).then((base64String) => {
+              this.deedModel.page5 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        if (page6) {
+          promises.push(
+            this.convertImageToBase64(page6).then((base64String) => {
+              this.deedModel.page6 = base64String;
+              pageCount++;
+            })
+          );
+        }
+    
+        // Wait for all promises to resolve
+        Promise.all(promises)
+          .then(() => {
+            // Create a new instance of DocumentAppend
+            const deedAppend = new DocumentAppend();
+            deedAppend.serviceId = this.serviceId;
+            deedAppend.deedModel = { ...this.deedModel }; // Use a copy of the deedModel
+            deedAppend.translationTitle = "Deed Translation Service";
+            deedAppend.submitedDate = new Date();
+            deedAppend.pages = pageCount;
+    
+            // Push the new document model to the list
+            this.appendDocList.push(deedAppend);
+    
+            // Reset the form and close the modal
+            this.deedForm.reset();
+            $("#exampleModal .close").click();
+          })
+          .catch((error) => {
+            this.tostr.error("Image Conversion Failed", error);
+          });
+      }
+    }
+    
 
   onChangeDeedPage1($event: any) {
     const file = ($event.target as any).files[0]; 
@@ -650,6 +752,8 @@ export class UploadRequiredDocsComponent implements OnInit {
       $("#exampleModal .close").click();
     }
   }
+ 
+    
 
   initAffidavitForm() {
     this.affidavitForm = this.fromBuilder.group({
@@ -699,7 +803,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.schoolLeavingTranslateForm.patchValue({"backImage": file});
   }
 
-  onSubmitSchoolLeavingCertificateForm() {
+  /*onSubmitSchoolLeavingCertificateForm() {
 
     const fullName = this.schoolLeavingTranslateForm.controls['fullName'].value;
     const schoolName = this.schoolLeavingTranslateForm.controls['schoolName'].value;
@@ -739,7 +843,54 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.schoolLeavingTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitSchoolLeavingCertificateForm() {
+      const fullName = this.schoolLeavingTranslateForm.controls['fullName'].value;
+      const schoolName = this.schoolLeavingTranslateForm.controls['schoolName'].value;
+      const frontImage = this.schoolLeavingTranslateForm.controls['frontImage'].value;
+      const backImage = this.schoolLeavingTranslateForm.controls['backImage'].value;
+    
+      if (fullName == "") {
+        this.tostr.error("Empty Fields Found", "Full Name is required");
+      } else if (schoolName == "") {
+        this.tostr.error("Empty Fields Found", "School Name is required");
+      } else if (frontImage == "") {
+        this.tostr.error("Empty Fields Found", "Front Image is required");
+      } else if (backImage == "") {
+        this.tostr.error("Empty Fields Found", "Back Image is required");
+      } else {
+        // Create a new instance of schoolLeavingCertificateNModel for each submission
+        const newSchoolLeavingCertificateModel = new SchoolLeavingCertificateModel(); 
+        newSchoolLeavingCertificateModel.fullName = fullName;
+        newSchoolLeavingCertificateModel.schoolname = schoolName;
+    
+        // Convert images to base64 and update the model
+        Promise.all([
+          this.convertImageToBase64(frontImage),
+          this.convertImageToBase64(backImage)
+        ]).then(([frontImageBase64, backImageBase64]) => {
+          newSchoolLeavingCertificateModel.frontImage = frontImageBase64;
+          newSchoolLeavingCertificateModel.backImage = backImageBase64;
+    
+          // Create a new instance of DocumentAppend for each submission
+          const newSchoolLeavingCertificateAppend = new DocumentAppend();
+          newSchoolLeavingCertificateAppend.serviceId = this.serviceId;
+          newSchoolLeavingCertificateAppend.schoolLeavingCertificateModel = newSchoolLeavingCertificateModel;
+          newSchoolLeavingCertificateAppend.translationTitle = "School Leaving Certificate";
+          newSchoolLeavingCertificateAppend.submitedDate = new Date();
+          newSchoolLeavingCertificateAppend.pages = 2;
+    
+          // Push the new document model to the list
+          this.appendDocList.push(newSchoolLeavingCertificateAppend);
+    
+          // Reset the form and close the modal
+          this.schoolLeavingTranslateForm.reset();
+          $("#exampleModal .close").click();
+        });
+      }
+    }
+     
 
   initSchoolLeavingCertificateForm() {
     this.schoolLeavingTranslateForm = this.fromBuilder.group({
@@ -780,7 +931,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.otherDocumentTranslateForm.patchValue({"image6": file});
   }
 
-  onSubmitOtherDocumentTranslateForm() {
+  /*onSubmitOtherDocumentTranslateForm() {
     const fullName = this.otherDocumentTranslateForm.controls['fullName'].value;
     const fatherName = this.otherDocumentTranslateForm.controls['fatherName'].value;
     const motherName = this.otherDocumentTranslateForm.controls['motherName'].value;
@@ -902,7 +1053,126 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.otherDocumentTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitOtherDocumentTranslateForm() {
+      const fullName = this.otherDocumentTranslateForm.controls['fullName'].value;
+      const fatherName = this.otherDocumentTranslateForm.controls['fatherName'].value;
+      const motherName = this.otherDocumentTranslateForm.controls['motherName'].value;
+      const page1 = this.otherDocumentTranslateForm.controls['image1'].value;
+      const page2 = this.otherDocumentTranslateForm.controls['image2'].value;
+      const page3 = this.otherDocumentTranslateForm.controls['image3'].value;
+      const page4 = this.otherDocumentTranslateForm.controls['image4'].value;
+      const page5 = this.otherDocumentTranslateForm.controls['image5'].value;
+      const page6 = this.otherDocumentTranslateForm.controls['image6'].value;
+    
+      if (fullName == "") {
+        this.tostr.error("Empty Fields Found", "Full Name is required");
+      } else if (fatherName == "") {
+        this.tostr.error("Empty Fields Found", "Father Name is required");
+      } else if (motherName == "") {
+        this.tostr.error("Empty Fields Found", "Mother Name is required");
+      } else if (page1 == "" && page2 == "" && page3 == "" && page4 == "" && page5 == "" && page6 == "") {
+        this.tostr.error("Empty Fields Found", "Minimum One Page is required");
+      } else {
+        // Create a new instance of otherDocumentTranslateModel for each submission
+        const newOtherDocumentTranslateModel = new OtherDocumentTranslateModel(); // Assuming this is your model class
+        newOtherDocumentTranslateModel.fullName = fullName;
+        newOtherDocumentTranslateModel.fatherName = fatherName;
+        newOtherDocumentTranslateModel.motherName = motherName;
+    
+        let pageCount = 0;
+    
+        // Convert images to base64 and update the model
+        Promise.all([
+          page1 ? this.convertImageToBase64(page1) : null,
+          page2 ? this.convertImageToBase64(page2) : null,
+          page3 ? this.convertImageToBase64(page3) : null,
+          page4 ? this.convertImageToBase64(page4) : null,
+          page5 ? this.convertImageToBase64(page5) : null,
+          page6 ? this.convertImageToBase64(page6) : null
+        ]).then(([page1Base64, page2Base64, page3Base64, page4Base64, page5Base64, page6Base64]) => {
+          if (page1Base64) {
+            newOtherDocumentTranslateModel.page1 = page1Base64;
+            pageCount += 1;
+          }
+          if (page2Base64) {
+            newOtherDocumentTranslateModel.page2 = page2Base64;
+            pageCount += 1;
+          }
+          if (page3Base64) {
+            newOtherDocumentTranslateModel.page3 = page3Base64;
+            pageCount += 1;
+          }
+          if (page4Base64) {
+            newOtherDocumentTranslateModel.page4 = page4Base64;
+            pageCount += 1;
+          }
+          if (page5Base64) {
+            newOtherDocumentTranslateModel.page5 = page5Base64;
+            pageCount += 1;
+          }
+          if (page6Base64) {
+            newOtherDocumentTranslateModel.page6 = page6Base64;
+            pageCount += 1;
+          }
+    
+          // Create a new instance of DocumentAppend for each submission
+          const newOtherDocumentAppend = new DocumentAppend();
+          newOtherDocumentAppend.serviceId = this.serviceId;
+          newOtherDocumentAppend.otherDocumentModel = newOtherDocumentTranslateModel;
+    
+          // Set translation title based on serviceId
+          switch (this.serviceId) {
+            case 5:
+              newOtherDocumentAppend.translationTitle = "Exam Result Sheet";
+              break;
+            case 6:
+              newOtherDocumentAppend.translationTitle = "Police Report";
+              break;
+            case 8:
+              newOtherDocumentAppend.translationTitle = "Other Exam Sheet";
+              break;
+            case 10:
+              newOtherDocumentAppend.translationTitle = "Other Certificate";
+              break;
+            case 11:
+              newOtherDocumentAppend.translationTitle = "Grama Niladari Certificate";
+              break;
+            case 12:
+              newOtherDocumentAppend.translationTitle = "Character Certificate";
+              break;
+            case 14:
+              newOtherDocumentAppend.translationTitle = "Title Report";
+              break;
+            default:
+              newOtherDocumentAppend.translationTitle = "Other Document";
+              break;
+          }
+    
+          newOtherDocumentAppend.submitedDate = new Date();
+          newOtherDocumentAppend.pages = pageCount;
+    
+          // Push the new document model to the list
+          this.appendDocList.push(newOtherDocumentAppend);
+    
+          // Reset the form and file inputs
+          this.otherDocumentTranslateForm.reset();
+          this.fileInput1.nativeElement.value = null;
+          this.fileInput2.nativeElement.value = null;
+          this.fileInput3.nativeElement.value = null;
+          this.fileInput4.nativeElement.value = null;
+          this.fileInput5.nativeElement.value = null;
+          this.fileInput6.nativeElement.value = null;
+    
+          // Close the modal
+          $("#exampleModal .close").click();
+        });
+      }
+    
+      return false;
+    }
+    
 
   initOtherDocumenTranslateForm() {
     this.otherDocumentTranslateForm = this.fromBuilder.group({
@@ -1003,7 +1273,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.spinner.hide();
   }
 
-  onSubmitDeathCertificateTranslateForm() {
+  /*onSubmitDeathCertificateTranslateForm() {
     const name = this.deathTranslateForm.controls['name'].value;
     const fatherName = this.deathTranslateForm.controls['fatherName'].value;
     const motherName = this.deathTranslateForm.controls['motherName'].value;
@@ -1046,7 +1316,62 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.deathTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitDeathCertificateTranslateForm() {
+      const name = this.deathTranslateForm.controls['name'].value;
+      const fatherName = this.deathTranslateForm.controls['fatherName'].value;
+      const motherName = this.deathTranslateForm.controls['motherName'].value;
+      const frontImg = this.deathTranslateForm.controls['frontImg'].value;
+      const backImg = this.deathTranslateForm.controls['backImg'].value;
+    
+      if (name == "") {
+        this.tostr.error("Empty Fields Found", "Name is required");
+      } else if (fatherName == "") {
+        this.tostr.error("Empty Fields Found", "Father Name is required");
+      } else if (motherName == "") {
+        this.tostr.error("Empty Fields Found", "Mother Name is required");
+      } else if (frontImg == "") {
+        this.tostr.error("Empty Fields Found", "Front Image is required");
+      } else if (backImg == "") {
+        this.tostr.error("Empty Fields Found", "Back Image is required");
+      } else {
+       
+        const newDcTranslateModel = new DCTranslateModel(); 
+        newDcTranslateModel.name = name;
+        newDcTranslateModel.fatherName = fatherName;
+        newDcTranslateModel.motherName = motherName;
+    
+        // Convert images to base64 and update the model
+        Promise.all([
+          this.convertImageToBase64(frontImg),
+          this.convertImageToBase64(backImg)
+        ]).then(([frontImgBase64, backImgBase64]) => {
+          newDcTranslateModel.frontImg = frontImgBase64;
+          newDcTranslateModel.backImg = backImgBase64;
+    
+          // Create a new instance of DocumentAppendModel for each submission
+          const newDcDocumentAppendModel = new DocumentAppend();
+          newDcDocumentAppendModel.serviceId = this.serviceId;
+          newDcDocumentAppendModel.dcTranslateModel = newDcTranslateModel;
+          newDcDocumentAppendModel.translationTitle = "Death Certificate Translate Model";
+          newDcDocumentAppendModel.submitedDate = new Date();
+          newDcDocumentAppendModel.pages = 2;
+    
+          // Push the new document model to the list
+          this.appendDocList.push(newDcDocumentAppendModel);
+    
+          console.log('console data >>>>>', this.appendDocList);
+    
+          // Reset the form and close the modal
+          this.deathTranslateForm.reset();
+          $("#exampleModal .close").click();
+        });
+      }
+    
+      return false;
+    }
+    
 
   deathCertificateTranslateFormInit() {
     this.deathTranslateForm = this.fromBuilder.group({
@@ -1136,7 +1461,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     })
   }
 
-  onSubmitMariageTranslateForm() {
+  /*onSubmitMariageTranslateForm() {
     const maleName = this.marriageTranslateForm.controls['maleName'].value;
     const maleFatherName = this.marriageTranslateForm.controls['maleFathersName'].value;
     const maleResidence = this.marriageTranslateForm.controls['maleResidence'].value;
@@ -1192,7 +1517,75 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.marriageTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitMariageTranslateForm() {
+      const maleName = this.marriageTranslateForm.controls['maleName'].value;
+      const maleFatherName = this.marriageTranslateForm.controls['maleFathersName'].value;
+      const maleResidence = this.marriageTranslateForm.controls['maleResidence'].value;
+      const femaleName = this.marriageTranslateForm.controls['femaleName'].value;
+      const femaleFathersName = this.marriageTranslateForm.controls['femaleFathersName'].value;
+      const femaleResidence = this.marriageTranslateForm.controls['femaleResidence'].value;
+    
+      const frontImg = this.marriageTranslateForm.controls['frontImg'].value;
+      const backImg = this.marriageTranslateForm.controls['backImg'].value;
+    
+      if (maleName == "") {
+        this.tostr.error("Empty Fields Found", "Male Name is required");
+      } else if (maleFatherName == "") {
+        this.tostr.error("Empty Fields Found", "Male Father Name is required");
+      } else if (maleResidence == "") {
+        this.tostr.error("Empty Fields Found", "Male Residence is required");
+      } else if (femaleName == "") {
+        this.tostr.error("Empty Fields Found", "Female Name is required");
+      } else if (femaleFathersName == "") {
+        this.tostr.error("Empty Fields Found", "Female Father Name is required");
+      } else if (femaleResidence == "") {
+        this.tostr.error("Empty Fields Found", "Female Residence is required");
+      } else if (frontImg == "") {
+        this.tostr.error("Empty Fields Found", "Front Image is required");
+      } else if (backImg == "") {
+        this.tostr.error("Empty Fields Found", "Back Image is required");
+      } else {
+        // Create a new instance of mcTranslateModel for each submission
+        const newMcTranslateModel = new MCTranslateModel(); // Assuming this is your model class
+        newMcTranslateModel.maleName = maleName;
+        newMcTranslateModel.maleFatherName = maleFatherName;
+        newMcTranslateModel.maleResidence = maleResidence;
+        newMcTranslateModel.femaleName = femaleName;
+        newMcTranslateModel.femaleFatherName = femaleFathersName;
+        newMcTranslateModel.femaleResidencae = femaleResidence;
+    
+        // Convert images to base64 and update the model
+        Promise.all([
+          this.convertImageToBase64(frontImg),
+          this.convertImageToBase64(backImg)
+        ]).then(([frontImgBase64, backImgBase64]) => {
+          newMcTranslateModel.frontImg = frontImgBase64;
+          newMcTranslateModel.backImg = backImgBase64;
+    
+          // Create a new instance of DocumentAppendModel for each submission
+          const newMcTranslateAppendModel = new DocumentAppend();
+          newMcTranslateAppendModel.serviceId = this.serviceId;
+          newMcTranslateAppendModel.mcTranslateModel = newMcTranslateModel;
+          newMcTranslateAppendModel.pages = 2;
+          newMcTranslateAppendModel.translationTitle = "Marriage Certificate Translate";
+          newMcTranslateAppendModel.submitedDate = new Date();
+    
+          // Push the new document model to the list
+          this.appendDocList.push(newMcTranslateAppendModel);
+    
+          console.log('console data >>>>>', this.appendDocList);
+    
+          // Reset the form and close the modal
+          this.marriageTranslateForm.reset();
+          $("#exampleModal .close").click();
+        });
+      }
+    
+      return false;
+    }
+    
 
   marriageTranslateFormInit() {
     this.marriageTranslateForm = this.fromBuilder.group({
@@ -1244,7 +1637,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     })
   }
 
-  onSubmitPassportTranslateForm() {
+  /*onSubmitPassportTranslateForm() {
     const frontImg = this.passportTranslateForm.controls['frontImg'].value;
     const backImg = this.passportTranslateForm.controls['backImg'].value;
 
@@ -1266,9 +1659,42 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.passportTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
 
-  onSubmitBirthCertificateTranslateForm() {
+    onSubmitPassportTranslateForm() {
+      const frontImg = this.passportTranslateForm.controls['frontImg'].value;
+      const backImg = this.passportTranslateForm.controls['backImg'].value;
+    
+      if (frontImg == "") {
+        this.tostr.error("Empty Fields Found", "Front Image is required");
+      } else if (backImg == "") {
+        this.tostr.error("Empty Fields Found", "Back Image is required");
+      } else {
+        
+        const newPassportTranslateModel = new PassporTranslateModel(); 
+        newPassportTranslateModel.frontImg = frontImg;
+        newPassportTranslateModel.backImg = backImg;
+    
+        
+        const newDocumentAppendModel = new DocumentAppend();
+        newDocumentAppendModel.passportTranslateModel = newPassportTranslateModel;
+        newDocumentAppendModel.translationTitle = "Passport Translation";
+        newDocumentAppendModel.submitedDate = new Date();
+        newDocumentAppendModel.pages = 2;
+    
+        
+        this.appendDocList.push(newDocumentAppendModel);
+    
+        console.log('console data >>>>>', this.appendDocList);
+    
+        
+        this.passportTranslateForm.reset();
+        $("#exampleModal .close").click();
+      }
+    }
+    
+
+  /*onSubmitBirthCertificateTranslateForm() {
     const name = this.bcTranslateForm.controls['name'].value;
     const fatherName = this.bcTranslateForm.controls['fatherName'].value;
     const motherName = this.bcTranslateForm.controls['motherName'].value;
@@ -1309,7 +1735,59 @@ export class UploadRequiredDocsComponent implements OnInit {
       this.bcTranslateForm.reset();
       $("#exampleModal .close").click();
     }
-  }
+  }*/
+
+    onSubmitBirthCertificateTranslateForm() {
+      const name = this.bcTranslateForm.controls['name'].value;
+      const fatherName = this.bcTranslateForm.controls['fatherName'].value;
+      const motherName = this.bcTranslateForm.controls['motherName'].value;
+      const frontImg = this.bcTranslateForm.controls['frontImg'].value;
+      const backImg = this.bcTranslateForm.controls['backImg'].value;
+    
+      if (name == "") {
+        this.tostr.error("Empty Fields Found", "Name is required");
+      } else if (fatherName == "") {
+        this.tostr.error("Empty Fields Found", "Father Name is required");
+      } else if (motherName == "") {
+        this.tostr.error("Empty Fields Found", "Mother Name is required");
+      } else {
+        
+        const newBcTranslateModel = new BCTranslateModel(); 
+        newBcTranslateModel.name = name;
+        newBcTranslateModel.fatherName = fatherName;
+        newBcTranslateModel.motherName = motherName;
+    
+        
+        Promise.all([
+          this.convertImageToBase64(frontImg),
+          this.convertImageToBase64(backImg)
+        ]).then(([frontImgBase64, backImgBase64]) => {
+          newBcTranslateModel.frontImage = frontImgBase64;
+          newBcTranslateModel.backImage = backImgBase64;
+          newBcTranslateModel.pages = 2;
+    
+          
+          const bcTranslateAppend = new DocumentAppend();
+          bcTranslateAppend.serviceId = this.serviceId;
+          bcTranslateAppend.bcTranslateModel = newBcTranslateModel;
+          bcTranslateAppend.translationTitle = "BC Translation";
+          bcTranslateAppend.submitedDate = new Date();
+          bcTranslateAppend.pages = 2;
+    
+         
+          this.appendDocList.push(bcTranslateAppend);
+    
+          console.log('console data >>>>>', this.appendDocList);
+    
+          
+          this.bcTranslateForm.reset();
+          $("#exampleModal .close").click();
+        });
+      }
+    
+      return false;
+    }
+    
 
   bcTranslateFormInit() {
     this.bcTranslateForm = this.fromBuilder.group({
@@ -1445,7 +1923,7 @@ export class UploadRequiredDocsComponent implements OnInit {
     this.bcTranslateForm.patchValue({"backImg": file});
   }
 
-  onSubmitNicTranslateForm() {
+ /* onSubmitNicTranslateForm() {
     const nicName = this.nicTranslateForm.controls['nicName'].value;
     const birthPlace = this.nicTranslateForm.controls['birthPlace'].value;
     const address = this.nicTranslateForm.controls['address'].value;
@@ -1487,14 +1965,71 @@ export class UploadRequiredDocsComponent implements OnInit {
       nicModelAppend.pages = 2;
 
       this.appendDocList.push(nicModelAppend);
-
+console.log('console data >>>>>',this.appendDocList);
       // $('#exampleModal').modal().close();
       this.nicTranslateForm.reset();
       $("#exampleModal .close").click()
     }
 
     return false;
-  }
+  }*/
+
+    onSubmitNicTranslateForm() {
+      const nicName = this.nicTranslateForm.controls['nicName'].value;
+      const birthPlace = this.nicTranslateForm.controls['birthPlace'].value;
+      const address = this.nicTranslateForm.controls['address'].value;
+      const frontImg = this.nicTranslateForm.controls['frontImg'].value;
+      const backImg = this.nicTranslateForm.controls['backImg'].value;
+    
+      if (nicName == "") {
+        this.tostr.error("Empty Fields Found", "NIC Name is required");
+      } else if (birthPlace == "") {
+        this.tostr.error("Empty Fields Found", "Birth Place is required");
+      } else if (address == "") {
+        this.tostr.error("Empty Fields Found", "Address is required");
+      } else if (frontImg == "") {
+        this.tostr.error("Empty Fields Found", "Front Image is required");
+      } else if (backImg == "") {
+        this.tostr.error("Empty Fields Found", "Back Image is required");
+      } else {
+        // Create a new instance of NICTranslator for each document
+        const newNicTranslatorModel = new NICTranslator();
+        newNicTranslatorModel.nicName = nicName;
+        newNicTranslatorModel.birthPlace = birthPlace;
+        newNicTranslatorModel.address = address;
+    
+        // Convert images to base64
+        Promise.all([
+          this.convertImageToBase64(frontImg),
+          this.convertImageToBase64(backImg)
+        ]).then(([frontImgBase64, backImgBase64]) => {
+          newNicTranslatorModel.frontImg = frontImgBase64;
+          newNicTranslatorModel.backImg = backImgBase64;
+          newNicTranslatorModel.pages = 2;
+    
+          // Create a new DocumentAppend instance
+          const nicModelAppend = new DocumentAppend();
+          nicModelAppend.serviceId = 1;
+          nicModelAppend.nicTranslateModel = newNicTranslatorModel;
+          nicModelAppend.translationTitle = "NIC Translation";
+          nicModelAppend.submitedDate = new Date();
+          nicModelAppend.pages = 2;
+    
+          // Push the new document model to the list
+          this.appendDocList.push(nicModelAppend);
+    
+          console.log('console data >>>>>', this.appendDocList);
+    
+          // Reset the form and close the modal
+          this.nicTranslateForm.reset();
+          $("#exampleModal .close").click();
+        });
+      }
+    
+      return false;
+    }
+     
+    
 
   initNicTranslateForm() {
     this.nicTranslateForm = this.fromBuilder.group({
