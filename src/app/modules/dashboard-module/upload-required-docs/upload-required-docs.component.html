@@ -1,9 +1,13 @@
-<h4 class="card-header" style="font-weight: bolder;">පරිවර්තනය කිරීමට අවශ්‍ය ලිපිගොණු ඇතුලත් කරන්න.<h5  style="font-weight: bolder;color:#ff0000">( තොරතුරු ඇතුලත් කිරීමේදී ඇතිවන ගැටලු සදහා සහාය +94717177099 අමතන්න. )</h5></h4>
+<h4 class="card-header" style="font-weight: bolder;">පරිවර්තනය කිරීමට අවශ්‍ය ලිපිගොණු ඇතුලත් කරන්න.<h5
+    style="font-weight: bolder;color:#ff0000">( තොරතුරු ඇතුලත් කිරීමේදී ඇතිවන ගැටලු සදහා සහාය +94717177099 අමතන්න. )
+  </h5>
+</h4>
 
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <div class="card-body">
   <div class="row">
-    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" *ngFor="let eachService of this.selectedServiceList[0]; index as i">
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12"
+      *ngFor="let eachService of this.selectedServiceList[0]; index as i">
       <div class="card">
         <div class="card-header">{{ eachService.serviceName }}</div>
         <div class="card-body">
@@ -14,7 +18,7 @@
             <div class="col-8 pt-1">
               <!-- <a href="#" ></a> -->
               <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"
-              (click)="setTranslateModalId(eachService.serviceId)">Upload Documents</button>
+                (click)="setTranslateModalId(eachService.serviceId)">Upload Documents</button>
             </div>
             <div class="col-4 pt-1">
               <!-- <a href="#" (click)="onClickRemove()">Remove</a> -->
@@ -25,7 +29,7 @@
       </div>
     </div>
 
-    
+
   </div>
 
   <div class="row">
@@ -82,10 +86,21 @@
             <div class="col-12">
               <div class="bank_card border-primary shadow-sm">
                 <div class="bank_card-body">
-                  <h3>පහත සදහන් ගිනුමට ඔබගේ මුදල් බැරකර රිසිට් පත Upload කරන්න, ඔබට පසුව උවද මුදල් තැම්පත්කල හැක. ඒ සදහා Order Request තුලට පිවිසෙන්න</h3>
+                  <h3>පහත සදහන් ගිනුමට ඔබගේ මුදල් බැරකර රිසිට් පත Upload කරන්න, ඔබට පසුව උවද මුදල් තැම්පත්කල හැක. ඒ සදහා
+                    Order Request තුලට පිවිසෙන්න</h3>
+                  <div class="row mb-3 bgc-primary-l3 p-2 rounded align-items-center">
+                    <div class="col-8">
+                      <h4 class="card-title text-primary mb-4" style="font-size: 1.1rem; text-align: left;">මුළු මුදල
+                        (Total Amount) :-</h4>
+                    </div>
+                    <div class="col-4 text-end" style="text-align: right;">
+                      <h4 class="mb-0 text-danger fw-bold" style="font-size: 1.25rem;">LKR. {{ calculateTotalAmount()
+                        }}.00</h4>
+                    </div>
+                  </div>
                   <h4 class="card-title text-primary mb-4">ගිණුම් විස්තර:-</h4>
                   <div class="row">
-                   
+
                     <div class="col-md-6 mb-3">
                       <p class="fw-bold mb-1">Name :-</p>
                       <p class="mb-0">I Translate Private Limited</p>
@@ -166,17 +181,25 @@
     </div>
   </div>
 
-  <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">
+  <button class="btn btn-primary btn-sm" (click)="onClickPreviousBtn()"
+    style="background-color: #ff0000; border: none; margin-right: 10px;">
     Previous
   </button>
-  <button class="btn btn-primary btn-sm" style="margin-left: 10px" (click)="onClickNextStep()" style="background-color: #ff0000; border: none;">Go to Next Step</button>
+  <button class="btn btn-primary btn-sm" style="margin-left: 10px" (click)="onClickNextStep()"
+    style="background-color: #ff0000; border: none;">Go to Next Step</button>
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Fill information</h5>
+        <div>
+          <h5 class="modal-title" id="exampleModalLabel">Fill information</h5>
+          <small class="text-danger font-weight-bold"
+            *ngIf="this.serviceId == 11 || this.serviceId == 12 || this.serviceId == 13 || this.serviceId == 15 || this.serviceId == 14 || this.serviceId == 10">
+            * එක් ලේඛනයකට අදාල පිටු පමණක් ඇතුලත් කරන්න. වෙනත් ලේඛන තිබේනම් වෙන වෙනම නැවත නැවත ඇතුලත් කරන්න.
+          </small>
+        </div>
         <a href="#" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
@@ -292,8 +315,7 @@
             </div>
             <div class="col-12">
               <label for="">Father's Name:</label>
-              <input type="text" class="form-control" placeholder=""
-                formControlName="femaleFathersName">
+              <input type="text" class="form-control" placeholder="" formControlName="femaleFathersName">
             </div>
             <div class="col-12">
               <label for="">Recidencies:</label>
@@ -357,11 +379,22 @@
               <input type="text" class="form-control" formControlName="fullName">
             </div>
             <div class="col-12">
-              <label for="">Father Name:</label>
+              <label for="" *ngIf="this.serviceId == 14">Land Name:</label>
+              <label for="" *ngIf="this.serviceId == 5 || this.serviceId == 8">Institute Address:</label>
+              <label for="" *ngIf="this.serviceId == 11 || this.serviceId == 12">Address:</label>
+              <label for=""
+                *ngIf="this.serviceId != 14 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 5 && this.serviceId != 8">Father
+                Name:</label>
               <input type="text" class="form-control" formControlName="fatherName">
             </div>
             <div class="col-12">
-              <label for="">Mother Name:</label>
+              <label for="" *ngIf="this.serviceId == 14">Assessment Number:</label>
+              <label for=""
+                *ngIf="this.serviceId == 11 || this.serviceId == 12 || this.serviceId == 5 || this.serviceId == 8">Institute
+                Name:</label>
+              <label for=""
+                *ngIf="this.serviceId != 14 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 5 && this.serviceId != 8">Mother
+                Name:</label>
               <input type="text" class="form-control" formControlName="motherName">
             </div>
             <div class="col-12">
@@ -372,19 +405,23 @@
               <label for="">Page 2</label>
               <input type="file" class="form-control" #fileInput2 (change)="onChangeOtherDocPage2Change($event)">
             </div>
-            <div class="col-12">
+            <div class="col-12"
+              *ngIf="this.serviceId != 5 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 8">
               <label for="">Page 3</label>
               <input type="file" class="form-control" #fileInput3 (change)="onChangeOtherDocPage3Change($event)">
             </div>
-            <div class="col-12">
+            <div class="col-12"
+              *ngIf="this.serviceId != 5 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 8">
               <label for="">Page 4</label>
               <input type="file" class="form-control" #fileInput4 (change)="onChangeOtherDocPage4Change($event)">
             </div>
-            <div class="col-12">
+            <div class="col-12"
+              *ngIf="this.serviceId != 5 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 8">
               <label for="">Page 5</label>
               <input type="file" class="form-control" #fileInput5 (change)="onChangeOtherDocPage5Change($event)">
             </div>
-            <div class="col-12">
+            <div class="col-12"
+              *ngIf="this.serviceId != 5 && this.serviceId != 11 && this.serviceId != 12 && this.serviceId != 8">
               <label for="">Page 6</label>
               <input type="file" class="form-control" #fileInput6 (change)="onChangeOtherDocPage6Change($event)">
             </div>
@@ -439,15 +476,15 @@
             </div>
             <div class="col-12">
               <label for="">Page 1</label>
-              <input type="file" class="form-control" (change)="onChangeAffidavirPage1($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage1($event)" required>
             </div>
             <div class="col-12">
               <label for="">Page 2</label>
-              <input type="file" class="form-control" (change)="onChangeAffidavirPage2($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage2($event)" required>
             </div>
             <div class="col-12">
               <label for="">Page 3</label>
-              <input type="file" class="form-control" (change)="onChangeAffidavirPage3($event)">
+              <input type="file" class="form-control" (change)="onChangeAffidavirPage3($event)" required>
             </div>
             <div class="col-12">
               <label for="">Page 4</label>
@@ -515,7 +552,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Capitalize English
-correctly as you use it</h5>
+          correctly as you use it</h5>
         <a href="#" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
@@ -528,8 +565,7 @@ correctly as you use it</h5>
                 <div class="row">
                   <div class="col-12">
                     <label for="">NIC Name</label>
-                    <input type="text" class="form-control" placeholder=""
-                      formControlName="nicName">
+                    <input type="text" class="form-control" placeholder="" formControlName="nicName">
                   </div>
                   <div class="col-12 mt-3">
                     <label for="">Birth Place</label>
@@ -541,7 +577,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -558,12 +595,12 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3">
                     <label for="">Mother Name</label>
-                    <input type="text" class="form-control" placeholder=""
-                      formControlName="motherName">
+                    <input type="text" class="form-control" placeholder="" formControlName="motherName">
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -612,7 +649,8 @@ correctly as you use it</h5>
 
                 <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                   <label for="">View Image</label>
-                  <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                  <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here
+                    to View Image</button>
                 </div>
               </form>
 
@@ -632,7 +670,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -653,7 +692,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -670,7 +710,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -692,7 +733,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>
@@ -709,7 +751,8 @@ correctly as you use it</h5>
                   </div>
                   <div class="col-12 mt-3" *ngFor="let eachImage of this.viewFormImageList">
                     <label for="">View Image</label>
-                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck Here to View Image</button>
+                    <button class="btn btn-primary" style="width: 100%;" (click)="onClickViewImage(eachImage)">Clieck
+                      Here to View Image</button>
                   </div>
                 </div>
               </form>

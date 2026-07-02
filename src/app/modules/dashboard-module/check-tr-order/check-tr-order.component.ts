@@ -5,6 +5,7 @@ import { each } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, switchMap, timer } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
+import { WebsocketService } from 'src/app/services/websocket.service';
 import { AdminMessage } from 'src/app/shared/models/AdminMessage/admin-message';
 import { BCTranslateModel } from 'src/app/shared/models/BCTranslateModel/bctranslate-model';
 import { DCTranslateModel } from 'src/app/shared/models/DCTranslateModel/dctranslate-model';
@@ -54,8 +55,12 @@ export class CheckTrOrderComponent implements OnInit {
   affidavitImageList: string[] = [];
   deedImageList: string[] = [];
   UserName: string | null = '';
+  isEditMode = false;
+  currentEditingRowId?: number;
+  currentDocValueObj: any = null;
+  currentServiceId?: any;
   constructor(private activatedRouter: ActivatedRoute, private orderService: OrderService, private tostr: ToastrService
-            , private formBuilder: FormBuilder) {}
+    , private formBuilder: FormBuilder, private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
     this.invoiceNo = this.activatedRouter.snapshot.params['invoiceNo'];
@@ -66,21 +71,28 @@ export class CheckTrOrderComponent implements OnInit {
     this.requestParamModel.token = sessionStorage.getItem("authToken");
     this.requestParamModel.flag = sessionStorage.getItem("role");
 
-    this.subscription = timer(0, 1500).pipe(
-
-      switchMap(() => this.orderService.getOrderAdminMessageList(this.requestParamModel))
-
-    ).subscribe((result: any) => {
+    this.orderService.getOrderAdminMessageList(this.requestParamModel).subscribe((result: any) => {
       this.adminLessageList = [];
-      const data = JSON.parse(JSON.stringify(result))
-
-      data.data[0].forEach((eachData: AdminMessage) => {
-        const formatedDate = parseInt(eachData.time) * 1000;
-        eachData.time = formatedDate.toString();
-
-        this.adminLessageList.push(eachData);
-      })
+      const data = JSON.parse(JSON.stringify(result));
+      if (data && data.data && data.data[0]) {
+        data.data[0].forEach((eachData: AdminMessage) => {
+          const formatedDate = parseInt(eachData.time) * 1000;
+          eachData.time = formatedDate.toString();
+          this.adminLessageList.push(eachData);
+        });
+      }
     });
+
+    this.websocketService.getEcho()
+      .channel('order-chat.' + this.invoiceNo)
+      .listen('.message.sent', (data: any) => {
+        if (data && data.messageData) {
+          const eachData = data.messageData;
+          const formatedDate = parseInt(eachData.time) * 1000;
+          eachData.time = formatedDate.toString();
+          this.adminLessageList.push(eachData);
+        }
+      });
 
     this.initNicTranslateModelForm();
     this.initBcTranslateModelForm();
@@ -222,7 +234,7 @@ export class CheckTrOrderComponent implements OnInit {
       name: ['', Validators.required],
       fatherName: ['', Validators.required],
       motherName: ['', Validators.required],
-      frontImg: ['',Validators.required],
+      frontImg: ['', Validators.required],
       backImg: ['', Validators.required]
     })
 
@@ -243,12 +255,53 @@ export class CheckTrOrderComponent implements OnInit {
     this.nicTranslateModelForm.controls['birthPlace'].disable();
   }
 
-  onClickViewDoc(serviceId: string, valueObj: any) {
+  onClickViewDoc(serviceId: string, valueObj: any, isEditMode: boolean = false, orderItemId?: number) {
+    this.isEditMode = isEditMode;
+    this.currentEditingRowId = orderItemId;
+    this.currentDocValueObj = valueObj[0];
+    this.currentServiceId = serviceId;
+
+    // Reset all document view flags to false
+    this.nicTranslateModel = false;
+    this.bcTranslateModel = false;
+    this.marriageTranslateModel = false;
+    this.deathTranslateService = false;
+    this.otherDocumentTranslateService = false;
+    this.schoolLeaveTranslateService = false;
+    this.affidavitTranslateionService = false;
+    this.deedTranslationService = false;
+
+    this.initNicTranslateModelForm();
+    this.initBcTranslateModelForm();
+    this.marriageTranslateFormInit();
+    this.initDCTranslateForm();
+    this.initOtherDocumenTranslateForm();
+    this.initSchoolLeavingCertificateForm();
+    this.initAffidavitForm();
+    this.initDeedForm();
+
+    if (isEditMode) {
+      if (this.nicTranslateModelForm) this.nicTranslateModelForm.enable();
+      if (this.bcTranslateModelForm) this.bcTranslateModelForm.enable();
+      if (this.marriageTranslateForm) this.marriageTranslateForm.enable();
+      if (this.deathTranslateForm) this.deathTranslateForm.enable();
+      if (this.otherDocumentTranslateForm) this.otherDocumentTranslateForm.enable();
+      if (this.schoolLeavingTranslateForm) this.schoolLeavingTranslateForm.enable();
+      if (this.affidavitForm) this.affidavitForm.enable();
+      if (this.deedForm) this.deedForm.enable();
+    } else {
+      if (this.nicTranslateModelForm) this.nicTranslateModelForm.disable();
+      if (this.bcTranslateModelForm) this.bcTranslateModelForm.disable();
+      if (this.marriageTranslateForm) this.marriageTranslateForm.disable();
+      if (this.deathTranslateForm) this.deathTranslateForm.disable();
+      if (this.otherDocumentTranslateForm) this.otherDocumentTranslateForm.disable();
+      if (this.schoolLeavingTranslateForm) this.schoolLeavingTranslateForm.disable();
+      if (this.affidavitForm) this.affidavitForm.disable();
+      if (this.deedForm) this.deedForm.disable();
+    }
+
     if (serviceId == "1") {
       this.nicTranslateModel = true;
-      this.bcTranslateModel = false;
-      this.deathTranslateService = false;
-      this.marriageTranslateModel = false;
 
       this.nicTranslateModelForm.controls['nicName'].setValue(valueObj[0].nicName);
       this.nicTranslateModelForm.controls['address'].setValue(valueObj[0].address);
@@ -256,10 +309,7 @@ export class CheckTrOrderComponent implements OnInit {
       this.nicTranslateModelObj.frontImg = valueObj[0].frontImg;
       this.nicTranslateModelObj.backImg = valueObj[0].backImg;
     } else if (serviceId == "2") {
-      this.nicTranslateModel = false;
       this.bcTranslateModel = true;
-      this.deathTranslateService = false;
-      this.marriageTranslateModel = false;
 
       this.bcTranslateModelForm.controls['name'].setValue(valueObj[0].name);
       this.bcTranslateModelForm.controls['fatherName'].setValue(valueObj[0].fatherName);
@@ -267,32 +317,30 @@ export class CheckTrOrderComponent implements OnInit {
       this.bcTranslateModelObj.frontImage = valueObj[0].frontImage;
       this.bcTranslateModelObj.backImage = valueObj[0].backImage;
     } else if (serviceId == "3") {
-      this.nicTranslateModel = false;
-      this.bcTranslateModel = false;
       this.marriageTranslateModel = true;
-      this.deathTranslateService = false;
 
       this.marriageTranslateForm.controls['maleName'].setValue(valueObj[0].maleName);
-      this.marriageTranslateForm.controls['maleFathersName'].setValue(valueObj[0].maleFathersName);
+      this.marriageTranslateForm.controls['maleFathersName'].setValue(valueObj[0].maleFatherName || valueObj[0].maleFathersName || '');
       this.marriageTranslateForm.controls['maleResidence'].setValue(valueObj[0].maleResidence);
 
       this.marriageTranslateForm.controls['femaleName'].setValue(valueObj[0].femaleName);
-      this.marriageTranslateForm.controls['femaleFathersName'].setValue(valueObj[0].femaleFathersName);
-      this.marriageTranslateForm.controls['femaleResidence'].setValue(valueObj[0].femaleResidence);
+      this.marriageTranslateForm.controls['femaleFathersName'].setValue(valueObj[0].femaleFatherName || valueObj[0].femaleFathersName || '');
+      this.marriageTranslateForm.controls['femaleResidence'].setValue(valueObj[0].femaleResidencae || valueObj[0].femaleResidence || '');
+
+      this.mcTranslateModelObj.frontImg = valueObj[0].frontImg;
+      this.mcTranslateModelObj.backImg = valueObj[0].backImg;
     } else if (serviceId == "4") {
+      this.deathTranslateService = true;
+
       this.deathTranslateForm.controls['name'].setValue(valueObj[0].name);
       this.deathTranslateForm.controls['fatherName'].setValue(valueObj[0].fatherName);
       this.deathTranslateForm.controls['motherName'].setValue(valueObj[0].motherName);
       this.dcTranslateModel.frontImg = valueObj[0].frontImg;
       this.dcTranslateModel.backImg = valueObj[0].backImg;
     } else if (serviceId == "5" || serviceId == "6" || serviceId == "8" || serviceId == "10" || serviceId == "11" || serviceId == "12" || serviceId == "14") {
-      
+
       this.otherFormImagesList = [];
 
-      this.nicTranslateModel = false;
-      this.bcTranslateModel = false;
-      this.deathTranslateService = false;
-      this.marriageTranslateModel = false;
       this.otherDocumentTranslateService = true;
 
       this.otherDocumentTranslateForm.controls['fullName'].setValue(valueObj[0].fullName);
@@ -322,19 +370,14 @@ export class CheckTrOrderComponent implements OnInit {
       if ("page6" in valueObj[0]) {
         this.otherFormImagesList.push(valueObj[0].page6);
       }
-    } else if (serviceId == "7") {
-      this.nicTranslateModel = false;
-      this.bcTranslateModel = false;
-      this.deathTranslateService = false;
-      this.marriageTranslateModel = false;
-      this.otherDocumentTranslateService = false;
+    } else if (serviceId == "9") {
       this.schoolLeaveTranslateService = true;
 
       this.schoolLeavingTranslateForm.controls['fullName'].setValue(valueObj[0].fullName);
-      this.schoolLeavingTranslateForm.controls['schoolName'].setValue(valueObj[0].schoolName);
+      this.schoolLeavingTranslateForm.controls['schoolName'].setValue(valueObj[0].schoolname || valueObj[0].schoolName);
       this.schoolLeavingTranslateModel.frontImage = valueObj[0].frontImage;
       this.schoolLeavingTranslateModel.backImage = valueObj[0].backImage;
-    } else if (serviceId == "9") {
+    } else if (serviceId == "7") {
 
       this.affidavitImageList = [];
 
@@ -385,7 +428,7 @@ export class CheckTrOrderComponent implements OnInit {
 
       this.deedForm.controls['fullName'].setValue(valueObj[0].fullName);
       this.deedForm.controls['address'].setValue(valueObj[0].address);
-      
+
       if ("page1" in valueObj[0]) {
         this.deedImageList.push(valueObj[0].page1);
       }
@@ -429,7 +472,7 @@ export class CheckTrOrderComponent implements OnInit {
   }
 
   onClickViewDocument(documentName: string) {
-    const filePath = environment.fileServerURL  + documentName;
+    const filePath = environment.fileServerURL + documentName;
     window.open(filePath);
   }
 
@@ -442,7 +485,14 @@ export class CheckTrOrderComponent implements OnInit {
     this.orderService.sendOrderMessageToAdmin(this.requestParamModel).subscribe((resp: any) => {
 
       if (resp.code === 1) {
-        
+        const localMsg: AdminMessage = {
+          toUser: 'Admin',
+          fromUser: this.UserName || 'Client',
+          message: message,
+          time: new Date().getTime().toString(),
+          avatar: ''
+        };
+        this.adminLessageList.push(localMsg);
       }
     })
   }
@@ -488,6 +538,89 @@ export class CheckTrOrderComponent implements OnInit {
         this.tostr.error("Order Assign", resp.message)
       }
     })
+  }
+
+  onSubmitUpdateDoc(serviceId?: string) {
+    const activeServiceId = serviceId || this.currentServiceId || '';
+    let updatedModel: any = {};
+    if (activeServiceId == "1") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        nicName: this.nicTranslateModelForm.value.nicName,
+        address: this.nicTranslateModelForm.value.address,
+        birthPlace: this.nicTranslateModelForm.value.birthPlace
+      };
+    } else if (activeServiceId == "2") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        name: this.bcTranslateModelForm.value.name,
+        fatherName: this.bcTranslateModelForm.value.fatherName,
+        motherName: this.bcTranslateModelForm.value.motherName
+      };
+    } else if (activeServiceId == "3") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        maleName: this.marriageTranslateForm.value.maleName,
+        maleFatherName: this.marriageTranslateForm.value.maleFathersName,
+        maleResidence: this.marriageTranslateForm.value.maleResidence,
+        femaleName: this.marriageTranslateForm.value.femaleName,
+        femaleFatherName: this.marriageTranslateForm.value.femaleFathersName,
+        femaleResidencae: this.marriageTranslateForm.value.femaleResidence
+      };
+    } else if (activeServiceId == "4") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        name: this.deathTranslateForm.value.name,
+        fatherName: this.deathTranslateForm.value.fatherName,
+        motherName: this.deathTranslateForm.value.motherName
+      };
+    } else if (["5", "6", "8", "10", "11", "12", "14"].includes(activeServiceId)) {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        fullName: this.otherDocumentTranslateForm.value.fullName,
+        fatherName: this.otherDocumentTranslateForm.value.fatherName,
+        motherName: this.otherDocumentTranslateForm.value.motherName
+      };
+    } else if (activeServiceId == "9") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        fullName: this.schoolLeavingTranslateForm.value.fullName,
+        schoolName: this.schoolLeavingTranslateForm.value.schoolName
+      };
+    } else if (activeServiceId == "7") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        fullName: this.affidavitForm.value.fullName,
+        address: this.affidavitForm.value.address,
+        descriptionOfService: this.affidavitForm.value.descriptionOfService
+      };
+    } else if (activeServiceId == "13" || activeServiceId == "15") {
+      updatedModel = {
+        ...this.currentDocValueObj,
+        fullName: this.deedForm.value.fullName,
+        address: this.deedForm.value.address
+      };
+    }
+
+    const payload = {
+      token: sessionStorage.getItem("authToken"),
+      flag: sessionStorage.getItem("role"),
+      orderItemId: this.currentEditingRowId,
+      jsonValue: JSON.stringify(updatedModel)
+    };
+
+    this.orderService.updateOrderItemDetails(payload).subscribe((resp: any) => {
+      if (resp.code === 1) {
+        this.tostr.success("Update Details", "Document details updated successfully.");
+        $("#exampleModal .close").click();
+        this.taskList = [];
+        this.loadOrderDetailsByInvoiceNo();
+      } else {
+        this.tostr.error("Update Details", resp.message || "Failed to update details.");
+      }
+    });
+
+    return false;
   }
 
 }

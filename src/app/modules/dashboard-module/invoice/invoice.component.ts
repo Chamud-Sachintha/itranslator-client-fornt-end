@@ -12,7 +12,7 @@ import { InvoiceTable } from 'src/app/shared/models/InvoiceTable/invoice-table';
 import { Order } from 'src/app/shared/models/Order/order';
 import { OrderNotification } from 'src/app/shared/models/OrderNotification/order-notification';
 import { Request } from 'src/app/shared/models/Request/request';
-declare var $: any; 
+declare var $: any;
 
 @Component({
   selector: 'app-invoice',
@@ -35,10 +35,12 @@ export class InvoiceComponent implements OnInit {
   invoiceNo!: string;
   deliveryMethod!: string;
   bankSlipCacheObj!: any;
+  documentSubtotal: number = 0;
+  deliveryCost: number = 0;
 
   constructor(private dataShareService: DataShareService, private orderService: OrderService, private tostr: ToastrService, private spinner: NgxSpinnerService
-            , private authService: AuthService, private smsService: SmsService, private exportService: ExportService
-            , private router: Router) {}
+    , private authService: AuthService, private smsService: SmsService, private exportService: ExportService
+    , private router: Router) { }
 
   ngOnInit(): void {
 
@@ -55,7 +57,7 @@ export class InvoiceComponent implements OnInit {
       this.sendDataObj = data;
 
       if (data.paymentMethod != 2) {
-        if (this.bankSlipCacheObj != null){
+        if (this.bankSlipCacheObj != null) {
           this.bankSlip = true;
         } else if (data.bankSlip != null) {
           if (data.bankSlip.__zone_symbol__value) {
@@ -68,12 +70,12 @@ export class InvoiceComponent implements OnInit {
 
       let totalAmount = 0;
       dataList.uploadedDocList.forEach((eachDoc: any) => {
-        
+
         let invoiceObj = new InvoiceTable();
 
         invoiceObj.documentTitle = eachDoc.translationTitle;
         invoiceObj.pages = eachDoc.pages;
-        
+
         console.log(eachDoc.nicTranslateModel)
 
         if (eachDoc.nicTranslateModel !== undefined) {
@@ -81,7 +83,11 @@ export class InvoiceComponent implements OnInit {
         } else if (eachDoc.bcTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.bcTranslateModel.price;
         } else if (eachDoc.otherDocumentModel !== undefined) {
-          invoiceObj.unitPrice = eachDoc.otherDocumentModel.price * invoiceObj.pages;
+          if (eachDoc.serviceId == 11 || eachDoc.serviceId == 12 || eachDoc.serviceId == 8) {
+            invoiceObj.unitPrice = eachDoc.otherDocumentModel.price;
+          } else {
+            invoiceObj.unitPrice = eachDoc.otherDocumentModel.price * invoiceObj.pages;
+          }
         } else if (eachDoc.dcTranslateModel !== undefined) {
           invoiceObj.unitPrice = eachDoc.dcTranslateModel.price;
         } else if (eachDoc.affidavitModel != undefined) {
@@ -101,15 +107,17 @@ export class InvoiceComponent implements OnInit {
 
       // need to change total amount according to delivery method
 
+      this.documentSubtotal = totalAmount;
       this.deliveryMethod = dataList.deliveryMethod;
+      this.deliveryCost = 0;
 
       if (this.deliveryMethod === "3") {
-        totalAmount += 500;
+        this.deliveryCost = 500;
       } else if (this.deliveryMethod === "4") {
-        totalAmount += 1000;
+        this.deliveryCost = 1000;
       }
 
-      this.inviceTableObj.amount = totalAmount;
+      this.inviceTableObj.amount = this.documentSubtotal + this.deliveryCost;
     })
   }
 
@@ -141,11 +149,11 @@ export class InvoiceComponent implements OnInit {
 
     this.exportService.exportInvoiceAsPDF(this.orderDetails).subscribe((blob: any) => {
       const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-        a.href = objectUrl;
-        a.download = 'invoice.pdf';  // You can use a dynamic name here based on your invoice object
-        a.click();
-        URL.revokeObjectURL(objectUrl);
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = 'invoice.pdf';  // You can use a dynamic name here based on your invoice object
+      a.click();
+      URL.revokeObjectURL(objectUrl);
     })
   }
 
@@ -164,23 +172,23 @@ export class InvoiceComponent implements OnInit {
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 
     this.spinner.show();
+
     this.orderService.placeOrderWithPaymentGateWay(this.orderDetails).subscribe((resp: any) => {
-      
+
       const dataList = JSON.parse(JSON.stringify(resp));
 
       if (resp.code === 1) {
         const redirectUrl = dataList.data[0].redirect_url;
         $('#exampleModal').modal('show');
         sessionStorage.setItem("reference", dataList.data[0].reference);
-        //usrl open
-        //window.open(redirectUrl);
-        window.open(redirectUrl, '_blank');
-        this.router.navigateByUrl('/app/order-requests');
 
+        window.location.href = redirectUrl;
       }
 
       this.spinner.hide();
       this.resetCache();
+    }, (err) => {
+      this.spinner.hide();
     })
   }
 
@@ -195,14 +203,14 @@ export class InvoiceComponent implements OnInit {
     if (this.bankSlipCacheObj != null || this.bankSlipCacheObj != undefined) {
       this.orderDetails.bankSlip = this.bankSlipCacheObj;
     }
-    
+
     this.orderDetails.deliveryTimeType = this.sendDataObj.deliveryTime;
     this.orderDetails.deliveryMethod = this.sendDataObj.deliveryMethod;
     this.orderDetails.paymentMethod = this.sendDataObj.paymentMethod;
     this.orderDetails.totalAmount = this.inviceTableObj.amount;
     this.orderDetails.invoiceNo = this.invoiceNo;
 
-    const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({type, value}));
+    const mapped = Object.entries(this.sendDataObj.uploadedDocList[0]).map(([type, value]) => ({ type, value }));
 
     this.orderDetails.valueObjModel = this.uploadeDocumentList[0];
 

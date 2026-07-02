@@ -57,6 +57,11 @@ export class OrderService {
     return this.http.post(path, requestParamModel);
   }
 
+  updateOrderItemDetails(payload: any) {
+    const path = environment.appURL + "update-order-item-details";
+    return this.http.post(path, payload);
+  }
+
   getCompleteOrderList(requestParamModel: Request) {
     const path = environment.appURL + "get-complete-orders";
     return this.http.post(path, requestParamModel);

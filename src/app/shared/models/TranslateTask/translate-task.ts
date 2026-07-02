@@ -1,4 +1,5 @@
 export class TranslateTask {
+    id?: number;
     serviceId!: string;
     documentTitle!: string;
     pages!: string;

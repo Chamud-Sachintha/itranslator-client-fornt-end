@@ -13,7 +13,7 @@
 
             <div class="page-tools">
                 <div class="action-buttons">
-                   <!-- <a class="btn bg-white btn-light mx-1px text-95" href="#" (click)="printInvoice()">
+                    <!-- <a class="btn bg-white btn-light mx-1px text-95" href="#" (click)="printInvoice()">
                         <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
                         Print
                     </a>-->
@@ -32,7 +32,8 @@
                         <div class="col-12">
                             <div class="text-center text-150">
                                 <!-- <i class="fa fa-book fa-2x text-success-m2 mr-1"></i> -->
-                                <img src="../../../../assets/images/itlogo.png" style="width: 40px; margin-top: -10px;" alt="">&nbsp;  
+                                <img src="../../../../assets/images/itlogo.png" style="width: 40px; margin-top: -10px;"
+                                    alt="">&nbsp;
                                 <span class="text-default-d3" style="font-size: 35px; color: red;">itranslate.lk</span>
                             </div>
                         </div>
@@ -45,22 +46,27 @@
                         <div class="col-sm-6">
                             <span style="-webkit-text-fill-color: black;"><b>Customer Details</b></span>
                             <br>
-                          
+
                             <div class="mt-2">
-                                <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Name:</span>
-                                <span class="text-600 text-110  align-middle">&nbsp;{{ this.invoiceModel.invoiceTo }}</span>
+                                <span class="text-sm text-grey-m2 align-middle"><i
+                                        class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Name:</span>
+                                <span class="text-600 text-110  align-middle">&nbsp;{{ this.invoiceModel.invoiceTo
+                                    }}</span>
                             </div>
                             <div class="text-grey-m2">
                                 <div class="my-1">
-                                    <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Address:</span>
-                                    <b class="text-600">&nbsp;{{ this.invoiceModel.invoiceAddress }}</b> 
+                                    <span class="text-sm text-grey-m2 align-middle"><i
+                                            class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Address:</span>
+                                    <b class="text-600">&nbsp;{{ this.invoiceModel.invoiceAddress }}</b>
                                 </div>
                                 <!-- <div class="my-1">
                                     State, Country
                                 </div> -->
                                 <div class="my-1">
-                                    <span class="text-sm text-grey-m2 align-middle"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Contact No:</span>&nbsp;
-                                    <b class="text-600">{{ this.invoiceModel.mobileNumber }}</b></div>
+                                    <span class="text-sm text-grey-m2 align-middle"><i
+                                            class="fa fa-circle text-blue-m2 text-xs mr-1"></i>Contact No:</span>&nbsp;
+                                    <b class="text-600">{{ this.invoiceModel.mobileNumber }}</b>
+                                </div>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -68,22 +74,24 @@
                         <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
                             <hr class="d-sm-none" />
                             <div class="text-grey-m2 mt-3">
-                                
+
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                         class="text-600 text-90">Delivery Method:</span>
-                                    <p *ngIf="this.deliveryMethod === '2'">By Hand</p>    
-                                    <p *ngIf="this.deliveryMethod === '3'">By Courier</p>  
-                                    <p *ngIf="this.deliveryMethod === '4'">By Speed Post</p>      
+                                    <p *ngIf="this.deliveryMethod === '2'">By Hand</p>
+                                    <p *ngIf="this.deliveryMethod === '3'">By Speed Post</p>
+                                    <p *ngIf="this.deliveryMethod === '4'">By Courier</p>
                                 </div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
-                                        class="text-600 text-90">Issue Date:</span> {{ this.invoiceIssuedDate | date }}</div>
+                                        class="text-600 text-90">Issue Date:</span> {{ this.invoiceIssuedDate | date }}
+                                </div>
 
                                 <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
                                         class="text-600 text-90">Payment Methord:</span>&nbsp;
-                                        <span   *ngIf="this.bankSlip">Bank Tranfser</span>
-                                        <span    *ngIf="!this.bankSlip">Online Payment</span></div>
+                                    <span *ngIf="this.bankSlip">Bank Tranfser</span>
+                                    <span *ngIf="!this.bankSlip">Online Payment</span>
+                                </div>
                             </div>
                         </div>
                         <!-- /.col -->
@@ -99,7 +107,8 @@
                         </div>
 
                         <div class="text-95 text-secondary-d3">
-                            <div class="row mb-2 mb-sm-0 py-25" *ngFor="let eachRow of this.invoiceItemList; index as i">
+                            <div class="row mb-2 mb-sm-0 py-25"
+                                *ngFor="let eachRow of this.invoiceItemList; index as i">
                                 <div class="d-none d-sm-block col-1">{{ i + 1 }}</div>
                                 <div class="col-9 col-sm-5">{{ eachRow.documentTitle }}</div>
                                 <div class="d-none d-sm-block col-2">
@@ -154,30 +163,50 @@
                             </div>
 
                             <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
-                                <!-- <div class="row my-2">
+                                <div class="row my-2 align-items-center text-grey-d2">
                                     <div class="col-7 text-right">
-                                        SubTotal
+                                        Translation Subtotal
                                     </div>
                                     <div class="col-5">
-                                        <span class="text-120 text-secondary-d1">$2,250</span>
+                                        <span class="text-110 text-secondary-d1">LKR. {{ this.documentSubtotal }}
+                                            .00</span>
                                     </div>
-                                </div> -->
+                                </div>
 
-                                <!-- <div class="row my-2">
+                                <div class="row my-2 align-items-center text-grey-d2" *ngIf="this.deliveryCost > 0">
                                     <div class="col-7 text-right">
-                                        Tax (10%)
+                                        Delivery Fee ({{ this.deliveryMethod === '3' ? 'Speed Post' : 'Courier' }})
                                     </div>
                                     <div class="col-5">
-                                        <span class="text-110 text-secondary-d1">$225</span>
+                                        <span class="text-110 text-secondary-d1">LKR. {{ this.deliveryCost }} .00</span>
                                     </div>
-                                </div> -->
+                                </div>
+
+                                <div class="row my-2 align-items-center text-grey-d2" *ngIf="this.deliveryCost == 0">
+                                    <div class="col-7 text-right">
+                                        Delivery Fee (By Hand)
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="text-110 text-secondary-d1">LKR. 0 .00</span>
+                                    </div>
+                                </div>
+
+                                <div class="row my-2 align-items-center text-grey-d2">
+                                    <div class="col-7 text-right">
+                                        Tax / VAT (0%)
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="text-110 text-secondary-d1">LKR. 0 .00</span>
+                                    </div>
+                                </div>
 
                                 <div class="row my-2 align-items-center bgc-primary-l3 p-2">
                                     <div class="col-7 text-right">
                                         Total Amount
                                     </div>
                                     <div class="col-5">
-                                        <span class="text-150 text-success-d3 opacity-2">LKR. {{ this.inviceTableObj.amount }} .00</span>
+                                        <span class="text-150 text-success-d3 opacity-2">LKR. {{
+                                            this.inviceTableObj.amount }} .00</span>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +215,8 @@
                         <hr />
 
                         <div>
-                            <span class="text-secondary-d1 text-105" style="display: block; text-align: center;" >Thank you for your Order!</span>
+                            <span class="text-secondary-d1 text-105" style="display: block; text-align: center;">Thank
+                                you for your Order!</span>
                             <div class="company-details">
                                 <p>No.71/D, 1st Floor, High Level Plaza , Delkanda, Nugegoda, Sri Lanka.</p>
                                 <p></p>
@@ -196,9 +226,14 @@
                                 <p>Email: itranslate.lk@gmail.com, Email: info@itranslate.lk</p>
                                 <p></p>
                             </div>
-                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip" (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay Now</button>
-                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip" (click)="placeOrderWithBankSlip()">Place Order</button>
-                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" (click)="onClickPreviousBtn()" style="background-color: #ff0000; border: none; margin-right: 10px;">
+                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="!this.bankSlip"
+                                (click)="placeOnlinePayment()" style="background-color: #ff0000; border: none;">Pay
+                                Now</button>
+                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0" *ngIf="this.bankSlip"
+                                (click)="placeOrderWithBankSlip()">Place Order</button>
+                            <button class="btn btn-info btn-bold px-4 float-right mt-3 mt-lg-0"
+                                (click)="onClickPreviousBtn()"
+                                style="background-color: #ff0000; border: none; margin-right: 10px;">
                                 Previous
                             </button>
                         </div>
