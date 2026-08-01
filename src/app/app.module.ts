@@ -7,12 +7,13 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { DashboardHeaderComponent } from './shared/dashboard-header/dashboard-header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CheckLegalAdviceComponent } from './modules/dashboard-module/check-legal-advice/check-legal-advice.component';
 import { CompleteLegalAdviceComponent } from './modules/dashboard-module/complete-legal-advice/complete-legal-advice.component';
+import { LoaderInterceptor } from './services/loader/loader-interceptor.service';
 
 
 @NgModule({
@@ -21,8 +22,8 @@ import { CompleteLegalAdviceComponent } from './modules/dashboard-module/complet
     AuthLayoutComponent,
     DashboardLayoutComponent,
     DashboardHeaderComponent,
-   
-   
+
+
   ],
   imports: [
     BrowserModule,
@@ -32,7 +33,10 @@ import { CompleteLegalAdviceComponent } from './modules/dashboard-module/complet
     NgxSpinnerModule,
     BrowserAnimationsModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

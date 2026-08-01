@@ -66,4 +66,9 @@ export class OrderService {
     const path = environment.appURL + "get-complete-orders";
     return this.http.post(path, requestParamModel);
   }
+
+  getNextInvoiceNo(payload: any) {
+    const path = environment.appURL + "get-next-invoice-no";
+    return this.http.post(path, payload);
+  }
 }

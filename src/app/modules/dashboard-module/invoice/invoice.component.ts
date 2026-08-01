@@ -47,7 +47,8 @@ export class InvoiceComponent implements OnInit {
     this.bankSlipCacheObj = localStorage.getItem("bankSlip");
     this.getClientInfo();
 
-    this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    this.invoiceNo = 'Loading...';
+    this.getNextInvoiceNo();
 
     this.dataShareService.getComponentValueObj().subscribe((data: any) => {
 
@@ -256,6 +257,26 @@ export class InvoiceComponent implements OnInit {
         this.invoiceModel.mobileNumber = dataList.data[0].mobile_number;
       }
     })
+  }
+
+  getNextInvoiceNo() {
+    this.spinner.show();
+    const payload = {
+      token: sessionStorage.getItem("authToken"),
+      flag: sessionStorage.getItem("role"),
+      type: "TR"
+    };
+    this.orderService.getNextInvoiceNo(payload).subscribe((resp: any) => {
+      this.spinner.hide();
+      if (resp && resp.code === 1 && resp.data && resp.data[0]) {
+        this.invoiceNo = resp.data[0].invoiceNo;
+      } else {
+        this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+      }
+    }, (err) => {
+      this.spinner.hide();
+      this.invoiceNo = this.dataShareService.generateInvoiceNo("TR");
+    });
   }
 
 }

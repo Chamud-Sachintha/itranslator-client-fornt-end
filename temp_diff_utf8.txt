@@ -1,0 +1,24 @@
+﻿diff --git a/app/Http/Controllers/OnePayGateway.php b/app/Http/Controllers/OnePayGateway.php
+index b72b4ed..9353f30 100644
+--- a/app/Http/Controllers/OnePayGateway.php
++++ b/app/Http/Controllers/OnePayGateway.php
+@@ -374,7 +374,7 @@ private function onePayGateway($paymentInfo) {
+         $app_id = "2MJ3118E348BC48E57A30";
+         $hash_salt = "V7R4118E348BC48E57A5C";
+         $app_token = "17d74e32519225a59421c269cb1efd8447ccade301dee6b4139530e62c8bf8a11dbd58c003519e24.C0VB118E348BC48E57A72";
+-
++            // done changes
+         $onepay_args = array(
+         
+         "amount" => $paymentInfo['amount'], //only upto 2 decimal points
+@@ -385,8 +385,8 @@ private function onePayGateway($paymentInfo) {
+         "customer_last_name"=> $paymentInfo['lastName'], // spaces are not allowed
+         "customer_phone_number" => $paymentInfo['contact'], //must start with +94, spaces are not allowed
+         "customer_email" => $paymentInfo['email'], // spaces are not allowed
+-        //"transaction_redirect_url" => "https://dashboard.itranslate.lk/#/app/select-services/step-01", // spaces are not allowed live
+-        "transaction_redirect_url" => "http://localhost:4200/#/app/select-services/step-01", // spaces are not allowed tets
++        "transaction_redirect_url" => "https://client.itranslate.lk/#/app/select-services/step-01", // spaces are not allowed live
++        //"transaction_redirect_url" => "http://localhost:4200/#/app/select-services/step-01", // spaces are not allowed tets cganges do
+         "additional_data" => "sample" //only support string, spaces are not allowed, this will return in response also
+         );
+ 

@@ -1398,7 +1398,11 @@ export class UploadRequiredDocsComponent implements OnInit {
         this.tostr.error("Upload Documents", "Please Upload Required Documents.");
       } else if (this.deliveryMethod == '' || this.deliveryTime == '' || this.paymentMethod == '') {
         this.tostr.error("Empty Properties.", "Please Select Order Properties.");
-      } else {
+      } else if (this.paymentMethod == "1" && this.bankSlip == null) {
+        this.tostr.error("Bank Slip", "Please Upload Bank Slip.");
+      }
+
+      else {
         // const completeDocObj = {
         //   uploadedDocList: this.appendDocList,
         //   deliveryTime: this.deliveryTime,
